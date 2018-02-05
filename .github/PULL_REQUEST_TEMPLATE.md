@@ -1,5 +1,5 @@
 ## Link to Ticket
-TITLE [Link]()
+Closes # [Link]()
 
 ## Description of Proposed Changes
 
