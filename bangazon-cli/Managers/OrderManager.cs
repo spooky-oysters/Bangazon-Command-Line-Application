@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using bangazon_cli.Models;
 
 namespace bangazon_cli.Managers
@@ -9,6 +10,7 @@ namespace bangazon_cli.Managers
      */
     public class OrderManager
     {
+        // collection to store orders until our database is setup
         private List<Order> _orders = new List<Order>();
 
         /*
@@ -16,14 +18,15 @@ namespace bangazon_cli.Managers
             Parameters: 
                 - Customer object
         */        
-        public void CreateOrder(Order order) {
+        public void AddOrder(Order order) {
             _orders.Add(order);
         }
 
         // returns customer's unpaid order from the database
-        public List<Order> GetUnpaidOrder() {
-            return _orders;
-            // create foreach loop to look for the customer's unpaid order and return it. 
+        public List<Order> GetUnpaidOrder(int id) {
+            // return _orders;
+            // later: create foreach loop to look for the customer's unpaid order and return it.
+            return _orders.Where(o => o.CustomerId == id && o.PaymentTypeId == null).ToList();
         }
         
     }

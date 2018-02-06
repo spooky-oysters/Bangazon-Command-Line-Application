@@ -25,13 +25,24 @@ namespace bangazon_cli.Managers.Tests
                Id = 1
            };
             
-            _manager.CreateOrder(newOrder);
+            _manager.AddOrder(newOrder);
         }
 
         [Fact]
         public void ListOrders()
         {
-            _manager.GetUnpaidOrder();
+            // create a new order
+            Order newOrder = new Order(){
+               Id = 1, 
+               CustomerId = 1,
+               PaymentTypeId = null,
+               CompletedDate = null
+            };
+
+            // add the newly created order to the order list
+            _manager.AddOrder(newOrder);
+
+            Assert.Contains(newOrder, _manager.GetUnpaidOrder(1));
         }
 
     }
