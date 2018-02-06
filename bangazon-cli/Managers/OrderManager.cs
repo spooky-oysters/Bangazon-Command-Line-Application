@@ -12,11 +12,15 @@ namespace bangazon_cli.Managers
     {
         // collection to store orders until our database is setup
         private List<Order> _orders = new List<Order>();
-
+        
+        // dictionary to act as joiner table for Product and Order
+        private Dictionary<int, int> _OrderProduct = new Dictionary<int, int>();
+        
+        
         /*
-            Adds a customer record to the database
+            Adds a Order record to the database
             Parameters: 
-                - Customer object
+                - Order object
         */        
         public void AddOrder(Order order) {
             _orders.Add(order);
@@ -24,10 +28,14 @@ namespace bangazon_cli.Managers
 
         // returns customer's unpaid order from the database
         public List<Order> GetUnpaidOrder(int id) {
-            // return _orders;
-            // later: create foreach loop to look for the customer's unpaid order and return it.
             return _orders.Where(o => o.CustomerId == id && o.PaymentTypeId == null).ToList();
         }
-        
+
+        // store a product on an order, by using a joiner table
+        public void AddProductToOrder(int productId, int orderId)
+        {
+            // create a dictionary for a joiner table to hold the relationship of product and order
+            _OrderProduct.Add(productId, orderId);
+        }
     }
 }
