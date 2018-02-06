@@ -6,14 +6,14 @@ using Xunit;
     References: Ticket #1 - Create customer account
     
  */
-namespace bangazon_cli.Models.Tests
+namespace bangazon_cli.Managers.Tests
 {
     public class CustomerManager_Should
     {
         [Fact]
         public void AddCustomerToCollection()
         {
-            Customer customer = new Customer();;
+            Models.Customer customer = new Models.Customer();;
             customer.Id = 1;
             
             CustomerManager manager = new CustomerManager();
