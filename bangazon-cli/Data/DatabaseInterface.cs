@@ -5,7 +5,7 @@ namespace bangazon_cli
 {
     /* 
     Author: Dre Randaci
-    Description: Database interface to access data in a local database file 
+    Purpose: Methods to access SQL data in a locally saved database file 
     Example access method: 
 
     public class ExampleClass
@@ -27,29 +27,33 @@ namespace bangazon_cli
 
     public class DatabaseInterface
     {        
+        // Environment variable to store the path to the local DB file
         private string _connectionString;
+        
+        // Variable to store the connection to the database. Passes _connectionString as an argument
         private SqliteConnection _connection;
 
+        // Method to extract the developers environment variable holding the BANGAZON_CLI_APP_DB.db filepath 
         public DatabaseInterface()
-        {
-            // Method to extract the environment variable holding the database path 
+        {            
             try {
                 _connectionString = $"Data Source=BANGAZON_CLI_APP_DB.db";
                 _connection = new SqliteConnection(_connectionString);
                 Console.Write("Connected...");
-
+            // If the filepath cannot be found, throw an exception message
             } catch (Exception err) {
                 Console.WriteLine("ERROR: Not connected to db " + err.Data);
                 Console.ReadLine();
             }
         }
 
-        // Method to query any table in the database
+        // Method to query any table in the database. Takes a string SQL command when called
         public void Query(string command, Action<SqliteDataReader> handler)
         {
             using (_connection)
             {
-                _connection.Open ();
+                // Creates a connection to the database and passes the SQL command in as the CommandText
+                _connection.Open ();                
                 SqliteCommand dbcmd = _connection.CreateCommand ();
                 dbcmd.CommandText = command;
 
@@ -67,6 +71,7 @@ namespace bangazon_cli
         {
             using (_connection)
             {
+                // Creates a connection to the database and passes the SQL command in as the CommandText
                 _connection.Open ();
                 SqliteCommand dbcmd = _connection.CreateCommand ();
                 dbcmd.CommandText = command;
@@ -78,20 +83,24 @@ namespace bangazon_cli
         // Method to insert new rows into the database
         public int Insert(string command)
         {
+            // Initializes an ID variable used to hold the returned inserted item ID
             int insertedItemId = 0;
 
             using (_connection)
             {
+                // Creates a connection to the database and passes the SQL command in as the CommandText
                 _connection.Open ();
                 SqliteCommand dbcmd = _connection.CreateCommand ();
                 dbcmd.CommandText = command;
 
                 dbcmd.ExecuteNonQuery ();
 
+                // Accesses the Query method within this class and passes a SQL command 
                 this.Query("select last_insert_rowid()",
                     (SqliteDataReader reader) => {
                         while (reader.Read ())
                         {
+                            // Loop runs once and assigns the initialized insertedItemId variable to the inserted returned items ID
                             insertedItemId = reader.GetInt32(0);
                         }
                     }
@@ -99,7 +108,7 @@ namespace bangazon_cli
 
                 dbcmd.Dispose ();
             }
-            
+            // Returns the inserted item ID
             return insertedItemId;
         }
 
@@ -109,6 +118,7 @@ namespace bangazon_cli
         {
             using (_connection)
             {
+                // Creates a connection to the database and passes the SQL command in as the CommandText
                 _connection.Open();
                 SqliteCommand dbcmd = _connection.CreateCommand ();
 
@@ -126,6 +136,7 @@ namespace bangazon_cli
                     Console.WriteLine(ex.Message);
                     if (ex.Message.Contains("no such table"))
                     {
+                        // Create table template command that can create a table if it does not exist
                         dbcmd.CommandText = $@"CREATE TABLE `ExampleTable` (
                             
                         )";
@@ -140,6 +151,7 @@ namespace bangazon_cli
                         }
                     }
                 }
+                // Closes the connection to the database
                 _connection.Close();
             }
         }
