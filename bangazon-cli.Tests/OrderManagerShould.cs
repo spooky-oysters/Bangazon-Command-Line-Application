@@ -1,11 +1,13 @@
+using System;
+using Xunit;
+using bangazon_cli.Models;
+
 /*
     Author: Greg Lawrence
     Purpose: To test methods of the Order Manager such as creating order, adding product to order
 */
-using System;
-using Xunit;
 
-namespace bangazon_cli.Tests
+namespace bangazon_cli.Managers.Tests
 {
     public class OrderManagerShould
     {
@@ -19,15 +21,17 @@ namespace bangazon_cli.Tests
         [Fact]
         public void CreateNewOrder()
         {
-            Product kite = new Product();
-            _manager.CreateOrder(kite);
+           Order newOrder = new Order(){
+               Id = 1
+           };
+            
+            _manager.CreateOrder(newOrder);
         }
 
         [Fact]
-        public void CreateNewOrder()
+        public void ListOrders()
         {
-            Product kite = new Product();
-            _manager.CreateOrder(kite);
+            _manager.GetUnpaidOrder();
         }
 
     }

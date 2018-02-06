@@ -16,7 +16,7 @@ namespace bangazon_cli.Managers
             Parameters: 
                 - Customer object
         */        
-        public void AddOrder(Order order) {
+        public void CreateOrder(Order order) {
             _orders.Add(order);
         }
 
