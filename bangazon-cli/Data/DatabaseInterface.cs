@@ -111,50 +111,5 @@ namespace bangazon_cli
             // Returns the inserted item ID
             return insertedItemId;
         }
-
-
-        // Method to check if a table exists. If the table does not exist, the method will create that table 
-        public void CheckTableName ()
-        {
-            using (_connection)
-            {
-                // Creates a connection to the database and passes the SQL command in as the CommandText
-                _connection.Open();
-                SqliteCommand dbcmd = _connection.CreateCommand ();
-
-                // Query the account table to see if table is created
-                dbcmd.CommandText = $"SELECT `Id` FROM `ExampleTable`";
-
-                try
-                {
-                    // Try to run the query
-                    using (SqliteDataReader reader = dbcmd.ExecuteReader()) { }
-                    dbcmd.Dispose ();
-                }
-                catch (Microsoft.Data.Sqlite.SqliteException ex)
-                {
-                    // If it throws an exception, create the table
-                    Console.WriteLine(ex.Message);
-                    if (ex.Message.Contains("no such table"))
-                    {
-                        // Create table template command that can create a table if it does not exist
-                        dbcmd.CommandText = $@"CREATE TABLE `ExampleTable` (
-                            
-                        )";
-
-                        try
-                        {
-                            dbcmd.ExecuteNonQuery ();
-                        }
-                        catch (Microsoft.Data.Sqlite.SqliteException crex)
-                        {
-                            Console.WriteLine("Table already exists. Ignoring");
-                        }
-                    }
-                }
-                // Closes the connection to the database
-                _connection.Close();
-            }
-        }
     }
 }
