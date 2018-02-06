@@ -53,8 +53,7 @@ namespace bangazon_cli.Managers
                 '{customer.PostalCode}',
                 '{customer.PhoneNumber}'
             );";
-            
-            Console.WriteLine(SQLInsert);
+
             
             customerId = _db.Insert(SQLInsert);
 

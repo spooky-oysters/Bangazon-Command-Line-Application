@@ -43,9 +43,8 @@ namespace bangazon_cli.Managers.Tests
             customer.PostalCode = "POSTALCODE";
             customer.PhoneNumber = "PHONENUMBER";
 
-
-            // CustomerManager manager = new CustomerManager(_db);
-            // manager.AddCustomer(customer);
+            CustomerManager manager = new CustomerManager(_db);
+            manager.AddCustomer(customer);
             // // The customer Id should be greater than one
             Assert.True(customer.Id > 0);
             
