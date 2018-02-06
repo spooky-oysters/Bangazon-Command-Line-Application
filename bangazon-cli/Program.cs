@@ -6,6 +6,8 @@ namespace bangazon_cli
     {
         static void Main(string[] args)
         {
+            DatabaseInterface db = new DatabaseInterface();
+            Managers.CustomerManager customerManager = new Managers.CustomerManager(db);
             Console.WriteLine("Hello World!");
         }
     }

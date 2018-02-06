@@ -1,6 +1,7 @@
 using System;
 using Microsoft.Data.Sqlite;
 
+
 namespace bangazon_cli
 {
     /* 
@@ -37,16 +38,24 @@ namespace bangazon_cli
         public DatabaseInterface()
         {            
             try {
-                _connectionString = $"Data Source=BANGAZON_CLI_APP_DB.db";
+                string path = System.Environment.GetEnvironmentVariable("BANGAZON_CLI_APP_DB");
+                _connectionString = $"Data Source={path}";
                 _connection = new SqliteConnection(_connectionString);
                 Console.Write("Connected...");
             // If the filepath cannot be found, throw an exception message
             } catch (Exception err) {
                 Console.WriteLine("ERROR: Not connected to db " + err.Data);
                 Console.ReadLine();
+                
             }
         }
 
+        // Method to generate the database file if it does not exist
+        // public void GenerateDatabaseFile() {
+        //     // environment variable
+        //     string path = System.Environment.GetEnvironmentVariable("BANGAZON_CLI_APP_DB.db");
+        //     SqliteConnection
+        // }
         // Method to query any table in the database. Takes a string SQL command when called
         public void Query(string command, Action<SqliteDataReader> handler)
         {
