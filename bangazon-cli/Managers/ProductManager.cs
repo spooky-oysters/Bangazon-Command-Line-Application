@@ -21,5 +21,11 @@ namespace bangazon_cli.Managers
             _products.Add(product);
         }
 
+        // returns all products from database
+        public List<Product> GetProducts()
+        {
+            return _products;
+        }
+
     }
 }
