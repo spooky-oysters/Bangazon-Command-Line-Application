@@ -12,13 +12,13 @@ namespace bangazon_cli
     {
         private DatabaseInterface db;
         db.Query(
-                $@"select Name
-                From Customer
+                $@"select ProductId
+                From Product
                 Where CustomerId = '{Id}';",
                 (SqliteDataReader reader) =>
                 {
                     while (reader.Read ()) {
-                        CustomerId = reader.GetInt32(0);
+                        ProductId = reader.GetInt32(0);
                     }
                 }
             ); 
@@ -27,7 +27,7 @@ namespace bangazon_cli
 
     public class DatabaseInterface
     {        
-        // Environment variable to store the path to the local DB file
+        // Variable to store the path to the local DB file
         private string _connectionString;
         
         // Variable to store the connection to the database. Passes _connectionString as an argument
@@ -66,7 +66,7 @@ namespace bangazon_cli
             }
         }
 
-        // Method to update any method in the database
+        // Method to update tables in the database
         public void Update(string command)
         {
             using (_connection)
@@ -100,7 +100,7 @@ namespace bangazon_cli
                     (SqliteDataReader reader) => {
                         while (reader.Read ())
                         {
-                            // Loop runs once and assigns the initialized insertedItemId variable to the inserted returned items ID
+                            // Loop runs once and assigns the inserted items ID to the initialized insertedItemId variable
                             insertedItemId = reader.GetInt32(0);
                         }
                     }
@@ -127,12 +127,13 @@ namespace bangazon_cli
 
                 try
                 {
-                    // Try to run the query. If it throws an exception, create the table
+                    // Try to run the query
                     using (SqliteDataReader reader = dbcmd.ExecuteReader()) { }
                     dbcmd.Dispose ();
                 }
                 catch (Microsoft.Data.Sqlite.SqliteException ex)
                 {
+                    // If it throws an exception, create the table
                     Console.WriteLine(ex.Message);
                     if (ex.Message.Contains("no such table"))
                     {
