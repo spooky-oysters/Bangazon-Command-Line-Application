@@ -12,25 +12,25 @@ namespace bangazon_cli.Models.Tests
         [Fact]
         public void HaveProperties()
         {
-            Customer customer = new Customer();
-            customer.Id = 1;
-            customer.Name = "Steve";
-            customer.StreetAddress = "1710 Shelby Ave";
-            customer.City = "Nashville";
-            customer.State = "TN";
-            customer.PostalCode = "37206";
-            customer.PhoneNumber = "615-855-5769";
-            
-            Assert.Equal(customer.Id,1);
-            Assert.Equal(customer.Name,"Steve");
-            Assert.Equal(customer.StreetAddress, "1710 Shelby Ave");
-            Assert.Equal(customer.City, "Nashville");
-            Assert.Equal(customer.State, "TN");
-            Assert.Equal(customer.PostalCode, "37206");
-            Assert.Equal(customer.PhoneNumber,"615-855-5769");
+            // create a dummy customer
+            Customer _customer = new Customer(){
+                Id=1
+            };
+
+            // create a new instance of an order
+            Order order = new Order(_customer.Id);
+
+            order.Id = 1;
+            order.PaymentTypeId = null;
+            order.CompletedDate = null;
+           
+
+            Assert.Equal(order.Id,1);
+            Assert.Equal(order.CustomerId,1);
+            Assert.Equal(order.PaymentTypeId, null);
+            Assert.Equal(order.CompletedDate, null);
 
         }
-
         
     }
 }

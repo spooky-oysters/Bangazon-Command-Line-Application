@@ -9,20 +9,39 @@ using bangazon_cli.Models;
 
 namespace bangazon_cli.Managers.Tests
 {
+
+
     public class OrderManagerShould
     {
+        // create a private instance of a new customer
         private readonly OrderManager _manager;
+        // private instance of a new customer
+        private Customer _customer;
 
         public OrderManagerShould()
         {
+            // create a new orderManager instance
             _manager = new OrderManager();
+
+            // create a new customer instance
+            _customer = new Customer();
+            // properties added to new customer
+            _customer.Id = 1;
+            _customer.Name = "G Lawrence";
+            _customer.StreetAddress = "123 Somewhere";
+            _customer.City = "Nashville";
+            _customer.State = "TN";
+            _customer.PostalCode = "37206";
+            _customer.PhoneNumber = "8018959001";
         }
 
         [Fact]
         public void CreateNewOrder()
         {
-           Order newOrder = new Order(){
-               Id = 1
+           Order newOrder = new Order(_customer.Id){
+                Id = 1, 
+                PaymentTypeId = null,
+                CompletedDate = null
            };
             
             _manager.AddOrder(newOrder);
@@ -32,9 +51,8 @@ namespace bangazon_cli.Managers.Tests
         public void ListOrders()
         {
             // create a new order
-            Order newOrder = new Order(){
+            Order newOrder = new Order(_customer.Id){
                Id = 1, 
-               CustomerId = 1,
                PaymentTypeId = null,
                CompletedDate = null
             };
