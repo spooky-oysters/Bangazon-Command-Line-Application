@@ -39,11 +39,6 @@ namespace bangazon_cli.Managers
             }
         }
 
-        // public void Add(Customer customer)
-        // {
-        //     throw new NotImplementedException();
-        // }
-
         /*
             Adds a customer record to the database
             This assigns the id to the customer object based on 
