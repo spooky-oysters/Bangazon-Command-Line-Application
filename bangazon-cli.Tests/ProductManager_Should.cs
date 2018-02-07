@@ -1,6 +1,8 @@
 using System;
 using bangazon_cli.Models;
 using Xunit;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace bangazon_cli.Managers.Tests
 {
@@ -11,20 +13,68 @@ namespace bangazon_cli.Managers.Tests
     public class ProductManager_Should
     {
         private Product _product;
+        private DatabaseInterface _db;
+        private string _dbPath;
+
+        // instatiate the test
+        public ProductManager_Should()
+        {
+            string testPath = System.Environment.GetEnvironmentVariable("BANGAZON_CLI_APP_DB_TEST");
+            _db = new DatabaseInterface(testPath);
+        }
 
         [Fact]
         public void AddProductToCollection()
         {
-            _product = new Models.Product();
-            _product.Id = 1;
+            // generate product
+            Product product = new Product();
+            product.CustomerId = 1;
+            product.Name = "AddProductToCollection";
+            product.Price = 34.00;
+            product.Description = "Product description";
+            product.Quantity = 45;
 
-            ProductManager productManager = new ProductManager();
-            productManager.AddProduct(_product);
+            // manager new instance
+            ProductManager productManager = new ProductManager(_db);
 
-            Assert.Contains(_product, productManager.GetProducts());
+            // capture existing record count. Test will use this to destermin if the add method increased the number of records
+            int initialRecordCount = productManager.GetProducts().Count();
+
+            // assign the id to the product object using AddProduct
+            product.Id = productManager.AddProduct(product);
+
+            // get the product from the manager
+            Product storedProduct = productManager.GetSingleProduct(product.Id);
+
+            // assert there are products in the list
+            Assert.True(productManager.GetProducts().Count() > initialRecordCount);
+
+            // assert the product created by test is in the list
+            Assert.Equal(product.Id, storedProduct.Id);
 
         }
 
+        [Fact]
+        public void AddsProductIdToAddedRecords()
+        {
+            Product product = new Product();
+            product.Id = 0;
+            product.CustomerId = 1;
+            product.Name = "AddProductIdToAddedRecords";
+            product.Price = 34.00;
+            product.Description = "Product description";
+            product.Quantity = 45;
+
+            ProductManager productManager = new ProductManager(_db);
+
+            productManager.AddProduct(product);
+
+            // the product Id should be greater than one
+            Assert.True(product.Id > 0);
+        }
+        
+// this needs refactoring now that product table is connect to SQLite
+/*
         [Fact]
         public void UpdateProductName()
         {
@@ -112,5 +162,6 @@ namespace bangazon_cli.Managers.Tests
             // tests that new product quantity is updated
             Assert.Equal(prodToUpdate.Quantity, 5);
         }
+        */
     }
 }

@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using bangazon_cli.Models;
 using System.Linq;
+using System;
+using Microsoft.Data.Sqlite;
 
 namespace bangazon_cli.Managers
 {
@@ -11,20 +13,91 @@ namespace bangazon_cli.Managers
     public class ProductManager
     {
         private List<Product> _products = new List<Product>();
+        private DatabaseInterface _db;
+
+        public ProductManager(DatabaseInterface db)
+        {
+            _db = db;
+            this.CreateProductTable();
+        }
+
+        private void CreateProductTable()
+        {
+            try
+            {
+                _db.Update(@"CREATE TABLE IF NOT EXISTS
+                `Product` (
+                    `Id` INTEGER PRIMARY KEY AUTOINCREMENT,
+                    `CustomerId` INTEGER NOT NULL,
+                    `Name` TEXT NOT NULL,
+                    `Price` DOUBLE NOT NULL,
+                    `Description` TEXT NOT NULL,
+                    `Quantity` INTEGER NOT NULL,
+                    FOREIGN KEY(`CustomerId`) REFERENCES `Customer`(`Id`)
+                );
+                ");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("CreateProductTable", ex.Message);
+            }
+        }
 
         /* 
-            Adds a product record to the database.
+            Adds a product record to the database. 
+            Assigns the id to the product object based on the id it is assigned in the database.
             Parameters: 
             - Product object
         */
-        public void AddProduct(Product product)
+        public int AddProduct(Product product)
         {
-            _products.Add(product);
+            string SQLInsert = $@"INSERT INTO `Product`
+            VALUES (
+                null,
+                '{product.CustomerId}',
+                '{product.Name}',
+                '{product.Price}',
+                '{product.Description}',
+                '{product.Quantity}'
+                );";
+
+            int productId = 0;
+            try
+            {
+                productId = _db.Insert(SQLInsert);
+                product.Id = productId;
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine("Add Product Error", err.Message);
+            }
+            return productId;
         }
 
         // returns all products from database
         public List<Product> GetProducts()
         {
+            // clear existing customers
+            _products.Clear();
+            // find the record for the product in the db and retrieve data
+            _db.Query($@"SELECT * FROM Product;",
+            (SqliteDataReader reader) =>
+                {
+                    while (reader.Read())
+                    {
+                        // new product object
+                        Product product = new Product();
+                        product.Id = Convert.ToInt32(reader["Id"]);
+                        product.CustomerId = Convert.ToInt32(reader["CustomerId"]);
+                        product.Name = Convert.ToString(reader["Name"]);
+                        product.Price = Convert.ToDouble(reader["Price"]);
+                        product.Description = Convert.ToString(reader["Description"]);
+                        product.Quantity = Convert.ToInt32(reader["Quantity"]);
+
+                        // add it to collection
+                        _products.Add(product);
+                    }
+                });
             return _products;
         }
 
@@ -75,7 +148,7 @@ namespace bangazon_cli.Managers
         // gets one product. Parameters: id
         public Product GetSingleProduct(int id)
         {
-            return _products.Where(p => p.Id == id).Single();
+            return this.GetProducts().Where(p => p.Id == id).Single();
         }
 
     }
