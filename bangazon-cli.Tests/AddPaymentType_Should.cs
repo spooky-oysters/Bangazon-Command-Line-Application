@@ -13,15 +13,15 @@ namespace bangazon_cli.Tests
     {
         /* 
             Variables that will be initialized in the constructor
+            
+            !TODO: Refactor to grab active customer from Program.ActiveCustomer variable once created
         */
         private ActiveCustomerManager _activeCustomerManager;
         private Customer _customer;
         private PaymentType _paymentType;
         private DatabaseInterface _db;
         private CustomerManager _customerManager;
-
-
-        // TODO: Refactor to grab active customer from Program.ActiveCustomer variable
+        private PaymentTypeManager _paymentTypeManager;
 
         public AddPaymentType_Should()
         {
@@ -33,6 +33,8 @@ namespace bangazon_cli.Tests
             
             // Initializing an instance of _customerManager to pass to the _activeCustomerManager ctor
             _customerManager = new CustomerManager(_db);
+
+            _paymentTypeManager = new PaymentTypeManager(_db);
 
             // Initializing the _activeCustomerManager and passing in an instance of _customerManager to the ctor
             _activeCustomerManager = new ActiveCustomerManager(_customerManager);
@@ -65,14 +67,16 @@ namespace bangazon_cli.Tests
         {
             // Assigns the _customer.Id instance to _paymentType
             _paymentType.CustomerId = _customer.Id;
+            
             Assert.Equal(_paymentType.CustomerId, 1);
         }
 
         [Fact]
         public void AddPaymentTypeToActiveCustomer_Should()
         {
-            // Requests a customer with the ID of 1, returns the requested customer 
+            // Requests active customer with the ID of 1, returns the requested customer instance 
             var customer = _activeCustomerManager.SetActiveCustomer(1);
+
             // Assigns the returned customer ID to the _paymentType.CustomerId
             _paymentType.CustomerId = customer.Id;
 
