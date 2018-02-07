@@ -19,12 +19,12 @@ namespace bangazon_cli.Managers
         // Dependancy injection to ensure the _customerManager instance is the same as the test
             _customerManager = customerManager;
         }
-        public Customer SetActiveCustomer(int idx)
+        public Customer SetActiveCustomer(int id)
         {
             /* 
                 Method takes an index integer from Program.cs user selection and returns the customer at that index with the GetCustomers list of all customers
             */
-            return _customerManager.GetCustomers().ElementAt(idx);
+            return _customerManager.GetSingleCustomer(id); 
         }
     }
 }
