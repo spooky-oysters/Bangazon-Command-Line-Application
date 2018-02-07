@@ -3,6 +3,7 @@ using Xunit;
 using bangazon_cli.Models;
 using System.Collections.Generic;
 using System.Linq;
+
 /*
 Author: Krys Mathis
 References: Ticket #1 - Create customer account
@@ -25,7 +26,7 @@ namespace bangazon_cli.Managers.Tests
         public void AddCustomerToCollection()
         {
             // generate a customer
-            Models.Customer customer = new Models.Customer();;
+            Customer customer = new Customer();;
             customer.Name = "AddCustomerToCollection";
             customer.City = "CITY";
             customer.State = "STATE";
@@ -59,7 +60,7 @@ namespace bangazon_cli.Managers.Tests
         [Fact]
         public void AddsCustomerIdToAddedRecords() {
 
-            Models.Customer customer = new Models.Customer();
+            Customer customer = new Customer();
             customer.Id = 0;
             customer.Name = "AddCustomerIdToAddedRecords";
             customer.City = "CITY";
