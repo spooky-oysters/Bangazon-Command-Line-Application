@@ -15,7 +15,6 @@ namespace bangazon_cli.Managers
     {
         private List<Customer> _customers = new List<Customer>();
         private DatabaseInterface _db;
-        private bool _tableExists;
 
         public CustomerManager(DatabaseInterface db)
         {

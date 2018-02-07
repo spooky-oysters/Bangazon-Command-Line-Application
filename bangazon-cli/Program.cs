@@ -1,5 +1,6 @@
 ﻿using System;
 using bangazon_cli.Menus;
+using bangazon_cli.Models;
 
 namespace bangazon_cli
 {
@@ -15,6 +16,18 @@ namespace bangazon_cli
             // When the user enters the system show the main menu
             do {
                 choice = MainMenu.Show();
+
+                switch (choice) {
+                    
+                    case 1: {
+                        AddCustomerMenu.Show(new Customer(), customerManager);
+                        break;
+                    }
+
+                    default: {
+                        break;
+                    }
+                }
 
             } while (choice != 9);
             MainMenu.Show()
