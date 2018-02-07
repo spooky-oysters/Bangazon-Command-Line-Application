@@ -17,7 +17,7 @@ namespace bangazon_cli.Actions.Tests
         private Managers.ActiveCustomerManager _activeCustomerManager;
         private Models.Customer _customer; 
         
-        public ActiveCustomer_Should()
+        public ActiveCustomerManager_Should()
         {
             // Initializing class instances to access class methods
              _customerManager = new Managers.CustomerManager();
