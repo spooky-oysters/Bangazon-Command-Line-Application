@@ -17,19 +17,30 @@ namespace bangazon_cli.Tests
         private ActiveCustomerManager _activeCustomerManager;
         private Customer _customer;
         private PaymentType _paymentType;
+        private DatabaseInterface _db;
+        private CustomerManager _customerManager;
 
 
         // TODO: Refactor to grab active customer from Program.ActiveCustomer variable
 
         public AddPaymentType_Should()
         {
-            // Initializing the _activeCustomerManager and passing in a db
-            _activeCustomerManager = new ActiveCustomerManager();
+            // Path to the environment variable on the users computer
+            string testPath = System.Environment.GetEnvironmentVariable("BANGAZON_CLI_APP_DB_TEST");
+
+            // Initializing a new DatabaseInterface and passing in the string path
+            _db = new DatabaseInterface(testPath);
+            
+            // Initializing an instance of _customerManager to pass to the _activeCustomerManager ctor
+            _customerManager = new CustomerManager(_db);
+
+            // Initializing the _activeCustomerManager and passing in an instance of _customerManager to the ctor
+            _activeCustomerManager = new ActiveCustomerManager(_customerManager);
 
             // Initializing a payment type 
             _paymentType = new PaymentType();
 
-            // Initializing a mock customer for testing purposes
+            // Initializing a mock customer for testing purposes with only an ID
             _customer = new Customer();
             _customer.Id = 1;
         }
@@ -60,9 +71,11 @@ namespace bangazon_cli.Tests
         [Fact]
         public void AddPaymentTypeToActiveCustomer_Should()
         {
+            // Requests a customer with the ID of 1, returns the requested customer 
             var customer = _activeCustomerManager.SetActiveCustomer(1);
-
+            // Assigns the returned customer ID to the _paymentType.CustomerId
             _paymentType.CustomerId = customer.Id;
+
             Assert.Equal(_paymentType.CustomerId, 1);
         }
     }
