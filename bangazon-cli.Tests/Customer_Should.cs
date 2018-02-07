@@ -21,13 +21,13 @@ namespace bangazon_cli.Models.Tests
             customer.PostalCode = "37206";
             customer.PhoneNumber = "615-855-5769";
             
-            Assert.Equal(customer.Id,1);
-            Assert.Equal(customer.Name,"Steve");
-            Assert.Equal(customer.StreetAddress, "1710 Shelby Ave");
-            Assert.Equal(customer.City, "Nashville");
-            Assert.Equal(customer.State, "TN");
-            Assert.Equal(customer.PostalCode, "37206");
-            Assert.Equal(customer.PhoneNumber,"615-855-5769");
+            Assert.Equal(1, customer.Id);
+            Assert.Equal("Steve",customer.Name);
+            Assert.Equal("1710 Shelby Ave",customer.StreetAddress);
+            Assert.Equal("Nashville",customer.City);
+            Assert.Equal("TN",customer.State);
+            Assert.Equal("37206",customer.PostalCode);
+            Assert.Equal("615-855-5769",customer.PhoneNumber);
 
         }
 
