@@ -40,7 +40,7 @@ namespace bangazon_cli
             try {
                 string path = System.Environment.GetEnvironmentVariable("BANGAZON_CLI_APP_DB");
                 _connectionString = $"Data Source={path}";
-                _connection = new SqliteConnection(_connectionString);
+                _connection = new SqliteConnection(_connectionString); 
                 Console.Write("Connected...");
             // If the filepath cannot be found, throw an exception message
             } catch (Exception err) {
@@ -48,6 +48,10 @@ namespace bangazon_cli
                 Console.ReadLine();
                 
             }
+        }
+
+        public string GetConnectionString() {
+            return _connectionString;
         }
 
         // Method to generate the database file if it does not exist
@@ -101,7 +105,6 @@ namespace bangazon_cli
                 _connection.Open ();
                 SqliteCommand dbcmd = _connection.CreateCommand ();
                 dbcmd.CommandText = command;
-
                 dbcmd.ExecuteNonQuery ();
 
                 // Accesses the Query method within this class and passes a SQL command 

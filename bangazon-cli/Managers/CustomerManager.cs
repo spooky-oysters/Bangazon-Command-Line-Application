@@ -2,35 +2,30 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using bangazon_cli.Models;
+using Microsoft.Data.Sqlite;
 
 namespace bangazon_cli.Managers
 {
     /*
         Author: Krys Mathis
         Responsibility: Manage the database related tasks for Customers
+        On init, create the customer table if it does not exist
      */
     public class CustomerManager
     {
+        private List<Customer> _customers = new List<Customer>();
         private DatabaseInterface _db;
+        private bool _tableExists;
 
         public CustomerManager(DatabaseInterface db)
         {
             _db = db;
+            this.CreateCustomerTable();
         }
 
-        private List<Customer> _customers = new List<Customer>();
-
-        /*
-            Adds a customer record to the database
-            Parameters: 
-                - Customer object
-        */        
-        public void AddCustomer(Customer customer) {
-            
-            _customers.Add(customer);
-            // create customer table if it does not exist
+        private void CreateCustomerTable() {
             try {
-                _db.Update(@"CREATE TABLE IF NOT EXISTS `Customers` (
+                _db.Update(@"CREATE TABLE IF NOT EXISTS `Customer` (
                     `Id` INTEGER PRIMARY KEY AUTOINCREMENT,
                     `Name` TEXT NOT NULL,
                     `City` TEXT NOT NULL,
@@ -38,13 +33,22 @@ namespace bangazon_cli.Managers
                     `PostalCode` TEXT NOT NULL,
                     `PhoneNumber` TEXT NOT NULL);
                 ");
-            } catch (Exception err) {
-                Console.WriteLine("Table exists");
+            } catch (Exception ex) {
+                Console.WriteLine("CreateCustomerTable", ex.Message);
             }
+        }
 
-            // append the record and get the integer
-            int customerId = 0;
-            string SQLInsert = $@"INSERT INTO `Customers`
+        /*
+            Adds a customer record to the database
+            This assigns the id to the customer object based on 
+            the id it is assigned in the database
+            Parameters: 
+                - Customer object
+            
+        */        
+        public int AddCustomer(Customer customer) {
+
+            string SQLInsert = $@"INSERT INTO `Customer`
             VALUES (
                 null, 
                 '{customer.Name}', 
@@ -54,15 +58,41 @@ namespace bangazon_cli.Managers
                 '{customer.PhoneNumber}'
             );";
 
-            
-            customerId = _db.Insert(SQLInsert);
-
-            customer.Id = customerId;
-
+            int customerId = 0;
+            try {
+                customerId = _db.Insert(SQLInsert);
+                customer.Id = customerId;
+            } catch (Exception err) {
+                Console.WriteLine("Add Customer Error", err.Message);
+            }
+            return customerId;
         }
 
         // returns all customers from the database
         public List<Customer> GetCustomers() {
+            
+            // clear the existing customers
+            _customers.Clear();
+             // find the record for the cohort in the db and retrieve data
+                _db.Query($@"SELECT * FROM Customer;", 
+                    (SqliteDataReader reader) =>
+                        {
+                            while (reader.Read ())
+                            {
+                                // new customer object
+                                Customer customer = new Customer();
+                                customer.Id = Convert.ToInt32(reader["Id"]);
+                                customer.Name = Convert.ToString(reader["Name"]);
+                                customer.City = Convert.ToString(reader["City"]);
+                                customer.State = Convert.ToString(reader["State"]);
+                                customer.PostalCode = Convert.ToString(reader["PostalCode"]);
+                                customer.PhoneNumber = Convert.ToString(reader["PhoneNumber"]);
+                                
+                                //add it to the collection
+                                _customers.Add(customer);
+                            }
+                        });
+
             return _customers;
         }
         

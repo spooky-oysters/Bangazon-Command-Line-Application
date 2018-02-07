@@ -1,11 +1,13 @@
 using System;
 using Xunit;
 using bangazon_cli.Models;
+using System.Collections.Generic;
+using System.Linq;
 /*
-    Author: Krys Mathis
-    References: Ticket #1 - Create customer account
-    
- */
+Author: Krys Mathis
+References: Ticket #1 - Create customer account
+
+*/
 namespace bangazon_cli.Managers.Tests
 {
     public class CustomerManager_Should
@@ -17,38 +19,65 @@ namespace bangazon_cli.Managers.Tests
         public CustomerManager_Should()
         {
             _db = new DatabaseInterface();
-            _dbPath = System.Environment.GetEnvironmentVariable("BANGAZON_CLI_APP_DB");
         }
         
         [Fact]
         public void AddCustomerToCollection()
         {
+            // generate a customer
             Models.Customer customer = new Models.Customer();;
-            customer.Id = 1;
+            customer.Name = "AddCustomerToCollection";
+            customer.City = "CITY";
+            customer.State = "STATE";
+            customer.PostalCode = "POSTALCODE";
+            customer.PhoneNumber = "PHONENUMBER";
             
-            DatabaseInterface db = new DatabaseInterface();
+            // instantiate the manager
+            CustomerManager manager = new CustomerManager(_db);
+            
+            // capture the existing record count. The test will use this
+            // to determine if the add method increased the number of records
+            int initialRecordCount = manager.GetCustomers().Count();
+            
+            // assign the id to the customer object using AddCustomer
+            customer.Id = manager.AddCustomer(customer);
 
-            CustomerManager manager = new CustomerManager(db);
-            manager.AddCustomer(customer);
+            // get the customer from the manager
+            Customer storedCustomer = manager.GetCustomers().Where(c => c.Id == customer.Id).Single();
             
-            Assert.Contains(customer, manager.GetCustomers());
+            // There are customers in the list
+            Assert.True(manager.GetCustomers().Count() > initialRecordCount);
+
+            // The customer created by the test is in the list
+            Assert.Equal(customer.Id, storedCustomer.Id);
+            
+            // Remove the customer added during the test
+            _db.Update($"DELETE FROM Customer WHERE Id = {customer.Id}");
+
         }
 
         [Fact]
         public void AddsCustomerIdToAddedRecords() {
+
             Models.Customer customer = new Models.Customer();
-            customer.Name = "Steve Brownlee";
+            customer.Id = 0;
+            customer.Name = "AddCustomerIdToAddedRecords";
             customer.City = "CITY";
             customer.State = "STATE";
             customer.PostalCode = "POSTALCODE";
             customer.PhoneNumber = "PHONENUMBER";
 
-            CustomerManager manager = new CustomerManager(_db);
-            manager.AddCustomer(customer);
-            // // The customer Id should be greater than one
-            Assert.True(customer.Id > 0);
-            
+            DatabaseInterface db = new DatabaseInterface();
+            CustomerManager manager = new CustomerManager(db);
 
+            manager.AddCustomer(customer);
+            
+            // The customer Id should be greater than one
+            Assert.True(customer.Id > 0);
+
+            // // Remove the customer added during the test
+            _db.Update($"DELETE FROM Customer WHERE Id = {customer.Id}");
+            
         }
         
     }
