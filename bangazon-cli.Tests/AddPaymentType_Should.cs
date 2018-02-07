@@ -14,7 +14,6 @@ namespace bangazon_cli.Tests
         /* 
             Variables that will be initialized in the constructor
         */
-        private CustomerManager _customerManager;
         private ActiveCustomerManager _activeCustomerManager;
         private Customer _customer;
         private PaymentType _paymentType;
@@ -24,6 +23,9 @@ namespace bangazon_cli.Tests
 
         public AddPaymentType_Should()
         {
+            // Initializing the _activeCustomerManager and passing in a db
+            _activeCustomerManager = new ActiveCustomerManager();
+
             // Initializing a payment type 
             _paymentType = new PaymentType();
 
@@ -33,8 +35,24 @@ namespace bangazon_cli.Tests
         }
 
         [Fact]
+        public void PaymentTypeProperties_Should()
+        {
+            // Checks that properties exist on the _paymentType instance
+            _paymentType.Id = 1;
+            _paymentType.CustomerId = 10;
+            _paymentType.Type = "Mastercard";
+            _paymentType.AccountNumber = 12345678910;
+
+            Assert.Equal(_paymentType.Id, 1);
+            Assert.Equal(_paymentType.CustomerId, 10);
+            Assert.Equal(_paymentType.Type, "Mastercard");
+            Assert.Equal(_paymentType.AccountNumber, 12345678910);
+        }
+
+        [Fact]
         public void AddCustomerIdToPaymentType_Should()
         {
+            // Assigns the _customer.Id instance to _paymentType
             _paymentType.CustomerId = _customer.Id;
             Assert.Equal(_paymentType.CustomerId, 1);
         }
@@ -42,7 +60,9 @@ namespace bangazon_cli.Tests
         [Fact]
         public void AddPaymentTypeToActiveCustomer_Should()
         {
-            _paymentType.CustomerId = _customer.Id;
+            var customer = _activeCustomerManager.SetActiveCustomer(1);
+
+            _paymentType.CustomerId = customer.Id;
             Assert.Equal(_paymentType.CustomerId, 1);
         }
     }
