@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using bangazon_cli.Models;
 
 namespace bangazon_cli.Managers
@@ -10,15 +11,15 @@ namespace bangazon_cli.Managers
         public ActiveCustomerManager()
         {
             _customerManager = new CustomerManager();
-            _customer = new Customer();                               
+            _customer = new Customer();
             _customer.Id = 1;
-        }
-        public Customer SetActiveCustomer(int id)
-        {
-            
             _customerManager.AddCustomer(_customer);
+
+        }
+        public Customer SetActiveCustomer(int idx)
+        {
             var customers = _customerManager.GetCustomers();
-            return customers.Find(c => c.Id == id);
+            return customers.ElementAt(idx);
         }
     }
 }
