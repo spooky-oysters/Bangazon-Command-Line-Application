@@ -28,6 +28,7 @@ namespace bangazon_cli.Managers
                 _db.Update(@"CREATE TABLE IF NOT EXISTS `Customer` (
                     `Id` INTEGER PRIMARY KEY AUTOINCREMENT,
                     `Name` TEXT NOT NULL,
+                    `StreetAddress` TEXT NOT NULL,
                     `City` TEXT NOT NULL,
                     `State` TEXT NOT NULL,
                     `PostalCode` TEXT NOT NULL,

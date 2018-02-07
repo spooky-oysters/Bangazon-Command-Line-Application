@@ -29,6 +29,7 @@ namespace bangazon_cli.Managers.Tests
             // generate a customer
             Customer customer = new Customer();;
             customer.Name = "AddCustomerToCollection";
+            customer.StreetAddress = "STREETADDRESS";
             customer.City = "CITY";
             customer.State = "STATE";
             customer.PostalCode = "POSTALCODE";
@@ -61,6 +62,7 @@ namespace bangazon_cli.Managers.Tests
             Customer customer = new Customer();
             customer.Id = 0;
             customer.Name = "AddCustomerIdToAddedRecords";
+            customer.StreetAddress = "STREETADDRESS";
             customer.City = "CITY";
             customer.State = "STATE";
             customer.PostalCode = "POSTALCODE";
