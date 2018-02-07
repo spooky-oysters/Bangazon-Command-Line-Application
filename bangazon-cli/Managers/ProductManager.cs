@@ -34,24 +34,46 @@ namespace bangazon_cli.Managers
             - Product Object
             - String name
         */
-        public void UpdateName (Product product, string name)
+        public void UpdateName(Product product, string name)
         {
             product.Name = name;
         }
 
         /*
-            Updates product name in database. 
+            Updates product description in database. 
             Parameters: 
             - Product Object
-            - String name
+            - String description
         */
-        public void UpdateDescription (Product product, string desc)
+        public void UpdateDescription(Product product, string desc)
         {
             product.Description = desc;
         }
 
+        /*
+            Updates product price in database. 
+            Parameters: 
+            - Product Object
+            - Double price
+        */
+        public void UpdatePrice(Product product, double price)
+        {
+            product.Price = price;
+        }
+
+        /*
+            Updates product price in database. 
+            Parameters: 
+            - Product Object
+            - Double price
+        */
+        public void UpdateQuantity(Product product, int quanity)
+        {
+            product.Quantity = quanity;
+        }
+
         // gets one product. Parameters: id
-        public Product GetSingleProduct (int id)
+        public Product GetSingleProduct(int id)
         {
             return _products.Where(p => p.Id == id).Single();
         }
