@@ -13,7 +13,6 @@ namespace bangazon_cli.Managers
      */
     public class CustomerManager
     {
-        private List<Customer> _customers = new List<Customer>();
         private DatabaseInterface _db;
 
         public CustomerManager(DatabaseInterface db)
@@ -72,6 +71,7 @@ namespace bangazon_cli.Managers
         // returns all customers from the database
         public List<Customer> GetCustomers() {
             
+            List<Customer> _customers = new List<Customer>();
             // clear the existing customers
             _customers.Clear();
              // find the record for the cohort in the db and retrieve data
