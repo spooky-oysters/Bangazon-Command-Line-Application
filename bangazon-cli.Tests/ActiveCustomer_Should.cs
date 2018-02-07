@@ -10,15 +10,16 @@ namespace bangazon_cli.Actions.Tests
 {
     public class ActiveCustomer_Should
     {
-        // Variables that will be initialized in the constructor
+        /* 
+            Variables that will be initialized in the constructor
+        */
         private Managers.CustomerManager _customerManager;
         private Managers.ActiveCustomerManager _activeCustomerManager;
         private Models.Customer _customer; 
         
-
         public ActiveCustomer_Should()
         {
-            // Initializing class instances to access those methods
+            // Initializing class instances to access class methods
              _customerManager = new Managers.CustomerManager();
              _activeCustomerManager = new Managers.ActiveCustomerManager();
             
@@ -40,7 +41,7 @@ namespace bangazon_cli.Actions.Tests
         [Fact]
         public void SetActiveCustomer_Should()
         {
-            // Fires off the method to return a customer at a given index from the list of all customers            
+            // Fires off a method to return a customer at a given index from the list of all customers            
             var ac = _activeCustomerManager.SetActiveCustomer(0);
 
             Assert.Equal(_customer.Id, ac.Id);
