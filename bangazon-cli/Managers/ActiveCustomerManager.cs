@@ -14,7 +14,6 @@ namespace bangazon_cli.Managers
             Variables that will be initialized in the constructor
         */
         private CustomerManager _customerManager;
-        private Customer _customer;
         public ActiveCustomerManager(CustomerManager customerManager)
         {
         // Dependancy injection to ensure the _customerManager instance is the same as the test
