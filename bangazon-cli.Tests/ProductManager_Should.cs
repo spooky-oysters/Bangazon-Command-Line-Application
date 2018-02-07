@@ -72,7 +72,7 @@ namespace bangazon_cli.Managers.Tests
             productManager.UpdateDescription(prodToUpdate, "New Kite description");
 
             // tests that new product name is updated
-            Assert.Equal(prodToUpdate.Name, "New Kite");
+            Assert.Equal(prodToUpdate.Name, "New Kite description");
         }
 
     }
