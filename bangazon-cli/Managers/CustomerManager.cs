@@ -95,6 +95,15 @@ namespace bangazon_cli.Managers
 
             return _customers;
         }
+
+        /*
+            Summary: Retrieves a single customer object from collection
+            Parameters: Customer Id property
+            Returns: A single customer object
+         */
+        public Customer GetSingleCustomer(int id) {
+            return this.GetCustomers().Where(c => c.Id == id).Single();
+        }
         
     }
 }

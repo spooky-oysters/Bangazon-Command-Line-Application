@@ -19,7 +19,8 @@ namespace bangazon_cli.Managers.Tests
         // Instantiate the Test
         public CustomerManager_Should()
         {
-            _db = new DatabaseInterface();
+            string testPath = System.Environment.GetEnvironmentVariable("BANGAZON_CLI_APP_DB_TEST");
+            _db = new DatabaseInterface(testPath);
         }
         
         [Fact]
@@ -44,7 +45,7 @@ namespace bangazon_cli.Managers.Tests
             customer.Id = manager.AddCustomer(customer);
 
             // get the customer from the manager
-            Customer storedCustomer = manager.GetCustomers().Where(c => c.Id == customer.Id).Single();
+            Customer storedCustomer = manager.GetSingleCustomer(customer.Id);
             
             // There are customers in the list
             Assert.True(manager.GetCustomers().Count() > initialRecordCount);
@@ -52,9 +53,6 @@ namespace bangazon_cli.Managers.Tests
             // The customer created by the test is in the list
             Assert.Equal(customer.Id, storedCustomer.Id);
             
-            // Remove the customer added during the test
-            _db.Update($"DELETE FROM Customer WHERE Id = {customer.Id}");
-
         }
 
         [Fact]
@@ -68,17 +66,13 @@ namespace bangazon_cli.Managers.Tests
             customer.PostalCode = "POSTALCODE";
             customer.PhoneNumber = "PHONENUMBER";
 
-            DatabaseInterface db = new DatabaseInterface();
-            CustomerManager manager = new CustomerManager(db);
+            CustomerManager manager = new CustomerManager(_db);
 
             manager.AddCustomer(customer);
             
             // The customer Id should be greater than one
             Assert.True(customer.Id > 0);
-
-            // // Remove the customer added during the test
-            _db.Update($"DELETE FROM Customer WHERE Id = {customer.Id}");
-            
+    
         }
         
     }

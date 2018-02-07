@@ -35,10 +35,9 @@ namespace bangazon_cli
         private SqliteConnection _connection;
 
         // Method to extract the developers environment variable holding the BANGAZON_CLI_APP_DB.db filepath 
-        public DatabaseInterface()
+        public DatabaseInterface(string path)
         {            
             try {
-                string path = System.Environment.GetEnvironmentVariable("BANGAZON_CLI_APP_DB");
                 _connectionString = $"Data Source={path}";
                 _connection = new SqliteConnection(_connectionString); 
                 Console.Write("Connected...");

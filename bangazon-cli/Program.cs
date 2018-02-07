@@ -6,7 +6,8 @@ namespace bangazon_cli
     {
         static void Main(string[] args)
         {
-            DatabaseInterface db = new DatabaseInterface();
+            string prodPath = System.Environment.GetEnvironmentVariable("BANGAZON_CLI_APP_DB");
+            DatabaseInterface db = new DatabaseInterface(prodPath);
             Managers.CustomerManager customerManager = new Managers.CustomerManager(db);
             Console.WriteLine("Hello World!");
         }
