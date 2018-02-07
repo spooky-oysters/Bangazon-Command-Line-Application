@@ -10,11 +10,12 @@ using System.Collections.Generic;
 
 namespace bangazon_cli.Managers.Tests
 {
-
+    
 
     public class OrderManagerShould
     {
         // private instances of things needed in unit tests
+        private DatabaseInterface _db;
         private Customer _customer;
         private readonly OrderManager _orderManager;
         private Order _testOrder;
@@ -23,6 +24,10 @@ namespace bangazon_cli.Managers.Tests
         // constructor for unit test
         public OrderManagerShould()
         {
+            // create database path
+            string testPath = System.Environment.GetEnvironmentVariable("BANGAZON_CLI_APP_DB_TEST");
+            _db = new DatabaseInterface(testPath);
+
             // create a new customer instance
             _customer = new Customer();
             // properties added to new customer
@@ -35,7 +40,7 @@ namespace bangazon_cli.Managers.Tests
             _customer.PhoneNumber = "8018959001";
             
             // create a new orderManager instance
-            _orderManager = new OrderManager();
+            _orderManager = new OrderManager(_db);
             // create a new order instance
             _testOrder = new Order(1);
             // create a new product instance
@@ -52,7 +57,7 @@ namespace bangazon_cli.Managers.Tests
         {
             _orderManager.AddOrder(_testOrder);
 
-            Assert.Contains(_testOrder, _orderManager.GetUnpaidOrder(1));
+            Assert.Equal(_testOrder, _orderManager.GetUnpaidOrder(1));
         }
 
         public void AddProductToOrder()
