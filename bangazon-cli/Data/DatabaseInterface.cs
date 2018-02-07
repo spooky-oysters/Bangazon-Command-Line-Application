@@ -1,11 +1,15 @@
 using System;
 using Microsoft.Data.Sqlite;
 
+
 namespace bangazon_cli
 {
     /* 
     Author: Dre Randaci
     Purpose: Methods to access SQL data in a locally saved database file 
+    To allow for both a development and testing database, the constructor
+    requires a database path.
+    
     Example access method: 
 
     public class ExampleClass
@@ -34,19 +38,25 @@ namespace bangazon_cli
         private SqliteConnection _connection;
 
         // Method to extract the developers environment variable holding the BANGAZON_CLI_APP_DB.db filepath 
-        public DatabaseInterface()
+        public DatabaseInterface(string path)
         {            
             try {
-                _connectionString = $"Data Source=BANGAZON_CLI_APP_DB.db";
-                _connection = new SqliteConnection(_connectionString);
+                _connectionString = $"Data Source={path}";
+                _connection = new SqliteConnection(_connectionString); 
                 Console.Write("Connected...");
             // If the filepath cannot be found, throw an exception message
             } catch (Exception err) {
                 Console.WriteLine("ERROR: Not connected to db " + err.Data);
                 Console.ReadLine();
+                
             }
         }
 
+        public string GetConnectionString() {
+            return _connectionString;
+        }
+
+        
         // Method to query any table in the database. Takes a string SQL command when called
         public void Query(string command, Action<SqliteDataReader> handler)
         {
@@ -92,7 +102,6 @@ namespace bangazon_cli
                 _connection.Open ();
                 SqliteCommand dbcmd = _connection.CreateCommand ();
                 dbcmd.CommandText = command;
-
                 dbcmd.ExecuteNonQuery ();
 
                 // Accesses the Query method within this class and passes a SQL command 
