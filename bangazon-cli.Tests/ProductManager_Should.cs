@@ -37,9 +37,6 @@ namespace bangazon_cli.Managers.Tests
             ProductManager productManager = new ProductManager();
             productManager.AddProduct(_product);
 
-            // list all products
-            var _listProducts = productManager.GetProducts();
-
             // select one product to update based on id
             Product prodToUpdate = productManager.GetSingleProduct(1);
 
@@ -61,9 +58,6 @@ namespace bangazon_cli.Managers.Tests
             // new product manager instance 
             ProductManager productManager = new ProductManager();
             productManager.AddProduct(_product);
-
-            // list all products
-            var _listProducts = productManager.GetProducts();
 
             // select one product to update based on id
             Product prodToUpdate = productManager.GetSingleProduct(1);
@@ -87,9 +81,6 @@ namespace bangazon_cli.Managers.Tests
             ProductManager productManager = new ProductManager();
             productManager.AddProduct(_product);
 
-            // list all products
-            var _listProducts = productManager.GetProducts();
-
             // select one product to update based on id
             Product prodToUpdate = productManager.GetSingleProduct(1);
 
@@ -111,9 +102,6 @@ namespace bangazon_cli.Managers.Tests
             // new product manager instance 
             ProductManager productManager = new ProductManager();
             productManager.AddProduct(_product);
-
-            // list all products
-            var _listProducts = productManager.GetProducts();
 
             // select one product to update based on id
             Product prodToUpdate = productManager.GetSingleProduct(1);
