@@ -1,4 +1,5 @@
 ﻿using System;
+using bangazon_cli.Menus;
 
 namespace bangazon_cli
 {
@@ -9,7 +10,14 @@ namespace bangazon_cli
             string prodPath = System.Environment.GetEnvironmentVariable("BANGAZON_CLI_APP_DB");
             DatabaseInterface db = new DatabaseInterface(prodPath);
             Managers.CustomerManager customerManager = new Managers.CustomerManager(db);
-            Console.WriteLine("Hello World!");
-        }
+            
+            int choice;
+            // When the user enters the system show the main menu
+            do {
+                choice = MainMenu.Show();
+
+            } while (choice != 9);
+            MainMenu.Show()
+;        }
     }
 }

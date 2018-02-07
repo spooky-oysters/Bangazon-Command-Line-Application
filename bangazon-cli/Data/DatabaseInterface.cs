@@ -7,6 +7,9 @@ namespace bangazon_cli
     /* 
     Author: Dre Randaci
     Purpose: Methods to access SQL data in a locally saved database file 
+    To allow for both a development and testing database, the constructor
+    requires a database path.
+    
     Example access method: 
 
     public class ExampleClass
