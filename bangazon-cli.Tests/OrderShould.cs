@@ -29,8 +29,6 @@ namespace bangazon_cli.Models.Tests
             Assert.Equal(order.CustomerId,1);
             Assert.Equal(order.PaymentTypeId, null);
             Assert.Equal(order.CompletedDate, null);
-
         }
-        
     }
 }

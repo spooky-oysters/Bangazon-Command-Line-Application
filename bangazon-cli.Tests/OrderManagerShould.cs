@@ -1,6 +1,7 @@
 using System;
 using Xunit;
 using bangazon_cli.Models;
+using System.Collections.Generic;
 
 /*
     Author: Greg Lawrence
@@ -13,12 +14,13 @@ namespace bangazon_cli.Managers.Tests
 
     public class OrderManagerShould
     {
-        // private instance of a new customer
+        // private instances of things needed in unit tests
         private Customer _customer;
-        private readonly OrderManager _manager;
+        private readonly OrderManager _orderManager;
         private Order _testOrder;
         private Product _testProduct;
 
+        // constructor for unit test
         public OrderManagerShould()
         {
             // create a new customer instance
@@ -33,7 +35,7 @@ namespace bangazon_cli.Managers.Tests
             _customer.PhoneNumber = "8018959001";
             
             // create a new orderManager instance
-            _manager = new OrderManager();
+            _orderManager = new OrderManager();
             // create a new order instance
             _testOrder = new Order(1);
             // create a new product instance
@@ -48,27 +50,27 @@ namespace bangazon_cli.Managers.Tests
         [Fact]
         public void AddOrder()
         {
-            _manager.AddOrder(_testOrder);
+            _orderManager.AddOrder(_testOrder);
 
-            Assert.Contains(_testOrder, _manager.GetUnpaidOrder(1));
+            Assert.Contains(_testOrder, _orderManager.GetUnpaidOrder(1));
         }
 
         [Fact]
         public void ListOrders()
         {
             // add the newly created order to the order list
-            _manager.AddOrder(_testOrder);
+            _orderManager.AddOrder(_testOrder);
 
-            Assert.Contains(_testOrder, _manager.GetUnpaidOrder(1));
+            Assert.Contains(_testOrder, _orderManager.GetUnpaidOrder(1));
         }
 
-        public void AddProduct()
+        public void AddProductToOrder()
         {
             // add product to order
-            _testOrder.OrderProducts.Add(_testProduct);
+            _orderManager.AddProductToOrder(1, 1);
 
-
-            // Assert.Contains(_testOrder.OrderProducts, _manager.GetUnpaidOrder(1));
+            // assert that the joiner table holds the relationship of that order and product
+            Assert.Equal(_orderManager.GetProduct(1, 1), true);
         }
 
     }

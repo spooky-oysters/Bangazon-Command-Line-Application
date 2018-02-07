@@ -14,7 +14,7 @@ namespace bangazon_cli.Managers
         private List<Order> _orders = new List<Order>();
         
         // dictionary to act as joiner table for Product and Order
-        private Dictionary<int, int> _OrderProduct = new Dictionary<int, int>();
+        private Dictionary<int, int> _orderProduct = new Dictionary<int, int>();
         
         
         /*
@@ -32,10 +32,30 @@ namespace bangazon_cli.Managers
         }
 
         // store a product on an order, by using a joiner table
-        public void AddProductToOrder(int productId, int orderId)
+        public void AddProductToOrder(int orderId, int productId)
         {
             // create a dictionary for a joiner table to hold the relationship of product and order
-            _OrderProduct.Add(productId, orderId);
+            _orderProduct.Add(orderId, productId);
         }
+
+        // function to check if customer's order contains a product.
+        public bool GetProduct(int orderId, int productId)
+        {
+            if (_orderProduct.Count > 0) {
+
+                foreach (KeyValuePair<int, int>product in _orderProduct)
+                {
+                    if (product.Key == orderId && product.Value == productId) 
+                    {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            } 
+
+            return false;
+        }
+
     }
 }
