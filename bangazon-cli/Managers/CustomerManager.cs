@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using bangazon_cli.Models;
 
@@ -11,11 +12,16 @@ namespace bangazon_cli.Managers
     {
         private List<Customer> _customers = new List<Customer>();
 
+        public void Add(Customer customer)
+        {
+            throw new NotImplementedException();
+        }
+
         /*
             Adds a customer record to the database
             Parameters: 
                 - Customer object
-        */        
+        */
         public void AddCustomer(Customer customer) {
             _customers.Add(customer);
         }
