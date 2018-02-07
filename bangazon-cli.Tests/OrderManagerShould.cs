@@ -43,6 +43,7 @@ namespace bangazon_cli.Managers.Tests
             _orderManager = new OrderManager(_db);
             // create a new order instance
             _testOrder = new Order(1);
+            _testOrder.CustomerId = 1;
             // create a new product instance
             _testProduct = new Product()
             {
@@ -55,19 +56,25 @@ namespace bangazon_cli.Managers.Tests
         [Fact]
         public void AddOrder()
         {
+            
             _orderManager.AddOrder(_testOrder);
-
-            Assert.Equal(_testOrder, _orderManager.GetUnpaidOrder(1));
+            // assign the id that the db assigned to the order back to the test order for testing
+            _testOrder.Id = _orderManager.GetUnpaidOrder(1).Id;
+            // check if the fields all match between the order sent to the db and the order retrieved from the db
+            Assert.Equal(_orderManager.GetUnpaidOrder(1).Id, _testOrder.Id);
+            Assert.Equal(_orderManager.GetUnpaidOrder(1).CustomerId, _testOrder.CustomerId);
+            Assert.Equal(_orderManager.GetUnpaidOrder(1).CompletedDate, _testOrder.CompletedDate);
+            Assert.Equal(_orderManager.GetUnpaidOrder(1).PaymentTypeId, _testOrder.PaymentTypeId);
         }
 
-        public void AddProductToOrder()
-        {
-            // add product to order
-            _orderManager.AddProductToOrder(1, 1);
+        // public void AddProductToOrder()
+        // {
+        //     // add product to order
+        //     _orderManager.AddProductToOrder(1, 1);
 
-            // assert that the joiner table holds the relationship of that order and product
-            Assert.Equal(_orderManager.GetProduct(1, 1), true);
-        }
+        //     // assert that the joiner table holds the relationship of that order and product
+        //     Assert.Equal(_orderManager.GetProduct(1, 1), true);
+        // }
 
     }
 }

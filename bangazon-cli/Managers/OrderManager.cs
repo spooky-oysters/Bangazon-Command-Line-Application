@@ -37,6 +37,7 @@ namespace bangazon_cli.Managers
                     `PaymentTypeId` INTEGER,
                     `CompletedDate` TEXT,
                     FOREIGN KEY(`CustomerId`) REFERENCES `Customer`(`Id`)
+                    );
                 ");
             } catch (Exception ex) {
                 Console.WriteLine("CreateOrderTable", ex.Message);
@@ -51,10 +52,16 @@ namespace bangazon_cli.Managers
             string SQLInsert = $@"INSERT INTO `Order`
             VALUES (
                 null,
-                '{order.CustomerId}',
+                {order.CustomerId},
                 null,
                 null
             );";
+
+            try {
+                _db.Insert(SQLInsert);
+            } catch (Exception err) {
+                Console.WriteLine("Add Order Error", err.Message);
+            }
         }
 
         // returns customer's unpaid order from the database
@@ -63,9 +70,9 @@ namespace bangazon_cli.Managers
             Order order = new Order();
             // query the database for a matching order
             _db.Query($@"SELECT * 
-                        FROM Order o
+                        FROM `Order` o
                         WHERE o.CustomerId = {id}
-                        AND o.PaymentType = null;
+                        AND o.PaymentTypeId IS NULL;
                         ",
                         (SqliteDataReader reader) =>
                         {
@@ -73,8 +80,8 @@ namespace bangazon_cli.Managers
                             {
                                 order.Id = Convert.ToInt32(reader["Id"]);
                                 order.CustomerId = Convert.ToInt32(reader["CustomerId"]);
-                                order.PaymentTypeId = Convert.ToInt32(reader["PaymentTypeId"]);
-                                order.CompletedDate = Convert.ToDateTime(reader["CompletedDate"]);
+                                order.PaymentTypeId = null;
+                                order.CompletedDate = null;
                             }
                         });
             
