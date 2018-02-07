@@ -28,6 +28,7 @@ namespace bangazon_cli.Managers
                 _db.Update(@"CREATE TABLE IF NOT EXISTS `Customer` (
                     `Id` INTEGER PRIMARY KEY AUTOINCREMENT,
                     `Name` TEXT NOT NULL,
+                    `StreetAddress` TEXT NOT NULL,
                     `City` TEXT NOT NULL,
                     `State` TEXT NOT NULL,
                     `PostalCode` TEXT NOT NULL,
@@ -52,6 +53,7 @@ namespace bangazon_cli.Managers
             VALUES (
                 null, 
                 '{customer.Name}', 
+                '{customer.StreetAddress}',
                 '{customer.City}',
                 '{customer.State}',
                 '{customer.PostalCode}',
@@ -83,6 +85,7 @@ namespace bangazon_cli.Managers
                                 Customer customer = new Customer();
                                 customer.Id = Convert.ToInt32(reader["Id"]);
                                 customer.Name = Convert.ToString(reader["Name"]);
+                                customer.StreetAddress = Convert.ToString(reader["StreetAddress"]);
                                 customer.City = Convert.ToString(reader["City"]);
                                 customer.State = Convert.ToString(reader["State"]);
                                 customer.PostalCode = Convert.ToString(reader["PostalCode"]);
