@@ -20,7 +20,8 @@ namespace bangazon_cli
                 switch (choice) {
                     
                     case 1: {
-                        AddCustomerMenu.Show(new Customer(), customerManager);
+                        AddCustomerMenu customerMenu = new AddCustomerMenu(new Customer(), customerManager);
+                        customerMenu.Show();
                         break;
                     }
 
