@@ -8,7 +8,7 @@ using Xunit;
  */
 namespace bangazon_cli.Actions.Tests
 {
-    public class ActiveCustomer_Should
+    public class ActiveCustomerManager_Should
     {
         /* 
             Variables that will be initialized in the constructor
