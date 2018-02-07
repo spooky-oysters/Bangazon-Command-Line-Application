@@ -44,7 +44,7 @@ public class ExampleClass
     private DatabaseInterface db;
 
     db.Query(
-            $@"select Name
+            $@"select CustomerId
             From Customer
             Where CustomerId = '{Id}';",
             (SqliteDataReader reader) =>
@@ -56,3 +56,6 @@ public class ExampleClass
         ); 
 }
 ``` 
+
+### Active Customer 
+Every user of the Bangazon-Command-Line-Application should be able to view, select, and make a customer active from a list of all customers in the database. When a user enters a key selection for a given customer on the selection menu, then access to that customer's profile and associated data will be available to create, update, and delete.
