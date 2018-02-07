@@ -55,15 +55,6 @@ namespace bangazon_cli.Managers.Tests
             Assert.Contains(_testOrder, _orderManager.GetUnpaidOrder(1));
         }
 
-        [Fact]
-        public void ListOrders()
-        {
-            // add the newly created order to the order list
-            _orderManager.AddOrder(_testOrder);
-
-            Assert.Contains(_testOrder, _orderManager.GetUnpaidOrder(1));
-        }
-
         public void AddProductToOrder()
         {
             // add product to order
