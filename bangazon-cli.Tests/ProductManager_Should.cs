@@ -1,4 +1,5 @@
 using System;
+using bangazon_cli.Models;
 using Xunit;
 
 namespace bangazon_cli.Managers.Tests
@@ -9,17 +10,44 @@ namespace bangazon_cli.Managers.Tests
     */
     public class ProductManager_Should
     {
+        private Product _product;
+
         [Fact]
         public void AddProductToCollection()
         {
-        Models.Product product = new Models.Product();
-        product.Id = 1;
+            _product = new Models.Product();
+            _product.Id = 1;
 
-        ProductManager productManager = new ProductManager();
-        productManager.AddProduct(product);
+            ProductManager productManager = new ProductManager();
+            productManager.AddProduct(_product);
 
-        Assert.Contains(product, productManager.GetProducts());
+            Assert.Contains(_product, productManager.GetProducts());
 
+        }
+
+        [Fact]
+        public void UpdateProduct()
+        {
+            // add new product with product name
+            _product = new Models.Product();
+            _product.Id = 1;
+            _product.Name = "Kite";
+
+            // new product manager instance 
+            ProductManager productManager = new ProductManager();
+            productManager.AddProduct(_product);
+
+            // list all products
+            var _listProducts = productManager.GetProducts();
+
+            // select one product to update based on id
+            Product prodToUpdate = productManager.GetSingleProduct(1);
+
+            // updates product name 
+            productManager.Update(prodToUpdate, "New Kite");
+            
+            // tests that new product name is updated
+            Assert.Equal(prodToUpdate.Name, "New Kite");
         }
 
     }
