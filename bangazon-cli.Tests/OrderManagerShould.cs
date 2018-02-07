@@ -67,14 +67,15 @@ namespace bangazon_cli.Managers.Tests
             Assert.Equal(_orderManager.GetUnpaidOrder(1).PaymentTypeId, _testOrder.PaymentTypeId);
         }
 
-        // public void AddProductToOrder()
-        // {
-        //     // add product to order
-        //     _orderManager.AddProductToOrder(1, 1);
+        [Fact]
+        public void AddProductToOrder()
+        {
+            // add product to order
+            _orderManager.AddProductToOrder(1, 1);
 
-        //     // assert that the joiner table holds the relationship of that order and product
-        //     Assert.Equal(_orderManager.GetProduct(1, 1), true);
-        // }
+            // assert that the joiner table holds the relationship of that order and product
+            Assert.Equal(_orderManager.GetProduct(1, 1), true);
+        }
 
     }
 }

@@ -26,6 +26,7 @@ namespace bangazon_cli.Managers
         {
             _db = db;
             this.CreateOrderTable();
+            this.CreateOrderProductTable();
         }
 
 
@@ -108,27 +109,61 @@ namespace bangazon_cli.Managers
         // store a product on an order, by using a joiner table
         public void AddProductToOrder(int orderId, int productId)
         {
-            // create a dictionary for a joiner table to hold the relationship of product and order
-            _orderProduct.Add(orderId, productId);
+            // add the product and order relationship to the OrderProduct join table
+            string SQLInsert = $@"INSERT INTO OrderProduct
+            VALUES (
+                null,
+                {orderId},
+                {productId}
+            );";
+
+            try {
+                _db.Insert(SQLInsert);
+            } catch (Exception err) {
+                Console.WriteLine("Add OrderProduct Error", err.Message);
+            }
         }
 
         // function to check if customer's order contains a product.
         public bool GetProduct(int orderId, int productId)
         {
-            if (_orderProduct.Count > 0) {
+            // if (_orderProduct.Count > 0) {
 
-                foreach (KeyValuePair<int, int>product in _orderProduct)
-                {
-                    if (product.Key == orderId && product.Value == productId) 
-                    {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                }
-            } 
+            //     foreach (KeyValuePair<int, int>product in _orderProduct)
+            //     {
+            //         if (product.Key == orderId && product.Value == productId) 
+            //         {
+            //             return true;
+            //         } else {
+            //             return false;
+            //         }
+            //     }
+            // } 
 
-            return false;
+            // return false;
+
+            // initialize a new order to hold the return from db
+            
+            // query the database for a matching order
+            _db.Query($@"SELECT * 
+                        FROM `OrderProduct` op
+                        WHERE o.OrderId = {orderId}
+                        AND o.ProductId = {productId};
+                        ",
+                        (SqliteDataReader reader) =>
+                        {
+                            while (reader.Read())
+                            {
+                                order.Id = Convert.ToInt32(reader["Id"]);
+                                order.CustomerId = Convert.ToInt32(reader["CustomerId"]);
+                                order.PaymentTypeId = null;
+                                order.CompletedDate = null;
+                            }
+
+                            return 
+                        });
+            
+            return order;
         }
 
     }
