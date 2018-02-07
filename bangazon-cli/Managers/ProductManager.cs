@@ -29,17 +29,14 @@ namespace bangazon_cli.Managers
         }
 
         /*
-            Updates product property in database. 
+            Updates product name in database. 
             Parameters: 
             - Product Object
-            - String property 
-            - Key
+            - String name
         */
-        public void Update (Product product, string property, int key)
+        public void UpdateName (Product product, string name)
         {
-            System.Collections.Hashtable h = new System.Collections.Hashtable();
-            h[product.key] = property;
-            // product.Name = name;
+            product.Name = name;
         }
 
         // gets one product. Parameters: id
