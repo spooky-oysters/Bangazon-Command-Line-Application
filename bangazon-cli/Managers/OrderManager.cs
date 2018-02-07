@@ -43,6 +43,22 @@ namespace bangazon_cli.Managers
                 Console.WriteLine("CreateOrderTable", ex.Message);
             }
         }
+
+        // creates the OrderProduct joiner table 
+        private void CreateOrderProductTable() {
+            try {
+                _db.Update(@"CREATE TABLE IF NOT EXISTS `OrderProduct` (
+                    `Id` INTEGER PRIMARY KEY AUTOINCREMENT,
+                    `OrderId` INTEGER NOT NULL,
+                    `ProductId` INTEGER NOT NULL,
+                    FOREIGN KEY(`OrderId`) REFERENCES `Order`(`Id`)
+                    FOREIGN KEY(`ProductId`) REFERENCES `Product`(`Id`)
+                    );
+                ");
+            } catch (Exception ex) {
+                Console.WriteLine("CreateOrderTable", ex.Message);
+            }
+        }
         /*
             Adds a Order record to the database
             Parameters: 
@@ -87,7 +103,6 @@ namespace bangazon_cli.Managers
             
             return order;
 
-            // return _orders.Where(o => o.CustomerId == id && o.PaymentTypeId == null).ToList();
         }
 
         // store a product on an order, by using a joiner table
