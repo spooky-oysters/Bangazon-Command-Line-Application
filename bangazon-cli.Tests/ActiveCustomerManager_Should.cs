@@ -21,27 +21,31 @@ namespace bangazon_cli.Actions.Tests
         {
             // Initializing class instances to access class methods
              _customerManager = new Managers.CustomerManager();
-             _activeCustomerManager = new Managers.ActiveCustomerManager();
+             _activeCustomerManager = new Managers.ActiveCustomerManager(_customerManager);
             
             // Initializing a mock customer for testing purposes
             _customer = new Models.Customer();                               
             _customer.Id = 1;
-
-            // Adding the customer to the manager class for testing purposes
-            _customerManager.AddCustomer(_customer);
         }        
 
         [Fact]
         public void CustomerExists()
         {            
             // Testing that the customer exists in the CustomerManager customer list 
+
+            // Adding the customer to the manager class for testing purposes
+            _customerManager.AddCustomer(_customer);
+
             Assert.Contains(_customer, _customerManager.GetCustomers());            
         }
 
         [Fact]
         public void SetActiveCustomer_Should()
         {
-            // Fires off a method to return a customer at a given index from the list of all customers            
+            // Fires off a method to return a customer at a given index from the list of all customers    
+
+            // Adding the customer to the manager class for testing purposes
+            _customerManager.AddCustomer(_customer);        
             var ac = _activeCustomerManager.SetActiveCustomer(0);
 
             Assert.Equal(_customer.Id, ac.Id);

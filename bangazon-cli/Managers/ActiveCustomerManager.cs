@@ -15,14 +15,10 @@ namespace bangazon_cli.Managers
         */
         private CustomerManager _customerManager;
         private Customer _customer;
-        public ActiveCustomerManager()
+        public ActiveCustomerManager(CustomerManager customerManager)
         {
-        // Initializing class instances to access class methods
-            _customerManager = new CustomerManager();
-            _customer = new Customer();
-            _customer.Id = 1;
-            _customerManager.AddCustomer(_customer);
-
+        // Dependancy injection to ensure the _customerManager instance is the same as the test
+            _customerManager = customerManager;
         }
         public Customer SetActiveCustomer(int idx)
         {
