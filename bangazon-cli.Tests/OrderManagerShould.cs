@@ -62,12 +62,10 @@ namespace bangazon_cli.Managers.Tests
         [Fact]
         public void AddOrder()
         {
-            
-            _orderManager.AddOrder(_testOrder);
-            // assign the id that the db assigned to the order back to the test order for testing
-            _testOrder.Id = _orderManager.GetUnpaidOrder(1).Id;
+            // add _testOrder to db
+            int orderId = _orderManager.AddOrder(_testOrder);
             // check if the fields all match between the order sent to the db and the order retrieved from the db
-            Assert.Equal(_orderManager.GetUnpaidOrder(1).Id, _testOrder.Id);
+            Assert.Equal(_orderManager.GetUnpaidOrder(1).Id, orderId);
             Assert.Equal(_orderManager.GetUnpaidOrder(1).CustomerId, _testOrder.CustomerId);
             Assert.Equal(_orderManager.GetUnpaidOrder(1).CompletedDate, _testOrder.CompletedDate);
             Assert.Equal(_orderManager.GetUnpaidOrder(1).PaymentTypeId, _testOrder.PaymentTypeId);
@@ -85,7 +83,7 @@ namespace bangazon_cli.Managers.Tests
             _orderManager.AddProductToOrder(orderId, productId);
 
             // get the Active Users order by passing in active userId
-            Order currentOrder = _orderManager.GetProductFromOrder(orderId);
+            // Order currentOrder = _orderManager.GetProductFromOrder(orderId);
             
             // Retrieve the order that was just added to db
             Product returnedProduct = _orderManager.GetSingleProductFromOrder(orderId, productId);
@@ -95,6 +93,12 @@ namespace bangazon_cli.Managers.Tests
             Assert.Equal(returnedProduct.Quantity, 1);
             Assert.Equal(returnedProduct.Name, "Bicycle");
             Assert.Equal(returnedProduct.Description, "Awesome bike");
+        }
+
+        public void Dispose()
+        {
+            _db.Update("DELETE FROM `Order`");
+            _db.Update("DELETE FROM Product");
         }
     }
 }

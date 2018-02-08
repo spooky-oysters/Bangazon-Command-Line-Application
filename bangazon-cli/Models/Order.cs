@@ -16,7 +16,7 @@ namespace bangazon_cli.Models
     
         public List<Product> Products { get; set; }
     
-        // constructor for the Order class. Takes one parameter, customerId, and assigned it to CustomerId field.Pa
+        // constructor for the Order class. Takes one parameter, customerId, and assigned it to CustomerId field.
         public Order(int customerId) 
         {
             this.Id = 0;

@@ -14,10 +14,10 @@ namespace bangazon_cli
             DatabaseInterface db = new DatabaseInterface(prodPath);
        
             // Initialize the Manager objects
-            CustomerManager customerManager = new Managers.CustomerManager(db);
+            CustomerManager customerManager = new CustomerManager(db);
             ActiveCustomerManager activeCustomerManager = new ActiveCustomerManager(customerManager);
             Customer activeCustomer = new Customer();
-            ProductManager productManager = new Managers.ProductManager(db);
+            ProductManager productManager = new ProductManager(db);
             OrderManager orderManager = new OrderManager(db);
 
             int choice;
@@ -42,6 +42,15 @@ namespace bangazon_cli
                         ActiveCustomerMenu activeCustomerMenu = new ActiveCustomerMenu(customerManager);
                         int customerId = activeCustomerMenu.Show();
                         activeCustomer = activeCustomerManager.SetActiveCustomer(customerId);
+                        break;
+                    }
+
+                    /*
+                        Lists all products to allow user to choose one to add to their order. When product is chosen, the product is added to the active customer's order
+                    */
+                    case 6: {
+                        AddProductToCartMenu addProductToCartMenu = new AddProductToCartMenu(activeCustomer, orderManager, productManager);
+                        addProductToCartMenu.Show();
                         break;
                     }
 
