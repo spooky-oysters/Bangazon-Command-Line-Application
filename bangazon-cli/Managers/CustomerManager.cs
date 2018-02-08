@@ -74,7 +74,8 @@ namespace bangazon_cli.Managers
             List<Customer> _customers = new List<Customer>();
             // clear the existing customers
             _customers.Clear();
-             // find the record for the cohort in the db and retrieve data
+            
+             // find all of the customers
                 _db.Query($@"SELECT * FROM Customer;", 
                     (SqliteDataReader reader) =>
                         {
