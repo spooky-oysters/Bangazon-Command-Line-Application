@@ -91,7 +91,7 @@ namespace bangazon_cli.Managers.Tests
             Product returnedProduct = _orderManager.GetSingleProductFromOrder(orderId, productId);
             // assert that the product stored on the order is the same product that we sent in. 
             Assert.Equal(returnedProduct.Id, productId);
-            Assert.Equal(returnedProduct.Price, 55.25);
+            Assert.Equal(55.25, returnedProduct.Price);
             Assert.Equal(returnedProduct.Quantity, 1);
             Assert.Equal(returnedProduct.Name, "Bicycle");
             Assert.Equal(returnedProduct.Description, "Awesome bike");
