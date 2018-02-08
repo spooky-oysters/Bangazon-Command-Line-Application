@@ -125,7 +125,7 @@ namespace bangazon_cli.Managers
         }
 
         // function to check if customer's order contains a product.
-        public bool GetProduct(int orderId, int productId)
+        public Order GetProductFromOrder(int orderId)
         {
             // if (_orderProduct.Count > 0) {
 
@@ -143,27 +143,41 @@ namespace bangazon_cli.Managers
             // return false;
 
             // initialize a new order to hold the return from db
-            
+            Order CurrentOrder = new Order();
+            CurrentOrder.Products = new List<Product>();    
+
             // query the database for a matching order
-            _db.Query($@"SELECT * 
-                        FROM `OrderProduct` op
-                        WHERE o.OrderId = {orderId}
-                        AND o.ProductId = {productId};
+            _db.Query($@"SELECT o.Id as OrderId, o.CustomerId as CustomerId, o.PaymentTypeId, o.CompletedDate, op.Id as OrderProductId, p.Id as ProductId, p.Name as ProductName, p.Description ProductDescription, p.Price as ProductPrice, p.Quantity as ProductQuantity
+                        FROM `Order` o, OrderProduct op, Product p
+                        WHERE o.Id = 1
+                        AND o.Id = op.OrderId
+						AND op.ProductId = p.Id;
                         ",
                         (SqliteDataReader reader) =>
                         {
                             while (reader.Read())
                             {
-                                order.Id = Convert.ToInt32(reader["Id"]);
-                                order.CustomerId = Convert.ToInt32(reader["CustomerId"]);
-                                order.PaymentTypeId = null;
-                                order.CompletedDate = null;
-                            }
+                                CurrentOrder.Id = Convert.ToInt32(reader["OrderId"]);
+                                CurrentOrder.CustomerId = Convert.ToInt32(reader["CustomerId"]);
+                                CurrentOrder.PaymentTypeId = null;
+                                CurrentOrder.CompletedDate = null;
 
-                            return 
+                                // int productId = Convert.ToInt32(reader["p.Id"]);
+
+                                Product CurProduct = new Product();
+
+                                CurProduct.Id = Convert.ToInt32(reader["ProductId"]);
+                                CurProduct.Name = Convert.ToString(reader["ProductName"]);
+                                CurProduct.Price = Convert.ToDouble(reader["ProductPrice"]);
+                                CurProduct.Description = Convert.ToString(reader["ProductDescription"]);
+                                CurProduct.Quantity = Convert.ToInt32(reader["ProductQuantity"]);
+                                
+                                CurrentOrder.Products.Add(CurProduct);
+                            }
+                        
                         });
             
-            return order;
+            return CurrentOrder;
         }
 
     }

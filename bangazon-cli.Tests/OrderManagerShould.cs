@@ -2,6 +2,7 @@ using System;
 using Xunit;
 using bangazon_cli.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 /*
     Author: Greg Lawrence
@@ -73,8 +74,17 @@ namespace bangazon_cli.Managers.Tests
             // add product to order
             _orderManager.AddProductToOrder(1, 1);
 
+            Order currentOrder = _orderManager.GetProductFromOrder(1);
+            
+            // foreach (var product in currentOrder.Products)
+            // {
+            //     Console.WriteLine(product.Name + product.Id + product.Description);
+            // }
+
+            Product storedProduct = currentOrder.Products.Where(p => p.Id == 1).Single();
+
             // assert that the joiner table holds the relationship of that order and product
-            Assert.Equal(_orderManager.GetProduct(1, 1), true);
+            Assert.Equal(storedProduct.Id, 1);
         }
 
     }
