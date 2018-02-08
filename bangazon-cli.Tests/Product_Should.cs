@@ -2,6 +2,7 @@ using System;
 using Xunit;
 using bangazon_cli.Models;
 
+
 /*
     Author: Kimberly Bird
     References: Ticket #4 - User should be able to add a product for a customer 
@@ -13,19 +14,6 @@ namespace bangazon_cli.Models.Tests
     {
         // private instance of a new customer
         private Customer _customer;
-
-        public Product_Should()
-        {
-            _customer = new Customer();
-            // properties added to new customer
-            _customer.Id = 1;
-            _customer.Name = "K Bird";
-            _customer.StreetAddress = "1921 Greenwood Ave";
-            _customer.City = "Nashville";
-            _customer.State = "TN";
-            _customer.PostalCode = "37206";
-            _customer.PhoneNumber = "8018959001";
-        }
 
         [Fact]
         public void ProductHasProperties()
