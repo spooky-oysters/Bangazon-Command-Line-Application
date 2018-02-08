@@ -1,4 +1,5 @@
 using System;
+using bangazon_cli.Models;
 
 namespace bangazon_cli.Menus
 {
@@ -10,7 +11,7 @@ namespace bangazon_cli.Menus
 
     public class MainMenu
     {
-        public static int Show()
+        public static int Show(Customer activeCustomer)
         {
             Console.Clear();
 
@@ -18,6 +19,12 @@ namespace bangazon_cli.Menus
             Console.WriteLine ("**  Welcome to Bangazon! Command Line Ordering System  **");
             Console.WriteLine ("*********************************************************");
             
+            if (activeCustomer.Id > 0) {
+                Console.WriteLine("*********************************************************");
+                Console.WriteLine ($"  Active Customer: {activeCustomer.Name}");
+                Console.WriteLine ("*********************************************************");
+            }
+
             Console.WriteLine ("1. Create a customer account");
             Console.WriteLine ("2. Choose active customer");
             Console.WriteLine ("3. Create a payment option");

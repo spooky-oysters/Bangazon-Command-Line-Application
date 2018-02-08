@@ -9,8 +9,11 @@ namespace bangazon_cli
     {
         static void Main(string[] args)
         {
+            // Initalize the interface
             string prodPath = System.Environment.GetEnvironmentVariable("BANGAZON_CLI_APP_DB");
             DatabaseInterface db = new DatabaseInterface(prodPath);
+            
+            // Initialize the Manager objects
             Managers.CustomerManager customerManager = new Managers.CustomerManager(db);
             ActiveCustomerManager activeCustomerManager = new ActiveCustomerManager(customerManager);
             Customer activeCustomer = new Customer();
@@ -18,19 +21,25 @@ namespace bangazon_cli
             int choice;
             // When the user enters the system show the main menu
             do {
-                choice = MainMenu.Show();
+                choice = MainMenu.Show(activeCustomer);
 
                 switch (choice) {
                     
+                    // Add customer
                     case 1: {
                         AddCustomerMenu customerMenu = new AddCustomerMenu(new Customer(), customerManager);
                         customerMenu.Show();
                         break;
                     }
 
+                    /*
+                        List the customers and allow the user to select a customer based on the
+                        position in the list
+                    */
                     case 2: {
-                        ActiveCustomerMenu activeCustomerMenu = new ActiveCustomerMenu(customerManager, activeCustomerManager);
-                        activeCustomer = activeCustomerMenu.Show();
+                        ActiveCustomerMenu activeCustomerMenu = new ActiveCustomerMenu(customerManager);
+                        int customerId = activeCustomerMenu.Show();
+                        activeCustomer = activeCustomerManager.SetActiveCustomer(customerId);
                         break;
                     }
 
@@ -40,7 +49,7 @@ namespace bangazon_cli
                 }
 
             } while (choice != 9);
-            MainMenu.Show()
-;        }
+
+      }
     }
 }

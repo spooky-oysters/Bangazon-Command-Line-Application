@@ -34,7 +34,6 @@ namespace bangazon_cli.Menus
             } while (_customer.Name.Length == 0);
 
             // Street address cannot be null
-            string streetAddress;
             do {
                 Console.WriteLine ("Enter street address");
                 Console.Write ("> ");
@@ -42,7 +41,6 @@ namespace bangazon_cli.Menus
             } while (_customer.StreetAddress.Length == 0);
 
             // City cannot be null
-            string city;
             do {
                 Console.WriteLine ("Enter customer city");
                 Console.Write ("> ");
@@ -50,7 +48,6 @@ namespace bangazon_cli.Menus
             } while (_customer.City.Length == 0);
 
             // State cannot be null
-            string state;
             do {
                 Console.WriteLine ("Enter customer state");
                 Console.Write ("> ");
@@ -58,7 +55,6 @@ namespace bangazon_cli.Menus
             } while (_customer.State.Length == 0);
 
             // PostalCode cannot be null
-            string postalCode;
             do {
                 Console.WriteLine ("Enter customer postal code");
                 Console.Write ("> ");
@@ -66,7 +62,6 @@ namespace bangazon_cli.Menus
             } while (_customer.PostalCode.Length == 0);
 
             // Phone number cannot be null
-            string phoneNumber;
             do {
                 Console.WriteLine ("Enter customer phone number");
                 Console.Write ("> ");
