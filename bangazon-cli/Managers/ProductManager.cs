@@ -83,7 +83,7 @@ namespace bangazon_cli.Managers
             _db.Query($@"SELECT * FROM Product;",
             (SqliteDataReader reader) =>
                 {
-                    while (reader.Read ())
+                    while (reader.Read())
                     {
                         // new product object
                         Product product = new Product();
@@ -109,24 +109,20 @@ namespace bangazon_cli.Managers
         */
         public void UpdateName(Product product, string name)
         {
-            
+
             //update name in SQL
             string SQLUpdate = $@"UPDATE `Product`
             SET `Name` = '{product.Name = name}'
-            WHERE `ProductId` = 1";
+            WHERE `Id` = 1";
 
-            _db.Update(SQLUpdate);
-
-            // try 
-            // {
-            //     name = _db.Update(SQLUpdate);
-            //     product.Name = name;
-            // }
-            // catch (Exception err)
-            // {
-            //     Console.WriteLine("Update Product Error", err.Message);
-            // }
-            // return name;
+            try
+            {
+                _db.Update(SQLUpdate);
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine("Update Product Error", err.Message);
+            }
         }
 
         /*
@@ -137,7 +133,19 @@ namespace bangazon_cli.Managers
         */
         public void UpdateDescription(Product product, string desc)
         {
-            product.Description = desc;
+            // update description in SQL
+            string SQLUpdate = $@"UPDATE `Product`
+            SET `Description` = '{product.Description = desc}'
+            WHERE `Id` = 1";
+
+            try
+            {
+                _db.Update(SQLUpdate);
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine("Update Product Error", err.Message);
+            }
         }
 
         /*
@@ -148,7 +156,19 @@ namespace bangazon_cli.Managers
         */
         public void UpdatePrice(Product product, double price)
         {
-            product.Price = price;
+            // update price in SQL
+            string SQLUpdate = $@"UPDATE `Product`
+            SET `Price` = '{product.Price = price}'
+            WHERE `Id` = 1";
+
+            try
+            {
+                _db.Update(SQLUpdate);
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine("Update Product Error", err.Message);
+            }
         }
 
         /*
@@ -159,13 +179,25 @@ namespace bangazon_cli.Managers
         */
         public void UpdateQuantity(Product product, int quanity)
         {
-            product.Quantity = quanity;
+            // update quantity in SQL
+            string SQLUpdate = $@"UPDATE `Product`
+            SET `Quantity` = '{product.Quantity = quanity}'
+            WHERE `Id` = 1";
+
+            try
+            {
+                _db.Update(SQLUpdate);
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine("Update Product Error", err.Message);
+            }
         }
 
         // gets one product. Parameters: id
         public Product GetSingleProduct(int id)
         {
-            return this.GetProducts().Where(p => p.Id == id).Single();
+            return GetProducts().Where(p => p.Id == id).Single();
         }
 
     }
