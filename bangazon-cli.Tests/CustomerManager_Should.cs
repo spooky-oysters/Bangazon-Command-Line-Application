@@ -14,7 +14,6 @@ namespace bangazon_cli.Managers.Tests
     public class CustomerManager_Should
     {
         private DatabaseInterface _db;
-        private string _dbPath;
         
         // Instantiate the Test
         public CustomerManager_Should()
