@@ -12,7 +12,7 @@ namespace bangazon_cli.Managers
      */
     public class ProductManager
     {
-        private List<Product> _products = new List<Product>();
+
         private DatabaseInterface _db;
 
         public ProductManager(DatabaseInterface db)
@@ -77,6 +77,7 @@ namespace bangazon_cli.Managers
         // returns all products from database
         public List<Product> GetProducts()
         {
+            List<Product> _products = new List<Product>();
             // clear existing customers
             _products.Clear();
             // find the record for the product in the db and retrieve data

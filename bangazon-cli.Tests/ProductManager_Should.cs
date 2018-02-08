@@ -29,9 +29,9 @@ namespace bangazon_cli.Managers.Tests
             // generate product
             Product product = new Product();
             product.CustomerId = 1;
-            product.Name = "another product";
+            product.Name = "Kite";
             product.Price = 37.00;
-            product.Description = "Product description";
+            product.Description = "Kite description";
             product.Quantity = 5;
 
             // manager new instance
@@ -60,10 +60,10 @@ namespace bangazon_cli.Managers.Tests
             Product product = new Product();
             product.Id = 0;
             product.CustomerId = 1;
-            product.Name = "AddProductIdToAddedRecords";
-            product.Price = 34.00;
-            product.Description = "Product description";
-            product.Quantity = 45;
+            product.Name = "Shirt";
+            product.Price = 14.00;
+            product.Description = "shirt description";
+            product.Quantity = 48;
 
             ProductManager productManager = new ProductManager(_db);
 
@@ -76,15 +76,23 @@ namespace bangazon_cli.Managers.Tests
         [Fact]
         public void GetSingleProd()
         {
+            // add new product with product name
+            _product = new Models.Product();
+            _product.Name = "Kite";
+            _product.CustomerId = 1;
+            _product.Price = 45.00;
+            _product.Description = "THIS IS UPDATED";
+            _product.Quantity = 3;
 
             // manager instance
             ProductManager productManager = new ProductManager(_db);
+            int id = productManager.AddProduct(_product);
 
             // get product from manager
-            Product storedProduct = productManager.GetSingleProduct(1);
+            Product storedProduct = productManager.GetSingleProduct(id);
 
             // products should match
-            Assert.Equal(1, storedProduct.Id);
+            Assert.Equal(id, storedProduct.Id);
         }
 
 
@@ -93,15 +101,18 @@ namespace bangazon_cli.Managers.Tests
         {
             // add new product with product name
             _product = new Models.Product();
-            _product.Id = 1;
-            _product.Name = "Kite";
+            _product.Name = "THIS IS UPDATED";
+            _product.CustomerId = 1;
+            _product.Price = 45.00;
+            _product.Quantity = 3;
+            _product.Description = "Kite description";
 
             // new product manager instance 
             ProductManager productManager = new ProductManager(_db);
-            productManager.AddProduct(_product);
+            int id = productManager.AddProduct(_product);
 
             // select one product to update based on id
-            Product prodToUpdate = productManager.GetSingleProduct(1);
+            Product prodToUpdate = productManager.GetSingleProduct(id);
 
             // updates product name 
             productManager.UpdateName(prodToUpdate, "New Kite");
@@ -115,15 +126,18 @@ namespace bangazon_cli.Managers.Tests
         {
             // add new product with product description
             _product = new Models.Product();
-            _product.Id = 1;
-            _product.Description = "Kite description";
+            _product.Description = "THIS IS UPDATED";
+            _product.Name = "Kite";
+            _product.CustomerId = 1;
+            _product.Price = 45.00;
+            _product.Quantity = 3;
 
             // new product manager instance 
             ProductManager productManager = new ProductManager(_db);
-            productManager.AddProduct(_product);
+            int id = productManager.AddProduct(_product);
 
             // select one product to update based on id
-            Product prodToUpdate = productManager.GetSingleProduct(1);
+            Product prodToUpdate = productManager.GetSingleProduct(id);
 
             // updates product description 
             productManager.UpdateDescription(prodToUpdate, "New Kite description");
@@ -137,15 +151,18 @@ namespace bangazon_cli.Managers.Tests
         {
             // add new product with product price
             _product = new Models.Product();
-            _product.Id = 1;
-            _product.Price = 45.00;
+            _product.Price = 75.00;
+            _product.Description = "Kite Description";
+            _product.Name = "Kite";
+            _product.CustomerId = 1;
+            _product.Quantity = 3;
 
             // new product manager instance 
             ProductManager productManager = new ProductManager(_db);
-            productManager.AddProduct(_product);
+            int id = productManager.AddProduct(_product);
 
             // select one product to update based on id
-            Product prodToUpdate = productManager.GetSingleProduct(1);
+            Product prodToUpdate = productManager.GetSingleProduct(id);
 
             // updates product price 
             productManager.UpdatePrice(prodToUpdate, 50.97);
@@ -159,21 +176,24 @@ namespace bangazon_cli.Managers.Tests
         {
             // add new product with product quantity
             _product = new Models.Product();
-            _product.Id = 1;
-            _product.Quantity = 4;
+            _product.Quantity = 70;
+            _product.Description = "Kite Description";
+            _product.Name = "Kite";
+            _product.CustomerId = 1;
+            _product.Price = 45.00;
 
             // new product manager instance 
             ProductManager productManager = new ProductManager(_db);
-            productManager.AddProduct(_product);
+            int id = productManager.AddProduct(_product);
 
             // select one product to update based on id
-            Product prodToUpdate = productManager.GetSingleProduct(1);
+            Product prodToUpdate = productManager.GetSingleProduct(id);
 
             // updates product quantity 
-            productManager.UpdateQuantity(prodToUpdate, 5);
+            productManager.UpdateQuantity(prodToUpdate, 10);
 
             // tests that new product quantity is updated
-            Assert.Equal(prodToUpdate.Quantity, 5);
+            Assert.Equal(prodToUpdate.Quantity, 10);
         }
 
     }
