@@ -37,7 +37,7 @@ namespace bangazon_cli.Managers.Tests
             // manager new instance
             ProductManager productManager = new ProductManager(_db);
 
-            // capture existing record count. Test will use this to destermin if the add method increased the number of records
+            // capture existing record count. Test will use this to determine if the add method increased the number of records
             int initialRecordCount = productManager.GetProducts().Count();
 
             // assign the id to the product object using AddProduct
@@ -73,8 +73,7 @@ namespace bangazon_cli.Managers.Tests
             Assert.True(product.Id > 0);
         }
         
-// this needs refactoring now that product table is connect to SQLite
-/*
+
         [Fact]
         public void UpdateProductName()
         {
@@ -84,7 +83,7 @@ namespace bangazon_cli.Managers.Tests
             _product.Name = "Kite";
 
             // new product manager instance 
-            ProductManager productManager = new ProductManager();
+            ProductManager productManager = new ProductManager(_db);
             productManager.AddProduct(_product);
 
             // select one product to update based on id
@@ -97,6 +96,7 @@ namespace bangazon_cli.Managers.Tests
             Assert.Equal(prodToUpdate.Name, "New Kite");
         }
 
+/* 
         [Fact]
         public void UpdateProductDesc()
         {

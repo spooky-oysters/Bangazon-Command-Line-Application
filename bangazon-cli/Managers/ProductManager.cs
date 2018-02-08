@@ -109,7 +109,22 @@ namespace bangazon_cli.Managers
         */
         public void UpdateName(Product product, string name)
         {
-            product.Name = name;
+        
+            //update name in SQL
+            string SQLUpdate = $@"UPDATE `Product`
+            SET `Name` = '{product.Name = name}'
+            WHERE `ProductId` = 1";
+
+            // try 
+            // {
+            //     name = _db.Update(SQLUpdate);
+            //     product.Name = name;
+            // }
+            // catch (Exception err)
+            // {
+            //     Console.WriteLine("Update Product Error", err.Message);
+            // }
+            // return name;
         }
 
         /*
