@@ -38,54 +38,60 @@ namespace bangazon_cli.Menus
                 // create variable to hold the user choice
                 int output = 0;
 
-                    do {
-                        if (AllProducts.Count > 0) {
-                        // create a variable to hold a number to use as the menu number.
-                        int menuNum = 1;
-                        // Loop through list of products and print each to console.
-                        Console.WriteLine("Choose a Product to add to the order:");
-                            Console.WriteLine();
-                        foreach (Product product in AllProducts)
-                        {
-                            Console.WriteLine($"{menuNum}. {product.Name}");
-                            menuNum++;
-                        }
-                        } else {
-                            Console.WriteLine("*** NO PRODUCTS CURRENTLY IN SYSTEM ***");
-                            Console.WriteLine("*** PRESS ENTER TO CONTINUE.        ***");
-                        }
-                        Console.Write ("> ");
-                        ConsoleKeyInfo enteredKey = Console.ReadKey();
-                        Console.WriteLine("");
-                        int.TryParse(enteredKey.KeyChar.ToString(), out output);
+                // create a variable to hold a number to use as the menu number.
+                int menuNum = 1;
 
-                    } while (output < 1 || output > AllProducts.Count);
+                do {
+                    // start the menuNum at 1 for each loop
+                    menuNum = 1;
 
-                
-                // find the selected product from the list
-                Product selectedProduct = AllProducts.ElementAt(output - 1);
+                    // Clear the console
+                    Console.Clear();
 
+                    if (AllProducts.Count > 0) {
+                    // Loop through list of products and print each to console.
+                    Console.WriteLine("Choose a Product to add to the order:");
+                        Console.WriteLine();
+                    foreach (Product product in AllProducts)
+                    {
+                        Console.WriteLine($"{menuNum}. {product.Name}");
+                        menuNum++;
+                    }
+                    } else {
+                        Console.WriteLine("*** NO PRODUCTS CURRENTLY IN SYSTEM ***");
+                        Console.WriteLine("*** PRESS ENTER TO CONTINUE.        ***");
+                    }
 
-                //retrieve customers Unpaid order
-                Order customerOrder = _orderManager.GetUnpaidOrder(_customer.Id);
+                    Console.WriteLine ($"{menuNum+1}. Exit back to Main Menu. ");
 
-                // check if the customer does not have a current order started. If they do not, add an order and retrieve it to get the OrderId. 
-                if (customerOrder.Id < 1) {
-                    Order newOrder = new Order(_customer.Id);
-                    customerOrder.Id = _orderManager.AddOrder(newOrder);
-                    Console.WriteLine("customerOrderId", customerOrder.Id);
-                }
+                    Console.Write ("> ");
+                    ConsoleKeyInfo enteredKey = Console.ReadKey();
+                    Console.WriteLine("");
+                    int.TryParse(enteredKey.KeyChar.ToString(), out output);
 
-                try {
+                    if (output != menuNum + 1) {
+                    // find the selected product from the list
+                    Product selectedProduct = AllProducts.ElementAt(output - 1);
+
+                    //retrieve customers Unpaid order
+                    Order customerOrder = _orderManager.GetUnpaidOrder(_customer.Id);
+
+                    // check if the customer does not have a current order started. If they do not, add an order and retrieve it to get the OrderId. 
+                    if (customerOrder.Id < 1) {
+                        Order newOrder = new Order(_customer.Id);
+                        customerOrder.Id = _orderManager.AddOrder(newOrder);
+                        Console.WriteLine("customerOrderId", customerOrder.Id);
+                    }
+
                     // create a record in the OrderProduct table for the relationship of the selected product and the customer's orderId
                     _orderManager.AddProductToOrder(customerOrder.Id, selectedProduct.Id);
 
                     Console.WriteLine("*** SUCCESS                ***");
                     Console.WriteLine("*** PRESS ENTER TO CONTINE ***");
                     Console.ReadLine();
-                } catch (Exception err) {
-                    Console.WriteLine("Error adding Product to Order", err.Message);
-                }
+                    }
+                    
+                } while (output != menuNum+1);
             } else {
                 Console.WriteLine("*** SELECT AN ACTIVE CUSTOMER FIRST! ***");
                 Console.WriteLine("*** PRESS ENTER TO CONTINUE ***");
