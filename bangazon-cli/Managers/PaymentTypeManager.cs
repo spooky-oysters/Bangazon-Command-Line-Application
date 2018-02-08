@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using bangazon_cli.Models;
 
 namespace bangazon_cli.Managers
@@ -11,18 +12,22 @@ namespace bangazon_cli.Managers
     public class PaymentTypeManager
     {
         private List<PaymentType> _payments;
-        private DatabaseInterface _db;
 
-        public PaymentTypeManager(DatabaseInterface db)
+        public PaymentTypeManager()
         {
-            _db = db;   
             _payments = new List<PaymentType>();
         }
 
         public void AddNewPaymentType(PaymentType paymentType, int custId)
         {
+            paymentType.Id = 1;
             paymentType.CustomerId = custId;
             _payments.Add(paymentType);
+        }
+
+        public PaymentType GetSinglePaymentType(int paymentId)
+        {
+            return _payments.Where(p => p.Id == paymentId).Single();
         }
     }
 }

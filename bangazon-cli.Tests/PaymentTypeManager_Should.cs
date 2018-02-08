@@ -29,15 +29,6 @@ namespace bangazon_cli.Tests
         {
             _payments = new List<PaymentType>();
 
-            // Path to the environment variable on the users computer
-            string testPath = System.Environment.GetEnvironmentVariable("BANGAZON_CLI_APP_DB_TEST");
-
-            // Initializing a new DatabaseInterface and passing in the string path
-            _db = new DatabaseInterface(testPath);
-            
-            // Initializing an instance of _customerManager to pass to the _activeCustomerManager ctor
-            _customerManager = new CustomerManager(_db);
-
             _paymentTypeManager = new PaymentTypeManager(_db);
 
             // Initializing the _activeCustomerManager and passing in an instance of _customerManager to the ctor
@@ -101,7 +92,7 @@ namespace bangazon_cli.Tests
         [Fact]
         public void GetSinglePaymentType_Should()
         {
-
+            
         }
 
         [Fact]
