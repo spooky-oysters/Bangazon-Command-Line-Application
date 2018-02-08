@@ -242,5 +242,10 @@ namespace bangazon_cli.Managers.Tests
             Assert.Equal(prodToUpdate.Quantity, 10);
         }
 
+        public void Dispose()
+        {
+            _db.Update("DELETE FROM product");
+        }
+
     }
 }
