@@ -22,12 +22,13 @@ namespace bangazon_cli.Menus
             Console.Clear();
             Console.WriteLine("Choose product to delete:");
 
-            // list the active customers products
+            // get the active customer's products
+            // TODO: Use productManager's getCustomersProducts method 
             List<Product> products = _productManager.GetProducts()
                             .Where(p => p.CustomerId == _activeCustomer.Id)
                             .OrderBy(x => x.Name).ToList();
 
-            // options to select the product
+            // display the options to select the product and get the selected product
             Product product = GetProductFromList(products);
 
             // error check if this customer has no products
@@ -35,20 +36,17 @@ namespace bangazon_cli.Menus
                 return;
             }
             
-            // option to update or delete
-
-
-            // branch for update
-
+            // only delete if it is not on an active order
+            // check if it is on an active order
 
             // branch for delete
+            Console.WriteLine(product.Id + " press enter to continue...");
             Console.ReadLine();
         }
 
         public Product GetProductFromList(List<Product> products) {
             
-            int id = 0;
-            int choice = 1;
+            int choice = 0;
             Product selectedProduct = new Product();
 
             // make sure there are products to display
@@ -66,14 +64,14 @@ namespace bangazon_cli.Menus
                     index ++;
                 });
 
-                Console.WriteLine("> ");
+                Console.Write("> ");
                 string userSelection = Console.ReadLine();
                 
                 if (int.TryParse(userSelection, out choice)) {
                     selectedProduct = products.ElementAt(choice -1);
                 }
 
-            } while (id == 0 || choice > products.Count());
+            } while (choice == 0 || choice > products.Count());
 
             return selectedProduct;
             

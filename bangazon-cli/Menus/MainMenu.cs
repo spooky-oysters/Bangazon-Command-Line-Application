@@ -62,22 +62,23 @@ namespace bangazon_cli.Menus
                     output = 0;
                 }
 
-
-                // Without a valid customer the only valid choices are 1,2 and 9
+                // Check validity of users's selection - which depends on if 
+                // an active customer was selected
                 if (hasActiveCustomer == false) {
+                    
+                    // Without a valid customer the only valid choices are 1,2 and 10
                     isValidChoice = validChoicesWithoutActiveCustomer.Contains(output);
                     
                     // if it is not a valid choice do not return an option
                     if (!isValidChoice) {
                         output = 0;
                     }
+
                 } else {
                     isValidChoice = true;
                 }
 
-                
-
-
+            // don't exit unless the output is >0 and is a valid choice
             } while (output == 0 && !isValidChoice);
 
 

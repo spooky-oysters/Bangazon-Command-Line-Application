@@ -12,11 +12,19 @@ namespace bangazon_cli
             // Initalize the interface
             string prodPath = System.Environment.GetEnvironmentVariable("BANGAZON_CLI_APP_DB");
             DatabaseInterface db = new DatabaseInterface(prodPath);
-            
+       
             // Initialize the Manager objects
-            Managers.CustomerManager customerManager = new Managers.CustomerManager(db);
+            CustomerManager customerManager = new Managers.CustomerManager(db);
             ActiveCustomerManager activeCustomerManager = new ActiveCustomerManager(customerManager);
+<<<<<<< HEAD
             ProductManager productManager = new ProductManager(db);
+||||||| merged common ancestors
+            Customer activeCustomer = new Customer();
+=======
+            Customer activeCustomer = new Customer();
+            ProductManager productManager = new Managers.ProductManager(db);
+            OrderManager orderManager = new OrderManager(db);
+>>>>>>> 8ee1e84b842a45f33396bd07a70f47e0dc3b64c0
 
             Customer activeCustomer = new Customer();
             
