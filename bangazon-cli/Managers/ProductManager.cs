@@ -78,10 +78,37 @@ namespace bangazon_cli.Managers
         public List<Product> GetProducts()
         {
             List<Product> _products = new List<Product>();
-            // clear existing customers
+            // clear existing products
             _products.Clear();
             // find the record for the product in the db and retrieve data
             _db.Query($@"SELECT * FROM Product;",
+            (SqliteDataReader reader) =>
+                {
+                    while (reader.Read())
+                    {
+                        // new product object
+                        Product product = new Product();
+                        product.Id = Convert.ToInt32(reader["Id"]);
+                        product.CustomerId = Convert.ToInt32(reader["CustomerId"]);
+                        product.Name = Convert.ToString(reader["Name"]);
+                        product.Price = Convert.ToDouble(reader["Price"]);
+                        product.Description = Convert.ToString(reader["Description"]);
+                        product.Quantity = Convert.ToInt32(reader["Quantity"]);
+
+                        // add it to collection
+                        _products.Add(product);
+                    }
+                });
+            return _products;
+        }
+        // returns all products for one customer
+        public List<Product> GetProducts(int id)
+        {
+            List<Product> _products = new List<Product>();
+            // clear existing customers
+            _products.Clear();
+            // find the record for the product in the db and retrieve data
+            _db.Query($@"SELECT * FROM Product WHERE CustomerId = {id};",
             (SqliteDataReader reader) =>
                 {
                     while (reader.Read())
