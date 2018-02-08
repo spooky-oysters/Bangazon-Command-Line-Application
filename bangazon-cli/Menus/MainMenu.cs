@@ -22,7 +22,7 @@ namespace bangazon_cli.Menus
             bool hasActiveCustomer = activeCustomer.Id > 0;
             int output = 0;
             bool isValidChoice = false;
-            List<int> validChoicesWithoutActiveCustomer = new List<int>(){1,2,9};
+            List<int> validChoicesWithoutActiveCustomer = new List<int>(){1,2,10};
             
             do {
                  Console.Clear();
@@ -45,19 +45,23 @@ namespace bangazon_cli.Menus
                     Console.WriteLine ("3. Create a payment option");
                     Console.WriteLine ("4. Add a product to active customer");
                     Console.WriteLine ("5. Update active customer's product");
-                    Console.WriteLine ("6. Add product to shopping cart");
-                    Console.WriteLine ("7. Complete an order");
-                    Console.WriteLine ("8. View Reports");
+                    Console.WriteLine ("6. Delete active customer's product");
+                    Console.WriteLine ("7. Add product to shopping cart");
+                    Console.WriteLine ("8. Complete an order");
+                    Console.WriteLine ("9. View Reports");
                 }
                 
-                Console.WriteLine ("9. Leave Bangazon!");
+                Console.WriteLine ("10. Leave Bangazon!");
 
                 // get the user input
                 Console.Write ("> ");
-                ConsoleKeyInfo enteredKey = Console.ReadKey();
+                string enteredValue = Console.ReadLine();
                 Console.WriteLine("");
                 output = 0;
-                int.TryParse(enteredKey.KeyChar.ToString(), out output);
+                if (int.TryParse(enteredValue, out output) == false) {
+                    output = 0;
+                }
+
 
                 // Without a valid customer the only valid choices are 1,2 and 9
                 if (hasActiveCustomer == false) {

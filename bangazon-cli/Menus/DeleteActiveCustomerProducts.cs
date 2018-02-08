@@ -6,12 +6,12 @@ using System.Collections.Generic;
 
 namespace bangazon_cli.Menus
 {
-    public class UpdateDeleteActiveCustomerProducts
+    public class DeleteActiveCustomerProducts
     {
         private Customer _activeCustomer;
         private ProductManager _productManager;
 
-        public UpdateDeleteActiveCustomerProducts(Customer activeCustomer, ProductManager productManager)
+        public DeleteActiveCustomerProducts(Customer activeCustomer, ProductManager productManager)
         {
             _activeCustomer = activeCustomer;
             _productManager = productManager;
@@ -20,8 +20,8 @@ namespace bangazon_cli.Menus
         public void Show() {
             
             Console.Clear();
+            Console.WriteLine("Choose product to delete:");
 
-            
             // list the active customers products
             List<Product> products = _productManager.GetProducts()
                             .Where(p => p.CustomerId == _activeCustomer.Id)
@@ -59,13 +59,13 @@ namespace bangazon_cli.Menus
             }
 
             do {
-                Console.Clear();
-                Console.WriteLine("Which Product?");
+                
                 int index = 1;
                 products.ForEach(c => {
                     Console.WriteLine($"{index}. {c.Name}");
                     index ++;
                 });
+
                 Console.WriteLine("> ");
                 string userSelection = Console.ReadLine();
                 

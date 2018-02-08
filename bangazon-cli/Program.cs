@@ -44,9 +44,13 @@ namespace bangazon_cli
                         activeCustomer = activeCustomerManager.SetActiveCustomer(customerId);
                         break;
                     }
-
-                    case 5: {
-                        UpdateDeleteActiveCustomerProducts menu = new UpdateDeleteActiveCustomerProducts(activeCustomer, productManager);
+                    
+                    /*
+                        List the active customer's product(s) 
+                        The user cannot delete products that are on active orders
+                    */
+                    case 6: {
+                        DeleteActiveCustomerProducts menu = new DeleteActiveCustomerProducts(activeCustomer, productManager);
                         menu.Show();
                         break;
                     }
@@ -55,7 +59,7 @@ namespace bangazon_cli
                     }
                 }
 
-            } while (choice != 9);
+            } while (choice != 10);
 
       }
     }
