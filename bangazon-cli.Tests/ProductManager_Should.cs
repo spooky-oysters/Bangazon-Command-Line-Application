@@ -16,11 +16,13 @@ namespace bangazon_cli.Managers.Tests
         private DatabaseInterface _db;
         private string _dbPath;
 
+
         // instatiate the test
         public ProductManager_Should()
         {
             string testPath = System.Environment.GetEnvironmentVariable("BANGAZON_CLI_APP_DB_TEST");
             _db = new DatabaseInterface(testPath);
+
         }
 
         [Fact]
@@ -194,6 +196,32 @@ namespace bangazon_cli.Managers.Tests
 
             // tests that new product quantity is updated
             Assert.Equal(prodToUpdate.Quantity, 10);
+        }
+
+        [Fact]
+        public void CheckIfProductIsOnUnpaidOrder() {
+            
+            // add new product with product name
+            _product = new Models.Product();
+            _product.Name = "Kite";
+            _product.CustomerId = 1;
+            _product.Price = 45.00;
+            _product.Description = "UNPAID TEST";
+            _product.Quantity = 3;
+
+            ProductManager productManager = new ProductManager(_db);
+            int prodId = productManager.AddProduct(_product);
+            OrderManager orderManager = new OrderManager(_db);
+
+            Order order = new Order(1);
+            int ordId = orderManager.AddOrder(order);
+            orderManager.AddProductToOrder(ordId,prodId);
+
+            // should be an unpaid order
+            bool isOnUnpaid = productManager.IsProductOnUnpaidOrder(prodId);
+
+            Assert.True(isOnUnpaid);
+
         }
 
     }

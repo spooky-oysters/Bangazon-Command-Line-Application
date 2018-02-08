@@ -201,5 +201,22 @@ namespace bangazon_cli.Managers
             return GetProducts().Where(p => p.Id == id).Single();
         }
 
+        public bool IsProductOnUnpaidOrder(int productId) {
+            
+            int rowCount = 0;
+            _db.Query($@"SELECT Count(o.Id) as ordercount 
+                    FROM `Order` o, OrderProduct op
+                    WHERE o.Id = op.OrderId;",
+            (SqliteDataReader reader) =>
+                {
+                    while (reader.Read())
+                    {
+                        rowCount = Convert.ToInt32(reader["ordercount"]);
+                    }
+                });
+            
+            return rowCount > 0;
+        }
+
     }
 }
