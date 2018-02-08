@@ -71,21 +71,18 @@ namespace bangazon_cli.Managers.Tests
         [Fact]
         public void AddProductToOrder()
         {
-            // add product to order
+            // add product to order by creating 
             _orderManager.AddProductToOrder(1, 1);
 
             Order currentOrder = _orderManager.GetProductFromOrder(1);
             
-            // foreach (var product in currentOrder.Products)
-            // {
-            //     Console.WriteLine(product.Name + product.Id + product.Description);
-            // }
-
-            Product storedProduct = currentOrder.Products.Where(p => p.Id == 1).Single();
-
-            // assert that the joiner table holds the relationship of that order and product
-            Assert.Equal(storedProduct.Id, 1);
+            // Retrieve the order that was just added to db
+            Product returnedProduct = _orderManager.GetSingleProductFromOrder(1, 1);
+            // assert that the product stored on the order is the same product that we sent in. 
+            Assert.Equal(returnedProduct.Price, 34.00);
+            Assert.Equal(returnedProduct.Quantity, 45);
+            Assert.Equal(returnedProduct.Name, "AddProductIdToAddedRecords");
+            Assert.Equal(returnedProduct.Description, "Product description");
         }
-
     }
 }

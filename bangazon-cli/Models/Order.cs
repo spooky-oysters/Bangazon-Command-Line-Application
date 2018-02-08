@@ -23,12 +23,12 @@ namespace bangazon_cli.Models
             this.CustomerId = customerId;
             this.PaymentTypeId = null;
             this.CompletedDate = null;
-            List<Product> Products = new List<Product>();
+            Products = new List<Product>();
         }
 
         // Constuctor function to have ability to initialize an order without any properties set
         public Order(){
-            List<Product> Products = new List<Product>();
+            Products = new List<Product>();
         }
     }
 }

@@ -101,9 +101,7 @@ namespace bangazon_cli.Managers
                                 order.CompletedDate = null;
                             }
                         });
-            
             return order;
-
         }
 
         // store a product on an order, by using a joiner table
@@ -124,32 +122,17 @@ namespace bangazon_cli.Managers
             }
         }
 
+        
         // function to check if customer's order contains a product.
         public Order GetProductFromOrder(int orderId)
         {
-            // if (_orderProduct.Count > 0) {
-
-            //     foreach (KeyValuePair<int, int>product in _orderProduct)
-            //     {
-            //         if (product.Key == orderId && product.Value == productId) 
-            //         {
-            //             return true;
-            //         } else {
-            //             return false;
-            //         }
-            //     }
-            // } 
-
-            // return false;
-
             // initialize a new order to hold the return from db
             Order CurrentOrder = new Order();
-            CurrentOrder.Products = new List<Product>();    
 
             // query the database for a matching order
             _db.Query($@"SELECT o.Id as OrderId, o.CustomerId as CustomerId, o.PaymentTypeId, o.CompletedDate, op.Id as OrderProductId, p.Id as ProductId, p.Name as ProductName, p.Description ProductDescription, p.Price as ProductPrice, p.Quantity as ProductQuantity
                         FROM `Order` o, OrderProduct op, Product p
-                        WHERE o.Id = 1
+                        WHERE o.Id = {orderId}
                         AND o.Id = op.OrderId
 						AND op.ProductId = p.Id;
                         ",
@@ -157,28 +140,71 @@ namespace bangazon_cli.Managers
                         {
                             while (reader.Read())
                             {
+                                // assign order details to the order created above
                                 CurrentOrder.Id = Convert.ToInt32(reader["OrderId"]);
                                 CurrentOrder.CustomerId = Convert.ToInt32(reader["CustomerId"]);
                                 CurrentOrder.PaymentTypeId = null;
                                 CurrentOrder.CompletedDate = null;
 
-                                // int productId = Convert.ToInt32(reader["p.Id"]);
-
+                                // create a new product to hold retrieved product from db
                                 Product CurProduct = new Product();
-
+                                // assign product details to the product created above
                                 CurProduct.Id = Convert.ToInt32(reader["ProductId"]);
                                 CurProduct.Name = Convert.ToString(reader["ProductName"]);
                                 CurProduct.Price = Convert.ToDouble(reader["ProductPrice"]);
                                 CurProduct.Description = Convert.ToString(reader["ProductDescription"]);
                                 CurProduct.Quantity = Convert.ToInt32(reader["ProductQuantity"]);
                                 
+                                // store product in a list on the order
                                 CurrentOrder.Products.Add(CurProduct);
                             }
-                        
                         });
             
             return CurrentOrder;
         }
 
+        
+        public Product GetSingleProductFromOrder(int orderId, int productId)
+        {
+
+            try {
+                // initialize a new order to hold the return from db
+                Order CurrentOrder = new Order();
+                // create a new product to hold retrieved product from db
+                Product CurProduct = new Product();    
+
+                // query the database for a matching order
+                _db.Query($@"SELECT o.Id as OrderId, o.CustomerId as CustomerId, o.PaymentTypeId, o.CompletedDate, op.Id as OrderProductId, p.Id as ProductId, p.Name as ProductName, p.Description ProductDescription, p.Price as ProductPrice, p.Quantity as ProductQuantity
+                            FROM `Order` o, OrderProduct op, Product p
+                            WHERE o.Id = {orderId}
+                            AND o.Id = op.OrderId
+                            AND op.ProductId = p.Id
+                            AND p.Id = {productId};
+                            ",
+                            (SqliteDataReader reader) =>
+                            {
+                                while (reader.Read())
+                                {
+                                    // assign order details to the order created above
+                                    CurrentOrder.Id = Convert.ToInt32(reader["OrderId"]);
+                                    CurrentOrder.CustomerId = Convert.ToInt32(reader["CustomerId"]);
+                                    CurrentOrder.PaymentTypeId = null;
+                                    CurrentOrder.CompletedDate = null;
+
+                                    // assign product details to the product created above
+                                    CurProduct.Id = Convert.ToInt32(reader["ProductId"]);
+                                    CurProduct.Name = Convert.ToString(reader["ProductName"]);
+                                    CurProduct.Price = Convert.ToDouble(reader["ProductPrice"]);
+                                    CurProduct.Description = Convert.ToString(reader["ProductDescription"]);
+                                    CurProduct.Quantity = Convert.ToInt32(reader["ProductQuantity"]);
+                                }
+                            });
+                return CurProduct;
+
+            } catch  (Exception err) {
+                Console.WriteLine("Get Single Product From Order Error", err.Message);
+                return null;
+            }
+        }
     }
 }
