@@ -16,8 +16,10 @@ namespace bangazon_cli
             // Initialize the Manager objects
             Managers.CustomerManager customerManager = new Managers.CustomerManager(db);
             ActiveCustomerManager activeCustomerManager = new ActiveCustomerManager(customerManager);
-            Customer activeCustomer = new Customer();
+            ProductManager productManager = new ProductManager(db);
 
+            Customer activeCustomer = new Customer();
+            
             int choice;
             // When the user enters the system show the main menu
             do {
@@ -43,6 +45,11 @@ namespace bangazon_cli
                         break;
                     }
 
+                    case 5: {
+                        UpdateDeleteActiveCustomerProducts menu = new UpdateDeleteActiveCustomerProducts(activeCustomer, productManager);
+                        menu.Show();
+                        break;
+                    }
                     default: {
                         break;
                     }
