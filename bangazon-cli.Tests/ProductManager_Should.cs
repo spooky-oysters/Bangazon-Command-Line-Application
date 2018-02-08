@@ -244,7 +244,8 @@ namespace bangazon_cli.Managers.Tests
 
         public void Dispose()
         {
-            _db.Update("DELETE FROM product");
+            _db.Update("DELETE FROM OrderProduct");
+            _db.Update("DELETE FROM Product");
         }
 
     }
