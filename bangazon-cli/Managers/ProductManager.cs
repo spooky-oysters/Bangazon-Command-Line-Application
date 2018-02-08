@@ -12,7 +12,7 @@ namespace bangazon_cli.Managers
      */
     public class ProductManager
     {
-        private List<Product> _products = new List<Product>();
+
         private DatabaseInterface _db;
 
         public ProductManager(DatabaseInterface db)
@@ -77,6 +77,7 @@ namespace bangazon_cli.Managers
         // returns all products from database
         public List<Product> GetProducts()
         {
+            List<Product> _products = new List<Product>();
             // clear existing customers
             _products.Clear();
             // find the record for the product in the db and retrieve data
@@ -109,7 +110,20 @@ namespace bangazon_cli.Managers
         */
         public void UpdateName(Product product, string name)
         {
-            product.Name = name;
+
+            //update name in SQL
+            string SQLUpdate = $@"UPDATE `Product`
+            SET `Name` = '{product.Name = name}'
+            WHERE `Id` = 1";
+
+            try
+            {
+                _db.Update(SQLUpdate);
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine("Update Product Error", err.Message);
+            }
         }
 
         /*
@@ -120,7 +134,19 @@ namespace bangazon_cli.Managers
         */
         public void UpdateDescription(Product product, string desc)
         {
-            product.Description = desc;
+            // update description in SQL
+            string SQLUpdate = $@"UPDATE `Product`
+            SET `Description` = '{product.Description = desc}'
+            WHERE `Id` = 1";
+
+            try
+            {
+                _db.Update(SQLUpdate);
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine("Update Product Error", err.Message);
+            }
         }
 
         /*
@@ -131,7 +157,19 @@ namespace bangazon_cli.Managers
         */
         public void UpdatePrice(Product product, double price)
         {
-            product.Price = price;
+            // update price in SQL
+            string SQLUpdate = $@"UPDATE `Product`
+            SET `Price` = '{product.Price = price}'
+            WHERE `Id` = 1";
+
+            try
+            {
+                _db.Update(SQLUpdate);
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine("Update Product Error", err.Message);
+            }
         }
 
         /*
@@ -142,13 +180,25 @@ namespace bangazon_cli.Managers
         */
         public void UpdateQuantity(Product product, int quanity)
         {
-            product.Quantity = quanity;
+            // update quantity in SQL
+            string SQLUpdate = $@"UPDATE `Product`
+            SET `Quantity` = '{product.Quantity = quanity}'
+            WHERE `Id` = 1";
+
+            try
+            {
+                _db.Update(SQLUpdate);
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine("Update Product Error", err.Message);
+            }
         }
 
         // gets one product. Parameters: id
         public Product GetSingleProduct(int id)
         {
-            return this.GetProducts().Where(p => p.Id == id).Single();
+            return GetProducts().Where(p => p.Id == id).Single();
         }
 
     }
