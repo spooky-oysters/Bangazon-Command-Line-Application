@@ -83,7 +83,7 @@ namespace bangazon_cli.Managers
             _db.Query($@"SELECT * FROM Product;",
             (SqliteDataReader reader) =>
                 {
-                    while (reader.Read())
+                    while (reader.Read ())
                     {
                         // new product object
                         Product product = new Product();
@@ -109,11 +109,13 @@ namespace bangazon_cli.Managers
         */
         public void UpdateName(Product product, string name)
         {
-        
+            
             //update name in SQL
             string SQLUpdate = $@"UPDATE `Product`
             SET `Name` = '{product.Name = name}'
             WHERE `ProductId` = 1";
+
+            _db.Update(SQLUpdate);
 
             // try 
             // {
