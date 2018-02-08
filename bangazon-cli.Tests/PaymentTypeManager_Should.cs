@@ -67,7 +67,10 @@ namespace bangazon_cli.Tests
             _paymentType2.AccountNumber = 0987654321;
             _paymentTypeManager.AddNewPaymentType(_paymentType2, 10);
 
+            // Requests all the payments associated with a customer
             var customerPayments = _paymentTypeManager.GetPaymentTypesByCustomerId(10);
+
+            // Checks that both payment types exist in the return list
             Assert.Contains(_paymentType, customerPayments);
             Assert.Contains(_paymentType2, customerPayments);
         }
