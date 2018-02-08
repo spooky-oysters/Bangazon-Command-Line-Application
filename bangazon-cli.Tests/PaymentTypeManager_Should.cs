@@ -14,91 +14,76 @@ namespace bangazon_cli.Tests
     {
         /* 
             Variables that will be initialized in the constructor
-            
-            !TODO: Refactor to grab active customer from Program.ActiveCustomer variable once created
         */
-        private List<PaymentType> _payments;
-        private ActiveCustomerManager _activeCustomerManager;
-        private Customer _customer;
         private PaymentType _paymentType;
-        private DatabaseInterface _db;
-        private CustomerManager _customerManager;
         private PaymentTypeManager _paymentTypeManager;
 
         public PaymentTypeManager_Should()
         {
-            _payments = new List<PaymentType>();
-
-            _paymentTypeManager = new PaymentTypeManager(_db);
-
-            // Initializing the _activeCustomerManager and passing in an instance of _customerManager to the ctor
-            _activeCustomerManager = new ActiveCustomerManager(_customerManager);
+            // Initializing a payment manager
+            _paymentTypeManager = new PaymentTypeManager();
 
             // Initializing a payment type 
             _paymentType = new PaymentType();
-
-            // Initializing a mock customer for testing purposes with only an ID
-            _customer = new Customer();
-            _customer.Id = 1;
         }
 
         [Fact]
         public void AddNewPaymentType_Should()
         {
             // Adds properties to the _paymentType instance
-            _paymentType.Id = 1;
-            _paymentType.CustomerId = 10;
+            _paymentType.Id = 0;
             _paymentType.Type = "Mastercard";
             _paymentType.AccountNumber = 12345678910;
 
-            // Adds the _paymentType to the _payments list
-            _payments.Add(_paymentType);
+            // Adds the _paymentType to the _paymentList in the paymentTypeManager, passes in a customerId
+            _paymentTypeManager.AddNewPaymentType(_paymentType, 10);
 
             // Asserts the properties exist
-            Assert.Equal(_paymentType.Id, 1);
-            Assert.Equal(_paymentType.CustomerId, 10);
-            Assert.Equal(_paymentType.Type, "Mastercard");
-            Assert.Equal(_paymentType.AccountNumber, 12345678910);
+            var payment = _paymentTypeManager.GetSinglePaymentType(0);
+            Assert.Equal(payment.Id, 0);
+            Assert.Equal(payment.CustomerId, 10);
+            Assert.Equal(payment.Type, "Mastercard");
+            Assert.Equal(payment.AccountNumber, 12345678910);
 
-            // Asserts the _paymentType exists in the list
-            Assert.Contains(_paymentType, _payments);
+            // Asserts the _paymentType exists in the _payments list
+            Assert.Contains(_paymentType, _paymentTypeManager.GetPaymentTypesByCustomerId(10));
         }
 
         [Fact]
-        public void AddCustomerIdToPaymentType_Should()
+        public void GetPaymentTypesByCustomerId_Should()
         {
-            // Assigns the _customer.Id instance to _paymentType
-            _paymentType.CustomerId = _customer.Id;
-            
-            // Asserts that the _customer.Id is equal to the instance of _paymentType
-            Assert.Equal(_paymentType.CustomerId, 1);
-            Assert.Equal(_paymentType.CustomerId, _customer.Id);
-        }
+            // Adds properties to the _paymentType instance
+            _paymentType.Id = 0;
+            _paymentType.Type = "Mastercard";
+            _paymentType.AccountNumber = 12345678910;
 
-        [Fact]
-        public void AddPaymentTypeToCustomer_Should()
-        {
-            // Requests active customer with the ID of 1, returns the requested customer instance 
-            var customer = _activeCustomerManager.SetActiveCustomer(1);
+            // Adds the _paymentType to the _paymentList in the paymentTypeManager, passes in a customerId
+            _paymentTypeManager.AddNewPaymentType(_paymentType, 10);
 
-            // Assigns the returned customer ID to the _paymentType.CustomerId
-            _paymentType.CustomerId = customer.Id;
+            // Adding a second payment type to the list
+            var _paymentType2 = new PaymentType();
+            _paymentType2.Id = 1;
+            _paymentType2.Type = "Visa";
+            _paymentType2.AccountNumber = 0987654321;
+            _paymentTypeManager.AddNewPaymentType(_paymentType2, 10);
 
-            // Asserts that the _customer.Id is equal to the instance of _paymentType
-            Assert.Equal(_paymentType.CustomerId, 1);
-            Assert.Equal(_paymentType.CustomerId, customer.Id);
+            var customerPayments = _paymentTypeManager.GetPaymentTypesByCustomerId(10);
+            Assert.Contains(_paymentType, customerPayments);
+            Assert.Contains(_paymentType2, customerPayments);
         }
 
         [Fact]
         public void GetSinglePaymentType_Should()
         {
-            
+            _paymentType.Id = 0;
+            _paymentTypeManager.AddNewPaymentType(_paymentType, 10);
+
+            // Pulls a single payment based off a paymentType.Id
+            var payment = _paymentTypeManager.GetSinglePaymentType(0);
+
+            // Asserts the _paymentType.Id instance and the single payment.Id are equal
+            Assert.Equal(_paymentType.Id, payment.Id);
         }
 
-        [Fact]
-        public void AddPaymentTypeToActiveCustomer_Should()
-        {
-            
-        }
     }
 }

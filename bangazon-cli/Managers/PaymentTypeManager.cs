@@ -11,23 +11,29 @@ namespace bangazon_cli.Managers
 {
     public class PaymentTypeManager
     {
-        private List<PaymentType> _payments;
+        private List<PaymentType> _paymentsList;
+        private PaymentType _payment;
 
         public PaymentTypeManager()
         {
-            _payments = new List<PaymentType>();
+            _paymentsList = new List<PaymentType>();
+            _payment = new PaymentType();
         }
 
         public void AddNewPaymentType(PaymentType paymentType, int custId)
         {
-            paymentType.Id = 1;
             paymentType.CustomerId = custId;
-            _payments.Add(paymentType);
+            _paymentsList.Add(paymentType);
+        }
+
+        public List<PaymentType> GetPaymentTypesByCustomerId(int custId)
+        {
+            return _paymentsList.Where(p => p.CustomerId == custId).ToList();
         }
 
         public PaymentType GetSinglePaymentType(int paymentId)
         {
-            return _payments.Where(p => p.Id == paymentId).Single();
+            return _paymentsList.Where(p => p.Id == paymentId).Single();
         }
     }
 }
