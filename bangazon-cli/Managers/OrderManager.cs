@@ -18,8 +18,6 @@ namespace bangazon_cli.Managers
         private List<Order> _orders = new List<Order>();
         private DatabaseInterface _db;
         
-        // dictionary to act as joiner table for Product and Order
-        private Dictionary<int, int> _orderProduct = new Dictionary<int, int>();
         
         // injecting databaseinterface dependency
         public OrderManager(DatabaseInterface db)
@@ -65,7 +63,7 @@ namespace bangazon_cli.Managers
             Parameters: 
                 - Order object
         */        
-        public void AddOrder(Order order) {
+        public int AddOrder(Order order) {
             string SQLInsert = $@"INSERT INTO `Order`
             VALUES (
                 null,
@@ -74,21 +72,24 @@ namespace bangazon_cli.Managers
                 null
             );";
 
+            int orderId = 0;
             try {
-                _db.Insert(SQLInsert);
+                orderId = _db.Insert(SQLInsert);
+                order.Id = orderId;
             } catch (Exception err) {
                 Console.WriteLine("Add Order Error", err.Message);
             }
+            return orderId;
         }
 
         // returns customer's unpaid order from the database
-        public Order GetUnpaidOrder(int id) {
+        public Order GetUnpaidOrder(int customerId) {
             // initialize a new order to hold the return from db
-            Order order = new Order();
+            Order order = new Order(customerId);
             // query the database for a matching order
             _db.Query($@"SELECT * 
                         FROM `Order` o
-                        WHERE o.CustomerId = {id}
+                        WHERE o.CustomerId = {customerId}
                         AND o.PaymentTypeId IS NULL;
                         ",
                         (SqliteDataReader reader) =>
