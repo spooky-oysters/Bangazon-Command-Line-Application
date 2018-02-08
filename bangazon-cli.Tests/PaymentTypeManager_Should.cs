@@ -7,6 +7,8 @@ namespace bangazon_cli.Tests
     /*
         Author: Dre Randaci
         References: Ticket #3 - Add a payment type to an active customer
+
+        !TODO: Refactor and remove hardcoded ID values
     */
     public class PaymentTypeManager_Should
     {
