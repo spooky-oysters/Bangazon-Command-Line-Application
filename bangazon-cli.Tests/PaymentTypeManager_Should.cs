@@ -34,9 +34,11 @@ namespace bangazon_cli.Tests
         [Fact]
         public void AddNewPaymentType_Should()
         {
+            // Variable initializations
             _paymentType1 = new PaymentType();
             _paymentTypeManager = new PaymentTypeManager(_db);
 
+            // Add a test customer to get the returned ID
             int custId = _custManager.AddCustomer(_testCustomer);
 
             // Adds properties to the _paymentType instance
@@ -57,8 +59,11 @@ namespace bangazon_cli.Tests
         [Fact]
         public void GetPaymentTypesByCustomerId_Should()
         {
+            // Variable initializations
             var _paymentType1 = new PaymentType();
             _paymentTypeManager = new PaymentTypeManager(_db);
+
+            // Add a test customer to get the returned ID
             int custId = _custManager.AddCustomer(_testCustomer);
 
             // Adds properties to the _paymentType instance
@@ -86,8 +91,11 @@ namespace bangazon_cli.Tests
         [Fact]
         public void GetSinglePaymentType_Should()
         {
+            // Variable initializations
             _paymentType1 = new PaymentType();
             _paymentTypeManager = new PaymentTypeManager(_db);
+
+            // Add a test customer to get the returned ID
             int custId = _custManager.AddCustomer(_testCustomer);
 
             _paymentType1.Type = "Mastercard";
@@ -101,6 +109,7 @@ namespace bangazon_cli.Tests
             Assert.Equal(paymentId, payment.Id);
         }
 
+        // Clears the database after the test suite runs
         [Fact]
         public void Dispose()
         {
