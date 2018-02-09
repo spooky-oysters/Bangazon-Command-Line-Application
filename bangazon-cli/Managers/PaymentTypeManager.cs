@@ -87,7 +87,7 @@ namespace bangazon_cli.Managers
                         paymentType.Id = Convert.ToInt32(reader["Id"]);
                         paymentType.CustomerId = Convert.ToInt32(reader["CustomerId"]);
                         paymentType.Type = Convert.ToString(reader["Type"]);
-                        paymentType.AccountNumber = Convert.ToDouble(reader["AccountNumber"]);
+                        paymentType.AccountNumber = Convert.ToInt64(reader["AccountNumber"]);
 
                         // add it to collection
                         _paymentTypesList.Add(paymentType);
@@ -110,7 +110,7 @@ namespace bangazon_cli.Managers
                         paymentType.Id = Convert.ToInt32(reader["Id"]);
                         paymentType.CustomerId = Convert.ToInt32(reader["CustomerId"]);
                         paymentType.Type = Convert.ToString(reader["Type"]);
-                        paymentType.AccountNumber = Convert.ToDouble(reader["AccountNumber"]);
+                        paymentType.AccountNumber = Convert.ToInt64(reader["AccountNumber"]);
                     }
                 });
             return paymentType;

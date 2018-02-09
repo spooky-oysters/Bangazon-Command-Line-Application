@@ -45,7 +45,7 @@ namespace bangazon_cli.Menus
             {
                 Console.WriteLine("Enter account number");
                 Console.Write("> ");
-                _paymentType.AccountNumber = Convert.ToInt32(Console.ReadLine());
+                _paymentType.AccountNumber = Convert.ToInt64(Console.ReadLine());
             } while (_paymentType.AccountNumber < 0);
 
             // Adds the payment type to the database, takes the active customer ID, returns the added payment type ID
