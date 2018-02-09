@@ -15,8 +15,9 @@ namespace bangazon_cli.Managers.Tests
         private Product _product;
         private DatabaseInterface _db;
         private string _dbPath;
-        private ProductManager _productManager;
         private CustomerManager _customerManager;
+        private ProductManager _productManager;
+        private OrderManager _orderManager;
         private Customer _customer;
 
         // instatiate the test
@@ -24,8 +25,10 @@ namespace bangazon_cli.Managers.Tests
         {
             string testPath = System.Environment.GetEnvironmentVariable("BANGAZON_CLI_APP_DB_TEST");
             _db = new DatabaseInterface(testPath);
-            _productManager = new ProductManager(_db);
+            // initialize managers to create db tables and use later in tests
             _customerManager = new CustomerManager(_db);
+            _productManager = new ProductManager(_db);
+            _orderManager = new OrderManager(_db);
 
             // create customer
             _customer = new Customer();

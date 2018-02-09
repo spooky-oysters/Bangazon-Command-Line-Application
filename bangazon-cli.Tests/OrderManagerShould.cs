@@ -31,6 +31,11 @@ namespace bangazon_cli.Managers.Tests
             string testPath = System.Environment.GetEnvironmentVariable("BANGAZON_CLI_APP_DB_TEST");
             _db = new DatabaseInterface(testPath);
 
+            // initialize managers to create db tables and use later in tests
+            _orderManager = new OrderManager(_db);
+            _productManager = new ProductManager(_db);
+            _customerManager = new CustomerManager(_db);
+            
             // create a new customer instance
             _customer = new Customer();
             // properties added to new customer
@@ -42,15 +47,9 @@ namespace bangazon_cli.Managers.Tests
             _customer.PostalCode = "37206";
             _customer.PhoneNumber = "8018959001";
             
-            // create a new orderManager instance
-            _orderManager = new OrderManager(_db);
-            // create a new productManager instance
-            _productManager = new ProductManager(_db);
-            // create a new customerManager instance
-            _customerManager = new CustomerManager(_db);
             // create a new order instance
-            _testOrder = new Order(1);
-            _testOrder.CustomerId = _customer.Id;
+            _testOrder = new Order();
+            // _testOrder.CustomerId = _customer.Id;
             // create a new product instance
             _testProduct = new Product()
             {
@@ -65,13 +64,18 @@ namespace bangazon_cli.Managers.Tests
         [Fact]
         public void AddOrder()
         {
+            // add customer to DB and get id
+            int CustomerId = _customerManager.AddCustomer(_customer);
+            // add the customerId to _testOrder
+            _testOrder.CustomerId = CustomerId;
+            
             // add _testOrder to db
             int orderId = _orderManager.AddOrder(_testOrder);
             // check if the fields all match between the order sent to the db and the order retrieved from the db
-            Assert.Equal(_orderManager.GetUnpaidOrder(1).Id, orderId);
-            Assert.Equal(_orderManager.GetUnpaidOrder(1).CustomerId, _testOrder.CustomerId);
-            Assert.Equal(_orderManager.GetUnpaidOrder(1).CompletedDate, _testOrder.CompletedDate);
-            Assert.Equal(_orderManager.GetUnpaidOrder(1).PaymentTypeId, _testOrder.PaymentTypeId);
+            Assert.Equal(_orderManager.GetUnpaidOrder(CustomerId).Id, orderId);
+            Assert.Equal(_orderManager.GetUnpaidOrder(CustomerId).CustomerId, CustomerId);
+            Assert.Equal(_orderManager.GetUnpaidOrder(CustomerId).CompletedDate, _testOrder.CompletedDate);
+            Assert.Equal(_orderManager.GetUnpaidOrder(CustomerId).PaymentTypeId, _testOrder.PaymentTypeId);
         }
 
         [Fact]

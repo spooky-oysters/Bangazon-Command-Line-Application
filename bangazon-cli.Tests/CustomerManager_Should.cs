@@ -14,12 +14,18 @@ namespace bangazon_cli.Managers.Tests
     public class CustomerManager_Should
     {
         private DatabaseInterface _db;
-        
+        private CustomerManager _customerManager;
+        private ProductManager _productManager;
+        private OrderManager _orderManager;
         // Instantiate the Test
         public CustomerManager_Should()
         {
             string testPath = System.Environment.GetEnvironmentVariable("BANGAZON_CLI_APP_DB_TEST");
             _db = new DatabaseInterface(testPath);
+            // initialize managers to create db tables and use later in tests
+            _customerManager = new CustomerManager(_db);
+            _productManager = new ProductManager(_db);
+            _orderManager = new OrderManager(_db);
         }
         
         [Fact]
@@ -34,21 +40,19 @@ namespace bangazon_cli.Managers.Tests
             customer.PostalCode = "POSTALCODE";
             customer.PhoneNumber = "PHONENUMBER";
             
-            // instantiate the manager
-            CustomerManager manager = new CustomerManager(_db);
             
             // capture the existing record count. The test will use this
             // to determine if the add method increased the number of records
-            int initialRecordCount = manager.GetCustomers().Count();
+            int initialRecordCount = _customerManager.GetCustomers().Count();
             
             // assign the id to the customer object using AddCustomer
-            customer.Id = manager.AddCustomer(customer);
+            customer.Id = _customerManager.AddCustomer(customer);
 
             // get the customer from the manager
-            Customer storedCustomer = manager.GetSingleCustomer(customer.Id);
+            Customer storedCustomer = _customerManager.GetSingleCustomer(customer.Id);
             
             // There are customers in the list
-            Assert.True(manager.GetCustomers().Count() > initialRecordCount);
+            Assert.True(_customerManager.GetCustomers().Count() > initialRecordCount);
 
             // The customer created by the test is in the list
             Assert.Equal(customer.Id, storedCustomer.Id);
@@ -67,9 +71,7 @@ namespace bangazon_cli.Managers.Tests
             customer.PostalCode = "POSTALCODE";
             customer.PhoneNumber = "PHONENUMBER";
 
-            CustomerManager manager = new CustomerManager(_db);
-
-            manager.AddCustomer(customer);
+            _customerManager.AddCustomer(customer);
             
             // The customer Id should be greater than one
             Assert.True(customer.Id > 0);
