@@ -75,7 +75,7 @@ namespace bangazon_cli.Menus
 
             if (id > 0) {
                 Console.WriteLine("*** SUCCESS                ***");
-                Console.WriteLine("*** PRESS ENTER TO CONTINE ***");
+                Console.WriteLine("*** PRESS ENTER TO CONTINUE ***");
                 Console.ReadLine();
             }
 
