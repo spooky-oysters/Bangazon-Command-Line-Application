@@ -9,7 +9,7 @@ namespace bangazon_cli.Menus
         Parameters: 
             - payment type
             - payment type manager
-            - customer id
+            - active customer ID and name
     */
     public class PaymentTypeMenu
     {
@@ -18,6 +18,7 @@ namespace bangazon_cli.Menus
         private int _activeCustormerId;
         private string _activeCustomerName;
 
+        // Class constructor. Takes 
         public PaymentTypeMenu(PaymentType paymentType, PaymentTypeManager paymentTypeManager, Customer activeCustomer)
         {
             _activeCustormerId = activeCustomer.Id;
@@ -26,8 +27,12 @@ namespace bangazon_cli.Menus
             _paymentTypeManager = paymentTypeManager;
         }
 
+        /*
+            Summary: Displays the add payment type menu to the user
+        */
         public void Show()
         {
+            // Both fields must contain value
             do
             {
                 Console.Clear();
@@ -43,21 +48,16 @@ namespace bangazon_cli.Menus
                 _paymentType.AccountNumber = Convert.ToInt32(Console.ReadLine());
             } while (_paymentType.AccountNumber < 0);
 
+            // Adds the payment type to the database, takes the active customer ID, returns the added payment type ID
             int id = _paymentTypeManager.AddNewPaymentType(_paymentType, _activeCustormerId);
 
+            // Checks if the payment was added successfully. 0 == failure 
             if (id > 0)
             {
-                Console.WriteLine($"*** {_paymentType.Type} PAYMENT TYPE ADDED FOR {_activeCustomerName}               ***");
+                Console.WriteLine($"*** {_paymentType.Type} PAYMENT TYPE ADDED FOR {_activeCustomerName} ***");
                 Console.WriteLine("*** PRESS ENTER TO CONTINUE ***");
                 Console.ReadLine();
             }
-
         }
-
-
-
-
-
-
     }
 }
