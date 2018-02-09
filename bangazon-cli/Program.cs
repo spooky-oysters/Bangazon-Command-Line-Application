@@ -19,6 +19,7 @@ namespace bangazon_cli
             Customer activeCustomer = new Customer();
             ProductManager productManager = new ProductManager(db);
             OrderManager orderManager = new OrderManager(db);
+            PaymentTypeManager paymentTypeManager = new PaymentTypeManager(db);
 
             int choice;
             // When the user enters the system show the main menu
@@ -42,6 +43,16 @@ namespace bangazon_cli
                         ActiveCustomerMenu activeCustomerMenu = new ActiveCustomerMenu(customerManager);
                         int customerId = activeCustomerMenu.Show();
                         activeCustomer = activeCustomerManager.SetActiveCustomer(customerId);
+                        break;
+                    }
+
+                    /*
+                        Add a new payment type for a customer
+                     */
+
+                    case 3: {
+                        PaymentTypeMenu addPaymentTypeMenu = new PaymentTypeMenu(new PaymentType(), paymentTypeManager, activeCustomer);
+                        addPaymentTypeMenu.Show();
                         break;
                     }
 
