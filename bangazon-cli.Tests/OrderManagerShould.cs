@@ -49,7 +49,6 @@ namespace bangazon_cli.Managers.Tests
             
             // create a new order instance
             _testOrder = new Order();
-            // _testOrder.CustomerId = _customer.Id;
             // create a new product instance
             _testProduct = new Product()
             {

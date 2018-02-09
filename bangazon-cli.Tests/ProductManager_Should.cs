@@ -54,9 +54,6 @@ namespace bangazon_cli.Managers.Tests
             product.Description = "Kite description";
             product.Quantity = 5;
 
-            // manager new instance
-            // ProductManager productManager = new ProductManager(_db);
-
             // capture existing record count. Test will use this to determine if the add method increased the number of records
             int initialRecordCount = _productManager.GetProducts().Count();
 
@@ -99,9 +96,6 @@ namespace bangazon_cli.Managers.Tests
             product3.Price = 64.00;
             product3.Description = "product3 description";
             product3.Quantity = 9;
-
-            // manager new instance
-            // ProductManager productManager = new ProductManager(_db);
 
             // capture existing record count. Test will use this to determine if the add method increased the number of records
             int initialRecordCount = _productManager.GetProducts().Count();
@@ -156,8 +150,7 @@ namespace bangazon_cli.Managers.Tests
             _product.Description = "THIS IS UPDATED";
             _product.Quantity = 3;
 
-            // manager instance
-            // ProductManager productManager = new ProductManager(_db);
+            // add product to database and get id returned
             int id = _productManager.AddProduct(_product);
 
             // get product from manager
@@ -182,8 +175,7 @@ namespace bangazon_cli.Managers.Tests
             _product.Quantity = 3;
             _product.Description = "Kite description";
 
-            // new product manager instance 
-            // ProductManager productManager = new ProductManager(_db);
+            // add product to database and get id returned
             int id = _productManager.AddProduct(_product);
 
             // select one product to update based on id
@@ -211,8 +203,8 @@ namespace bangazon_cli.Managers.Tests
             _product.Price = 45.00;
             _product.Quantity = 3;
 
-            // new product manager instance 
-            // ProductManager productManager = new ProductManager(_db);
+        
+            // add product to database and get id returned
             int id = _productManager.AddProduct(_product);
 
             // select one product to update based on id
@@ -239,8 +231,7 @@ namespace bangazon_cli.Managers.Tests
             _product.CustomerId = CustomerId;
             _product.Quantity = 3;
 
-            // new product manager instance 
-            // ProductManager productManager = new ProductManager(_db);
+            // add product to database and get id returned
             int id = _productManager.AddProduct(_product);
 
             // select one product to update based on id
@@ -267,8 +258,7 @@ namespace bangazon_cli.Managers.Tests
             _product.CustomerId = CustomerId;
             _product.Price = 45.00;
 
-            // new product manager instance 
-            // ProductManager productManager = new ProductManager(_db);
+            // add product to database and get id returned
             int id = _productManager.AddProduct(_product);
 
             // select one product to update based on id
