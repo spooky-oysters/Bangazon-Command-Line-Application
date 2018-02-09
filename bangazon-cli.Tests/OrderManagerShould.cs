@@ -20,6 +20,8 @@ namespace bangazon_cli.Managers.Tests
         private Customer _customer;
         private readonly OrderManager _orderManager;
         private readonly ProductManager _productManager;
+        private readonly CustomerManager _customerManager;
+        private readonly PaymentTypeManager _paymentTypeManager;
         private Order _testOrder;
         private Product _testProduct;
 
@@ -30,6 +32,12 @@ namespace bangazon_cli.Managers.Tests
             string testPath = System.Environment.GetEnvironmentVariable("BANGAZON_CLI_APP_DB_TEST");
             _db = new DatabaseInterface(testPath);
 
+            // initialize managers to create db tables and use later in tests
+            _orderManager = new OrderManager(_db);
+            _productManager = new ProductManager(_db);
+            _customerManager = new CustomerManager(_db);
+            _paymentTypeManager = new PaymentTypeManager(_db);
+            
             // create a new customer instance
             _customer = new Customer();
             // properties added to new customer
@@ -41,17 +49,12 @@ namespace bangazon_cli.Managers.Tests
             _customer.PostalCode = "37206";
             _customer.PhoneNumber = "8018959001";
             
-            // create a new orderManager instance
-            _orderManager = new OrderManager(_db);
-            // create a new productManager instance
-            _productManager = new ProductManager(_db);
             // create a new order instance
-            _testOrder = new Order(1);
-            _testOrder.CustomerId = 1;
+            _testOrder = new Order();
             // create a new product instance
             _testProduct = new Product()
             {
-                CustomerId = 1,
+                CustomerId = _customer.Id,
                 Name = "Bicycle",
                 Price = 55.25,
                 Description = "Awesome bike",
@@ -62,18 +65,33 @@ namespace bangazon_cli.Managers.Tests
         [Fact]
         public void AddOrder()
         {
+            // add customer to DB and get id
+            int CustomerId = _customerManager.AddCustomer(_customer);
+            // add the customerId to _testOrder
+            _testOrder.CustomerId = CustomerId;
+            
             // add _testOrder to db
             int orderId = _orderManager.AddOrder(_testOrder);
+            
+            // retrieve the order
+            Order retrievedOrder = _orderManager.GetUnpaidOrder(CustomerId);   
             // check if the fields all match between the order sent to the db and the order retrieved from the db
-            Assert.Equal(_orderManager.GetUnpaidOrder(1).Id, orderId);
-            Assert.Equal(_orderManager.GetUnpaidOrder(1).CustomerId, _testOrder.CustomerId);
-            Assert.Equal(_orderManager.GetUnpaidOrder(1).CompletedDate, _testOrder.CompletedDate);
-            Assert.Equal(_orderManager.GetUnpaidOrder(1).PaymentTypeId, _testOrder.PaymentTypeId);
+            Assert.Equal(retrievedOrder.Id, orderId);
+            Assert.Equal(retrievedOrder.CustomerId, CustomerId);
+            Assert.Equal(retrievedOrder.CompletedDate, _testOrder.CompletedDate);
+            Assert.Equal(retrievedOrder.PaymentTypeId, _testOrder.PaymentTypeId);
         }
 
         [Fact]
         public void AddProductToOrder()
         {
+            // add customer to DB and get id
+            int CustomerId = _customerManager.AddCustomer(_customer);
+            // add the customerId to _testOrder
+            _testOrder.CustomerId = CustomerId;
+            // add the customerId to _testProduct
+            _testProduct.CustomerId = CustomerId;
+
             // add a test order
             int orderId = _orderManager.AddOrder(_testOrder);
             // add a test product
@@ -82,9 +100,6 @@ namespace bangazon_cli.Managers.Tests
             // add product to order by creating a record in the OrderProduct join table
             _orderManager.AddProductToOrder(orderId, productId);
 
-            // get the Active Users order by passing in active userId
-            // Order currentOrder = _orderManager.GetProductFromOrder(orderId);
-            
             // Retrieve the order that was just added to db
             Product returnedProduct = _orderManager.GetSingleProductFromOrder(orderId, productId);
             // assert that the product stored on the order is the same product that we sent in. 
@@ -95,11 +110,10 @@ namespace bangazon_cli.Managers.Tests
             Assert.Equal(returnedProduct.Description, "Awesome bike");
         }
 
+        [Fact]
         public void Dispose()
         {
-            _db.Update("DELETE FROM OrderProduct");
-            _db.Update("DELETE FROM Product");
-            _db.Update("DELETE FROM `Order`");
+            _db.DeleteTables();
         }
     }
 }
