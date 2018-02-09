@@ -20,6 +20,7 @@ namespace bangazon_cli.Managers.Tests
         private Customer _customer;
         private readonly OrderManager _orderManager;
         private readonly ProductManager _productManager;
+        private readonly CustomerManager _customerManager;
         private Order _testOrder;
         private Product _testProduct;
 
@@ -45,13 +46,15 @@ namespace bangazon_cli.Managers.Tests
             _orderManager = new OrderManager(_db);
             // create a new productManager instance
             _productManager = new ProductManager(_db);
+            // create a new customerManager instance
+            _customerManager = new CustomerManager(_db);
             // create a new order instance
             _testOrder = new Order(1);
-            _testOrder.CustomerId = 1;
+            _testOrder.CustomerId = _customer.Id;
             // create a new product instance
             _testProduct = new Product()
             {
-                CustomerId = 1,
+                CustomerId = _customer.Id,
                 Name = "Bicycle",
                 Price = 55.25,
                 Description = "Awesome bike",
@@ -74,6 +77,13 @@ namespace bangazon_cli.Managers.Tests
         [Fact]
         public void AddProductToOrder()
         {
+            // add customer to DB and get id
+            int CustomerId = _customerManager.AddCustomer(_customer);
+            // add the customerId to _testOrder
+            _testOrder.CustomerId = CustomerId;
+            // add the customerId to _testProduct
+            _testProduct.CustomerId = CustomerId;
+
             // add a test order
             int orderId = _orderManager.AddOrder(_testOrder);
             // add a test product
@@ -82,9 +92,6 @@ namespace bangazon_cli.Managers.Tests
             // add product to order by creating a record in the OrderProduct join table
             _orderManager.AddProductToOrder(orderId, productId);
 
-            // get the Active Users order by passing in active userId
-            // Order currentOrder = _orderManager.GetProductFromOrder(orderId);
-            
             // Retrieve the order that was just added to db
             Product returnedProduct = _orderManager.GetSingleProductFromOrder(orderId, productId);
             // assert that the product stored on the order is the same product that we sent in. 

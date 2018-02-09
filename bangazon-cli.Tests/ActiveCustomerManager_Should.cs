@@ -33,6 +33,12 @@ namespace bangazon_cli.Actions.Tests
             // Initializing a mock customer for testing purposes
             _customer = new Models.Customer();
             _customer.Id = 1;
+            _customer.Name = "Dre Man";
+            _customer.StreetAddress = "123 Somewhere";
+            _customer.City = "Nashville";
+            _customer.State = "TN";
+            _customer.PostalCode = "323232";
+            _customer.PhoneNumber = "9876543";
         }
 
         [Fact]
