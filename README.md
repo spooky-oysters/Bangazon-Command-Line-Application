@@ -11,7 +11,8 @@ The Bangazon CLA provides Bangazon employees access to information about Bangazo
 ## Installation:
 
 1. Clone or download the repo
-1. Configure an environment variable for the database named: ```BANGAZON_CLI_APP_DB```
+1. Configure an environment variable for the production/development database named: ```BANGAZON_CLI_APP_DB```
+1. Configure an environment variable for the test database named: ```BANGAZON_CLI_APP_DB_TEST```
 1. In the terminal, navigate to the directory with the repo. Begin by installing the required packages:
 
  ```sh
@@ -56,6 +57,31 @@ public class ExampleClass
         ); 
 }
 ``` 
+### Add Customers
+Users can enter individual customer into the system using the "Create a customer account" option. The system will guide them through the steps, one value at a time:
+
+```sh
+Enter customer name
+> Beatric Quimby
+Enter street address
+> 1720 Klickitat St.
+Enter customer city
+> Portland 
+Enter customer state
+> OR
+Enter customer postal code
+> 97212
+Enter customer phone number
+> 855-555-5000
+```
 
 ### Active Customer 
 Every user of the Bangazon-Command-Line-Application should be able to view, select, and make a customer active from a list of all customers in the database. When a user enters a key selection for a given customer on the selection menu, then access to that customer's profile and associated data will be available to create, update, and delete.
+
+After, navigating to the active customer, the user will be prompted to select an active user:
+
+```sh
+Which customer will be active?
+1. Henry Huggins
+2. Ramona Quimby
+```
