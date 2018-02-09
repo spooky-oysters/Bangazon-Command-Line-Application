@@ -207,7 +207,9 @@ namespace bangazon_cli.Managers
             _db.Query($@"SELECT Count(o.Id) as ordercount 
                         FROM `Order` o, OrderProduct op
                         WHERE o.Id = op.OrderId
+                        AND op.ProductId = {productId}
                         AND o.CompletedDate is null;",
+                        
             (SqliteDataReader reader) =>
                 {
                     while (reader.Read())
