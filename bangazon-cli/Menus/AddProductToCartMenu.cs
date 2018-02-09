@@ -69,7 +69,7 @@ namespace bangazon_cli.Menus
                     Console.WriteLine("");
                     int.TryParse(enteredKey.KeyChar.ToString(), out output);
 
-                    if (output != menuNum + 1) {
+                    if (output != menuNum) {
                     // find the selected product from the list
                     Product selectedProduct = AllProducts.ElementAt(output - 1);
 
@@ -89,7 +89,7 @@ namespace bangazon_cli.Menus
                     Console.ReadLine();
                     }
                     
-                } while (output != menuNum+1);
+                } while (output != menuNum);
             } else {
                 Console.WriteLine("*** SELECT AN ACTIVE CUSTOMER FIRST! ***");
                 Console.WriteLine("*** PRESS ENTER TO CONTINUE ***");
