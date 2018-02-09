@@ -80,7 +80,6 @@ namespace bangazon_cli.Menus
                     if (customerOrder.Id < 1) {
                         Order newOrder = new Order(_customer.Id);
                         customerOrder.Id = _orderManager.AddOrder(newOrder);
-                        Console.WriteLine("customerOrderId", customerOrder.Id);
                     }
 
                     // create a record in the OrderProduct table for the relationship of the selected product and the customer's orderId
