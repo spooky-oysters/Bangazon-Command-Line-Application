@@ -95,11 +95,10 @@ namespace bangazon_cli.Managers.Tests
             Assert.Equal(returnedProduct.Description, "Awesome bike");
         }
 
+        [Fact]
         public void Dispose()
         {
-            _db.Update("DELETE FROM OrderProduct");
-            _db.Update("DELETE FROM Product");
-            _db.Update("DELETE FROM `Order`");
+            _db.DeleteTables();
         }
     }
 }

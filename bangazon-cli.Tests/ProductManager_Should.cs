@@ -15,12 +15,14 @@ namespace bangazon_cli.Managers.Tests
         private Product _product;
         private DatabaseInterface _db;
         private string _dbPath;
+        private ProductManager productManager;
 
         // instatiate the test
         public ProductManager_Should()
         {
             string testPath = System.Environment.GetEnvironmentVariable("BANGAZON_CLI_APP_DB_TEST");
             _db = new DatabaseInterface(testPath);
+            productManager = new ProductManager(_db);
         }
 
         [Fact]
@@ -35,7 +37,7 @@ namespace bangazon_cli.Managers.Tests
             product.Quantity = 5;
 
             // manager new instance
-            ProductManager productManager = new ProductManager(_db);
+            // ProductManager productManager = new ProductManager(_db);
 
             // capture existing record count. Test will use this to determine if the add method increased the number of records
             int initialRecordCount = productManager.GetProducts().Count();
@@ -79,7 +81,7 @@ namespace bangazon_cli.Managers.Tests
             product3.Quantity = 9;
 
             // manager new instance
-            ProductManager productManager = new ProductManager(_db);
+            // ProductManager productManager = new ProductManager(_db);
 
             // capture existing record count. Test will use this to determine if the add method increased the number of records
             int initialRecordCount = productManager.GetProducts().Count();
@@ -111,8 +113,6 @@ namespace bangazon_cli.Managers.Tests
             product.Description = "shirt description";
             product.Quantity = 48;
 
-            ProductManager productManager = new ProductManager(_db);
-
             productManager.AddProduct(product);
 
             // the product Id should be greater than one
@@ -131,7 +131,7 @@ namespace bangazon_cli.Managers.Tests
             _product.Quantity = 3;
 
             // manager instance
-            ProductManager productManager = new ProductManager(_db);
+            // ProductManager productManager = new ProductManager(_db);
             int id = productManager.AddProduct(_product);
 
             // get product from manager
@@ -154,7 +154,7 @@ namespace bangazon_cli.Managers.Tests
             _product.Description = "Kite description";
 
             // new product manager instance 
-            ProductManager productManager = new ProductManager(_db);
+            // ProductManager productManager = new ProductManager(_db);
             int id = productManager.AddProduct(_product);
 
             // select one product to update based on id
@@ -179,7 +179,7 @@ namespace bangazon_cli.Managers.Tests
             _product.Quantity = 3;
 
             // new product manager instance 
-            ProductManager productManager = new ProductManager(_db);
+            // ProductManager productManager = new ProductManager(_db);
             int id = productManager.AddProduct(_product);
 
             // select one product to update based on id
@@ -204,7 +204,7 @@ namespace bangazon_cli.Managers.Tests
             _product.Quantity = 3;
 
             // new product manager instance 
-            ProductManager productManager = new ProductManager(_db);
+            // ProductManager productManager = new ProductManager(_db);
             int id = productManager.AddProduct(_product);
 
             // select one product to update based on id
@@ -229,7 +229,7 @@ namespace bangazon_cli.Managers.Tests
             _product.Price = 45.00;
 
             // new product manager instance 
-            ProductManager productManager = new ProductManager(_db);
+            // ProductManager productManager = new ProductManager(_db);
             int id = productManager.AddProduct(_product);
 
             // select one product to update based on id
@@ -245,8 +245,7 @@ namespace bangazon_cli.Managers.Tests
         [Fact]
         public void Dispose()
         {
-            _db.Update("DELETE FROM OrderProduct");
-            _db.Update("DELETE FROM Product");
+            _db.DeleteTables();
         }
 
     }

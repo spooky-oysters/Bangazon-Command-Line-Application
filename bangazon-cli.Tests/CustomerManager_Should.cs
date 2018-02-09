@@ -76,5 +76,10 @@ namespace bangazon_cli.Managers.Tests
     
         }
         
+       [Fact]
+        public void Dispose()
+        {
+            _db.DeleteTables();
+        }
     }
 }
