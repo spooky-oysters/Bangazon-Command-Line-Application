@@ -16,10 +16,9 @@ namespace bangazon_cli.Models
     
         public List<Product> Products { get; set; }
     
-        // constructor for the Order class. Takes one parameter, customerId, and assigned it to CustomerId field.Pa
+        // constructor for the Order class. Takes one parameter, customerId, and assigned it to CustomerId field.
         public Order(int customerId) 
         {
-            this.Id = 0;
             this.CustomerId = customerId;
             this.PaymentTypeId = null;
             this.CompletedDate = null;
@@ -28,6 +27,8 @@ namespace bangazon_cli.Models
 
         // Constuctor function to have ability to initialize an order without any properties set
         public Order(){
+            this.PaymentTypeId = null;
+            this.CompletedDate = null;
             Products = new List<Product>();
         }
     }
