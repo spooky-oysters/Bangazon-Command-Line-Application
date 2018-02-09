@@ -97,6 +97,7 @@ namespace bangazon_cli
                 DELETE FROM OrderProduct;
                 DELETE FROM `Order`;
                 DELETE FROM Product;
+                DELETE FROM PaymentType;
                 DELETE FROM Customer;
                 ";
                 

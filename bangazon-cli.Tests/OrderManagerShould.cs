@@ -21,6 +21,7 @@ namespace bangazon_cli.Managers.Tests
         private readonly OrderManager _orderManager;
         private readonly ProductManager _productManager;
         private readonly CustomerManager _customerManager;
+        private readonly PaymentTypeManager _paymentTypeManager;
         private Order _testOrder;
         private Product _testProduct;
 
@@ -35,6 +36,7 @@ namespace bangazon_cli.Managers.Tests
             _orderManager = new OrderManager(_db);
             _productManager = new ProductManager(_db);
             _customerManager = new CustomerManager(_db);
+            _paymentTypeManager = new PaymentTypeManager(_db);
             
             // create a new customer instance
             _customer = new Customer();
@@ -102,7 +104,7 @@ namespace bangazon_cli.Managers.Tests
             Product returnedProduct = _orderManager.GetSingleProductFromOrder(orderId, productId);
             // assert that the product stored on the order is the same product that we sent in. 
             Assert.Equal(returnedProduct.Id, productId);
-            Assert.Equal(returnedProduct.Price, 55.25);
+            Assert.Equal(55.25, returnedProduct.Price);
             Assert.Equal(returnedProduct.Quantity, 1);
             Assert.Equal(returnedProduct.Name, "Bicycle");
             Assert.Equal(returnedProduct.Description, "Awesome bike");

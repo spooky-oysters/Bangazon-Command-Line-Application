@@ -17,6 +17,9 @@ namespace bangazon_cli.Managers.Tests
         private readonly CustomerManager _customerManager;
         private readonly ProductManager _productManager;
         private readonly OrderManager _orderManager;
+        private readonly PaymentTypeManager _paymentTypeManager;
+
+        
         // Instantiate the Test
         public CustomerManager_Should()
         {
@@ -26,6 +29,7 @@ namespace bangazon_cli.Managers.Tests
             _customerManager = new CustomerManager(_db);
             _productManager = new ProductManager(_db);
             _orderManager = new OrderManager(_db);
+            _paymentTypeManager = new PaymentTypeManager(_db);
         }
         
         [Fact]
