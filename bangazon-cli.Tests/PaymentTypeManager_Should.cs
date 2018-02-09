@@ -24,7 +24,7 @@ namespace bangazon_cli.Tests
         public PaymentTypeManager_Should()
         {
             string testPath = System.Environment.GetEnvironmentVariable("BANGAZON_CLI_APP_DB_TEST");
-            
+
             _db = new DatabaseInterface(testPath);
 
             _custManager = new CustomerManager(_db);
@@ -99,6 +99,14 @@ namespace bangazon_cli.Tests
 
             // Asserts the _paymentType.Id instance and the single payment.Id are equal
             Assert.Equal(paymentId, payment.Id);
+        }
+
+        [Fact]
+        public void Dispose()
+        {
+            _db.Update("DELETE FROM OrderProduct");
+            _db.Update("DELETE FROM `Order`");
+            _db.Update("DELETE FROM PaymentType");
         }
     }
 }
