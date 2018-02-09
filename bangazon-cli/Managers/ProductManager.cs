@@ -225,7 +225,11 @@ namespace bangazon_cli.Managers
         // gets one product. Parameters: id
         public Product GetSingleProduct(int id)
         {
-            return GetProducts().Where(p => p.Id == id).Single();
+            try {
+                return GetProducts().Where(p => p.Id == id).Single();
+            } catch {
+                return null;
+            }
         }
 
         public bool IsProductOnUnpaidOrder(int productId) {
@@ -246,6 +250,20 @@ namespace bangazon_cli.Managers
                 });
             
             return rowCount > 0;
+        }
+
+        public void DeleteProduct(int productId) {
+            // update description in SQL
+            string SQLUpdate = $@"DELETE FROM `Product`
+            WHERE id = {productId};";
+            try
+            {
+                _db.Update(SQLUpdate);
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine("There was an error with the delete statement", err.Message);
+            }
         }
 
     }

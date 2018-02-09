@@ -270,6 +270,45 @@ namespace bangazon_cli.Managers.Tests
 
         }
 
+        [Fact]
+        public void DeleteDatabaseRecord() {
+
+            Customer c = new Customer();
+            c.Name = "DELETE TEST";
+            c.StreetAddress = "DELETE ST.";
+            c.City = "Detroit";
+            c.State = "DLState";
+            c.PostalCode = "123456";
+            c.PhoneNumber = "615-555-5555";
+
+            CustomerManager customerManager = new CustomerManager(_db);
+            int cId = customerManager.AddCustomer(c);
+
+            Product product = new Product();
+            product.CustomerId = cId;
+            product.Name = "Kite";
+            product.Price = 37.00;
+            product.Description = "Kite description";
+            product.Quantity = 5;
+
+
+            // verify the add method worked
+            Assert.True(customerManager.GetSingleCustomer(cId).Id == cId);
+            
+            
+            ProductManager productManager = new ProductManager(_db);
+            int pId = productManager.AddProduct(product);
+
+            // verify the add method worked
+            Assert.True(productManager.GetSingleProduct(pId).Id == pId);
+
+            productManager.DeleteProduct(pId);
+
+            // Should return null
+            Assert.True(productManager.GetSingleProduct(pId)==null);
+
+        }
+
 
         [Fact]
         public void Dispose()

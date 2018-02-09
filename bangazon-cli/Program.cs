@@ -51,7 +51,7 @@ namespace bangazon_cli
                         The user cannot delete products that are on active orders
                     */
                     case 6: {
-                        DeleteActiveCustomerProducts menu = new DeleteActiveCustomerProducts(activeCustomer, productManager);
+                        DeleteActiveCustomerProductsMenu menu = new DeleteActiveCustomerProductsMenu(activeCustomer, productManager);
                         menu.Show();
                         break;
                     }
