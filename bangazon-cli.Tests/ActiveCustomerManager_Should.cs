@@ -20,6 +20,7 @@ namespace bangazon_cli.Actions.Tests
         private readonly ActiveCustomerManager _activeCustomerManager;
         private readonly ProductManager _productManager;
         private readonly OrderManager _orderManager;
+        private readonly PaymentTypeManager _paymentTypeManager;
         private Customer _customer;
 
         public ActiveCustomerManager_Should()
@@ -35,6 +36,7 @@ namespace bangazon_cli.Actions.Tests
             _activeCustomerManager = new Managers.ActiveCustomerManager(_customerManager);
             _productManager = new ProductManager(_db);
             _orderManager = new OrderManager(_db);
+            _paymentTypeManager = new PaymentTypeManager(_db);
 
             // Initializing a mock customer for testing purposes
             _customer = new Models.Customer();
