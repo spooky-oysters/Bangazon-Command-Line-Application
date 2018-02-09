@@ -90,6 +90,19 @@ namespace bangazon_cli
             }
         }
 
+        // Method to delete all tables in the database
+        public void DeleteTables()
+        {
+            string SQLDelete = $@"
+                DELETE FROM OrderProduct;
+                DELETE FROM `Order`;
+                DELETE FROM Product;
+                DELETE FROM Customer;
+                ";
+                
+            this.Update(SQLDelete);
+        }
+
         // Method to insert new rows into the database
         public int Insert(string command)
         {
