@@ -22,6 +22,10 @@ namespace bangazon_cli.Menus
             _productManager = productManager;
         }
 
+        /*
+            The show method loops until the user takes the exit path
+            It guides the user through the process to delete products
+         */
         public void Show() {
             
             int exitChoice = 0;
@@ -51,11 +55,12 @@ namespace bangazon_cli.Menus
                 Product product = products.ElementAt(choice -1);
                 
                 // Check if it is on an unpaid order
-                if (_productManager.IsProductOnUnpaidOrder(product.Id)==true) {
-                    Console.WriteLine("This product is on an unpaid order - cannot delete");
+                if (_productManager.IsProductOnOrder(product.Id)==true) {
+                    Console.WriteLine("This product is on an order - cannot delete");
                 
                 } else {
                     // delete the product
+                    _productManager.DeleteProduct(product.Id);
                     Console.WriteLine("Product deleted!");
                 }
                 
@@ -67,13 +72,15 @@ namespace bangazon_cli.Menus
             } while (exitMenu == false);
         }
 
+        // Displays the list of products and returns the id of the chosen
+        // product or the exit choice
         public int GetChoice(List<Product> products) {
             
             int choice = -1;
 
             // make sure there are products to display
             if (products.Count() == 0 ) {
-                Console.WriteLine("No Products - press any key to continue");
+                Console.WriteLine("No products to delete - press any key to continue");
                 Console.ReadLine();
                 return 0;
             }

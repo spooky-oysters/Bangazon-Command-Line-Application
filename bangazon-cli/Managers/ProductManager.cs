@@ -232,14 +232,13 @@ namespace bangazon_cli.Managers
             }
         }
 
-        public bool IsProductOnUnpaidOrder(int productId) {
+        public bool IsProductOnOrder(int productId) {
             
             int rowCount = 0;
             _db.Query($@"SELECT Count(o.Id) as ordercount 
                         FROM `Order` o, OrderProduct op
                         WHERE o.Id = op.OrderId
-                        AND op.ProductId = {productId}
-                        AND o.CompletedDate is null;",
+                        AND op.ProductId = {productId};",
                         
             (SqliteDataReader reader) =>
                 {

@@ -245,7 +245,7 @@ namespace bangazon_cli.Managers.Tests
         }
 
         [Fact]
-        public void CheckIfProductIsOnUnpaidOrder() {
+        public void CheckIfProductIsOnOrder() {
             
             // add new product with product name
             _product = new Models.Product();
@@ -264,9 +264,9 @@ namespace bangazon_cli.Managers.Tests
             orderManager.AddProductToOrder(ordId,prodId);
 
             // should be an unpaid order
-            bool isOnUnpaid = productManager.IsProductOnUnpaidOrder(prodId);
+            bool isOnOrder = productManager.IsProductOnOrder(prodId);
 
-            Assert.True(isOnUnpaid);
+            Assert.True(isOnOrder);
 
         }
 
