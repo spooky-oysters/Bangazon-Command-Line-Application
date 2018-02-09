@@ -87,6 +87,5 @@ namespace bangazon_cli.Tests
             // Asserts the _paymentType.Id instance and the single payment.Id are equal
             Assert.Equal(_paymentType.Id, payment.Id);
         }
-
     }
 }

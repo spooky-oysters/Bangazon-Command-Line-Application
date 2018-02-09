@@ -141,7 +141,8 @@ namespace bangazon_cli.Managers
             //update name in SQL
             string SQLUpdate = $@"UPDATE `Product`
             SET `Name` = '{product.Name = name}'
-            WHERE `Id` = 1";
+            WHERE `Id` = {product.Id};
+            ";
 
             try
             {
@@ -164,7 +165,7 @@ namespace bangazon_cli.Managers
             // update description in SQL
             string SQLUpdate = $@"UPDATE `Product`
             SET `Description` = '{product.Description = desc}'
-            WHERE `Id` = 1";
+            WHERE `Id` = {product.Id}";
 
             try
             {
@@ -187,7 +188,7 @@ namespace bangazon_cli.Managers
             // update price in SQL
             string SQLUpdate = $@"UPDATE `Product`
             SET `Price` = '{product.Price = price}'
-            WHERE `Id` = 1";
+            WHERE `Id` = {product.Id}";
 
             try
             {
@@ -205,12 +206,12 @@ namespace bangazon_cli.Managers
             - Product Object
             - Double price
         */
-        public void UpdateQuantity(Product product, int quanity)
+        public void UpdateQuantity(Product product, int quantity)
         {
             // update quantity in SQL
             string SQLUpdate = $@"UPDATE `Product`
-            SET `Quantity` = '{product.Quantity = quanity}'
-            WHERE `Id` = 1";
+            SET `Quantity` = '{product.Quantity = quantity}'
+            WHERE `Id` = {product.Id}";
 
             try
             {
