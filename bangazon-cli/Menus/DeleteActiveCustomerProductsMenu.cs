@@ -54,7 +54,7 @@ namespace bangazon_cli.Menus
                 Product product = products.ElementAt(choice -1);
                 
                 // Check if it is on an unpaid order
-                if (_productManager.IsProductOnOrder(product.Id)==true) {
+                if (_productManager.IsProductOnOrder(product.Id)) {
                     Console.WriteLine("This product is on an order - cannot delete");
                 
                 } else {
@@ -85,7 +85,7 @@ namespace bangazon_cli.Menus
             }
 
             do {
-                
+                Console.Clear();
                 int index = 1;
                 products.ForEach(c => {
                     Console.WriteLine($"{index}. {c.Name}");
@@ -97,7 +97,7 @@ namespace bangazon_cli.Menus
                 string userSelection = Console.ReadLine();
                 
                 // only reassign the product if they didn't select the exit path
-                if (int.TryParse(userSelection, out choice) == false) {  
+                if (!int.TryParse(userSelection, out choice)) {  
                     choice = -1;
                 }
             // while check that a choice was made. This could include the exit path
