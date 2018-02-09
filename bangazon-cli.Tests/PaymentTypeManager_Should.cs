@@ -17,16 +17,23 @@ namespace bangazon_cli.Tests
         private PaymentType _paymentType1;
         private PaymentTypeManager _paymentTypeManager;
         private CustomerManager _custManager;
+        private ProductManager _prodManager;
+        private OrderManager _orderManager;
         private Customer _testCustomer;
 
         public PaymentTypeManager_Should()
         {
+            // Establishing the path to the database
             string testPath = System.Environment.GetEnvironmentVariable("BANGAZON_CLI_APP_DB_TEST");
 
+            // Initializing an instance of the DatabaseInterface
             _db = new DatabaseInterface(testPath);
 
+            // By initializing these managers, all of the tables are created
+            _paymentTypeManager = new PaymentTypeManager(_db);
             _custManager = new CustomerManager(_db);
-            _testCustomer = new Customer();
+            _prodManager = new ProductManager(_db);
+            _orderManager = new OrderManager(_db);
         }
 
         [Fact]
@@ -34,7 +41,7 @@ namespace bangazon_cli.Tests
         {
             // Variable initializations
             _paymentType1 = new PaymentType();
-            _paymentTypeManager = new PaymentTypeManager(_db);
+            _testCustomer = new Customer();
 
             // Add a test customer to get the returned ID
             int custId = _custManager.AddCustomer(_testCustomer);
@@ -58,8 +65,8 @@ namespace bangazon_cli.Tests
         public void GetPaymentTypesByCustomerId_Should()
         {
             // Variable initializations
-            var _paymentType1 = new PaymentType();
-            _paymentTypeManager = new PaymentTypeManager(_db);
+            _paymentType1 = new PaymentType();
+            _testCustomer = new Customer();
 
             // Add a test customer to get the returned ID
             int custId = _custManager.AddCustomer(_testCustomer);
@@ -82,7 +89,7 @@ namespace bangazon_cli.Tests
             // Requests all the payments associated with a customer
             var customerPayments = _paymentTypeManager.GetPaymentTypesByCustomerId(custId);
 
-            // Checks that both payment types exist in the return list
+            // Checks that both payment types exist in the return list. Since a new customer ID is retrieved within this test, the number of times the payment types are added won't effect the test
             Assert.Equal(2, customerPayments.Count);
         }
 
@@ -91,7 +98,7 @@ namespace bangazon_cli.Tests
         {
             // Variable initializations
             _paymentType1 = new PaymentType();
-            _paymentTypeManager = new PaymentTypeManager(_db);
+            _testCustomer = new Customer();
 
             // Add a test customer to get the returned ID
             int custId = _custManager.AddCustomer(_testCustomer);
