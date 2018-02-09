@@ -145,7 +145,13 @@ At the time of this writing, there are 26 unit tests. **Run these each time you 
 
 ### Architecture:
 
-```
+* Program.cs - the main method for the application
+* Data - contains the DatabaseInterface class
+* Managers - the managers interact with the database using the DatabaseInterface
+* Menus - The menus interact with the customers and utilize the managers to complete tasks based on user input
+* Models - the data models for the application
+
+## Data
 ### Database Interface
 The `Data/DatabaseInterface.cs` file holds all the methods to access the database using `SQLite`. Each time a specific customer profile is requested, added, updated, or deleted all the methods for those actions are relayed to this file. 
 
@@ -168,3 +174,24 @@ public class ExampleClass
         ); 
 }
 ``` 
+### Managers
+All managers take, as part of their constructors, a DatabaseInterface object. They communicate with the database and essentially manage the database actions related to a specific feature or data model.
+
+For example, the CustomerManager manages the database queries relate to data.
+
+### Menus
+The menu classes control the visual interaction of the program and accept user input. These classes allow the program to coordinate between user input and Managers.
+
+### Models
+Each class represents the data structure for the application.
+Current models include:
+- Customer
+- Order
+- Payment Type
+- Product
+
+# Development Team:
+- [Dre Randaci](https://github.com/DreRandaci)
+- [Kimberly Bird](https://github.com/kimberly-bird)
+- [Greg Lawrence](https://github.com/Chewieez)
+- [Krys Mathis](https://github.com/krysmathis)
