@@ -36,6 +36,11 @@ namespace bangazon_cli.Menus
                 return;
             }
             
+            if (_productManager.IsProductOnUnpaidOrder(product.Id)==true) {
+                Console.WriteLine("This product is on an unpaid order - cannot delete");
+                Console.ReadLine();
+                return;
+            }
             // only delete if it is not on an active order
             // check if it is on an active order
 
