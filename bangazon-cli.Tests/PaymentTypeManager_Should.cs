@@ -1,8 +1,6 @@
 using Xunit;
-using System;
 using bangazon_cli.Managers;
 using bangazon_cli.Models;
-using System.Collections.Generic;
 
 namespace bangazon_cli.Tests
 {
