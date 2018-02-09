@@ -53,8 +53,54 @@ namespace bangazon_cli.Managers.Tests
 
             // assert the product created by test is in the list
             Assert.Equal(product.Id, storedProduct.Id);
-
         }
+
+        [Fact]
+        public void GetProductsForSingleCustomer()
+        {
+            // generate products
+            Product product1 = new Product();
+            product1.CustomerId = 2;
+            product1.Name = "some name";
+            product1.Price = 24.00;
+            product1.Description = "product1 description";
+            product1.Quantity = 4;
+            // generate products
+            Product product2 = new Product();
+            product2.CustomerId = 2;
+            product2.Name = "another name";
+            product2.Price = 754.00;
+            product2.Description = "product2 description";
+            product2.Quantity = 2;
+            // generate products
+            Product product3 = new Product();
+            product3.CustomerId = 2;
+            product3.Name = "third name";
+            product3.Price = 64.00;
+            product3.Description = "product3 description";
+            product3.Quantity = 9;
+
+            // manager new instance
+            ProductManager productManager = new ProductManager(_db);
+
+            // capture existing record count. Test will use this to determine if the add method increased the number of records
+            int initialRecordCount = productManager.GetProducts().Count();
+
+            // assign the id to the product object using AddProduct
+            product1.Id = productManager.AddProduct(product1);
+            product2.Id = productManager.AddProduct(product2);
+            product3.Id = productManager.AddProduct(product3);
+
+            List<Product> listOfProdForSingleCustomer = productManager.GetProducts(2);
+
+            // assert there are products in the list
+            Assert.True(productManager.GetProducts().Count() > initialRecordCount);
+
+            // assert the customer id matches each product.
+            Assert.Equal(listOfProdForSingleCustomer.Count(), 3);
+        }
+
+
 
         [Fact]
         public void AddsProductIdToAddedRecords()
@@ -222,6 +268,14 @@ namespace bangazon_cli.Managers.Tests
 
             Assert.True(isOnUnpaid);
 
+        }
+
+
+        [Fact]
+        public void Dispose()
+        {
+            _db.Update("DELETE FROM OrderProduct");
+            _db.Update("DELETE FROM Product");
         }
 
     }
