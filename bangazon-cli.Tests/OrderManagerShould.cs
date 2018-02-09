@@ -70,11 +70,14 @@ namespace bangazon_cli.Managers.Tests
             
             // add _testOrder to db
             int orderId = _orderManager.AddOrder(_testOrder);
+            
+            // retrieve the order
+            Order retrievedOrder = _orderManager.GetUnpaidOrder(CustomerId);   
             // check if the fields all match between the order sent to the db and the order retrieved from the db
-            Assert.Equal(_orderManager.GetUnpaidOrder(CustomerId).Id, orderId);
-            Assert.Equal(_orderManager.GetUnpaidOrder(CustomerId).CustomerId, CustomerId);
-            Assert.Equal(_orderManager.GetUnpaidOrder(CustomerId).CompletedDate, _testOrder.CompletedDate);
-            Assert.Equal(_orderManager.GetUnpaidOrder(CustomerId).PaymentTypeId, _testOrder.PaymentTypeId);
+            Assert.Equal(retrievedOrder.Id, orderId);
+            Assert.Equal(retrievedOrder.CustomerId, CustomerId);
+            Assert.Equal(retrievedOrder.CompletedDate, _testOrder.CompletedDate);
+            Assert.Equal(retrievedOrder.PaymentTypeId, _testOrder.PaymentTypeId);
         }
 
         [Fact]
