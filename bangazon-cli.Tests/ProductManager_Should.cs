@@ -275,10 +275,20 @@ namespace bangazon_cli.Managers.Tests
         [Fact]
         public void CheckIfProductIsOnOrder() {
             
+            Customer c = new Customer();
+            c.Name = "DELETE TEST";
+            c.StreetAddress = "DELETE ST.";
+            c.City = "Detroit";
+            c.State = "DLState";
+            c.PostalCode = "123456";
+            c.PhoneNumber = "615-555-5555";
+
+            int cId = _customerManager.AddCustomer(c);
+            
             // add new product with product name
             _product = new Models.Product();
             _product.Name = "Kite";
-            _product.CustomerId = 1;
+            _product.CustomerId = cId;
             _product.Price = 45.00;
             _product.Description = "UNPAID TEST";
             _product.Quantity = 3;
@@ -287,7 +297,7 @@ namespace bangazon_cli.Managers.Tests
             int prodId = productManager.AddProduct(_product);
             OrderManager orderManager = new OrderManager(_db);
 
-            Order order = new Order(1);
+            Order order = new Order(cId);
             int ordId = orderManager.AddOrder(order);
             orderManager.AddProductToOrder(ordId,prodId);
 
