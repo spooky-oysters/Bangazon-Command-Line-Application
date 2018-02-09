@@ -233,6 +233,13 @@ namespace bangazon_cli.Managers
             }
         }
 
+        /*
+            Author: Krys Mathis
+            Summary: Checks if the product is on an existing order
+            Parameter: Product Id
+            Return: true if it is on an order, in which case the 
+                    system cannot delete the product
+        */
         public bool IsProductOnOrder(int productId) {
             
             int rowCount = 0;
@@ -252,6 +259,11 @@ namespace bangazon_cli.Managers
             return rowCount > 0;
         }
 
+        /*
+            Author: Krys Mathis
+            Summary: Deletes a product from the products table based on Id
+            Parameter: Product Id
+         */
         public void DeleteProduct(int productId) {
             // update description in SQL
             string SQLUpdate = $@"DELETE FROM `Product`
