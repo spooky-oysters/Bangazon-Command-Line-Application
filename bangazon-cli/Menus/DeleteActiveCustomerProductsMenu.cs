@@ -46,12 +46,11 @@ namespace bangazon_cli.Menus
                 int choice = GetChoice(products);
 
                 // logic to validate the choice
-                // if there are no product the choice
                 if (choice == 0 || choice == exitChoice) {
                     return;
                 } 
                 
-                // get the product from the products
+                // get the product from the products list
                 Product product = products.ElementAt(choice -1);
                 
                 // Check if it is on an unpaid order
