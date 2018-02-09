@@ -15,9 +15,9 @@ namespace bangazon_cli.Managers.Tests
         private Product _product;
         private DatabaseInterface _db;
         private string _dbPath;
-        private CustomerManager _customerManager;
-        private ProductManager _productManager;
-        private OrderManager _orderManager;
+        private readonly CustomerManager _customerManager;
+        private readonly ProductManager _productManager;
+        private readonly OrderManager _orderManager;
         private Customer _customer;
 
         // instatiate the test

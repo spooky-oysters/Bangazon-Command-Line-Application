@@ -14,9 +14,9 @@ namespace bangazon_cli.Managers.Tests
     public class CustomerManager_Should
     {
         private DatabaseInterface _db;
-        private CustomerManager _customerManager;
-        private ProductManager _productManager;
-        private OrderManager _orderManager;
+        private readonly CustomerManager _customerManager;
+        private readonly ProductManager _productManager;
+        private readonly OrderManager _orderManager;
         // Instantiate the Test
         public CustomerManager_Should()
         {
