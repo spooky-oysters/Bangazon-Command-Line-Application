@@ -5,6 +5,7 @@ using bangazon_cli.Managers;
 namespace bangazon_cli.Menus
 {
     /*
+        Author: Krys Mathis
         Summary - controls the add customer menu
         Parameters 
             - customer object
@@ -26,6 +27,7 @@ namespace bangazon_cli.Menus
          */
         public void Show() {
             
+            Console.Clear();
             // Customer name must contain some value
             do {
                 Console.WriteLine ("Enter customer name");
@@ -73,7 +75,7 @@ namespace bangazon_cli.Menus
 
             if (id > 0) {
                 Console.WriteLine("*** SUCCESS                ***");
-                Console.WriteLine("*** PRESS ENTER TO CONTINE ***");
+                Console.WriteLine("*** PRESS ENTER TO CONTINUE ***");
                 Console.ReadLine();
             }
 

@@ -21,6 +21,7 @@ namespace bangazon_cli.Managers.Tests
         private readonly PaymentTypeManager _paymentTypeManager;
         private Customer _customer;
 
+
         // instatiate the test
         public ProductManager_Should()
         {
@@ -272,6 +273,82 @@ namespace bangazon_cli.Managers.Tests
             // tests that new product quantity is updated
             Assert.Equal(prodToUpdate.Quantity, 10);
         }
+
+        [Fact]
+        public void CheckIfProductIsOnOrder() {
+            
+            Customer c = new Customer();
+            c.Name = "DELETE TEST";
+            c.StreetAddress = "DELETE ST.";
+            c.City = "Detroit";
+            c.State = "DLState";
+            c.PostalCode = "123456";
+            c.PhoneNumber = "615-555-5555";
+
+            int cId = _customerManager.AddCustomer(c);
+            
+            // add new product with product name
+            _product = new Models.Product();
+            _product.Name = "Kite";
+            _product.CustomerId = cId;
+            _product.Price = 45.00;
+            _product.Description = "UNPAID TEST";
+            _product.Quantity = 3;
+
+            ProductManager productManager = new ProductManager(_db);
+            int prodId = productManager.AddProduct(_product);
+            OrderManager orderManager = new OrderManager(_db);
+
+            Order order = new Order(cId);
+            int ordId = orderManager.AddOrder(order);
+            orderManager.AddProductToOrder(ordId,prodId);
+
+            // should be an unpaid order
+            bool isOnOrder = productManager.IsProductOnOrder(prodId);
+
+            Assert.True(isOnOrder);
+
+        }
+
+        [Fact]
+        public void DeleteDatabaseRecord() {
+
+            Customer c = new Customer();
+            c.Name = "DELETE TEST";
+            c.StreetAddress = "DELETE ST.";
+            c.City = "Detroit";
+            c.State = "DLState";
+            c.PostalCode = "123456";
+            c.PhoneNumber = "615-555-5555";
+
+            CustomerManager customerManager = new CustomerManager(_db);
+            int cId = customerManager.AddCustomer(c);
+
+            Product product = new Product();
+            product.CustomerId = cId;
+            product.Name = "Kite";
+            product.Price = 37.00;
+            product.Description = "Kite description";
+            product.Quantity = 5;
+
+
+            // verify the add method worked
+            Assert.True(customerManager.GetSingleCustomer(cId).Id == cId);
+            
+            
+            ProductManager productManager = new ProductManager(_db);
+            int pId = productManager.AddProduct(product);
+
+            // verify the add method worked
+            Assert.True(productManager.GetSingleProduct(pId).Id == pId);
+
+            productManager.DeleteProduct(pId);
+
+            // Should return null
+            Assert.True(productManager.GetSingleProduct(pId)==null);
+
+        }
+
 
         [Fact]
         public void Dispose()

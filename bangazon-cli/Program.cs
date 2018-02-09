@@ -16,11 +16,12 @@ namespace bangazon_cli
             // Initialize the Manager objects
             CustomerManager customerManager = new CustomerManager(db);
             ActiveCustomerManager activeCustomerManager = new ActiveCustomerManager(customerManager);
-            Customer activeCustomer = new Customer();
-            ProductManager productManager = new ProductManager(db);
+            ProductManager productManager = new Managers.ProductManager(db);
             OrderManager orderManager = new OrderManager(db);
             PaymentTypeManager paymentTypeManager = new PaymentTypeManager(db);
 
+            Customer activeCustomer = new Customer();
+            
             int choice;
             // When the user enters the system show the main menu
             do
@@ -70,24 +71,35 @@ namespace bangazon_cli
                         addPaymentTypeMenu.Show();
                         break;
                     }
+                    
+                    /*
+                        List the active customer's product(s) 
+                        The user cannot delete products that are on active orders
+                    */
+                    case 6: {
+                        DeleteActiveCustomerProductsMenu menu = new DeleteActiveCustomerProductsMenu(activeCustomer, productManager);
+                        menu.Show();
+                        break;
+                    }
 
                     /*
                         Lists all products to allow user to choose one to add to their order. When product is chosen, the product is added to the active customer's order
                     */
-                    case 6:
-                        {
-                            AddProductToCartMenu addProductToCartMenu = new AddProductToCartMenu(activeCustomer, orderManager, productManager);
-                            addProductToCartMenu.Show();
-                            break;
-                        }
 
-                    default:
-                        {
-                            break;
-                        }
+                    case 7: {
+                        AddProductToCartMenu addProductToCartMenu = new AddProductToCartMenu(activeCustomer, orderManager, productManager);
+                        addProductToCartMenu.Show();
+                        break;
+                    }
+
+
+                    default: {
+                        break;
+                    }
+
                 }
 
-            } while (choice != 9);
+            } while (choice != 10);
 
         }
     }

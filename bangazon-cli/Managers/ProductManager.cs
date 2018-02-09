@@ -226,7 +226,56 @@ namespace bangazon_cli.Managers
         // gets one product. Parameters: id
         public Product GetSingleProduct(int id)
         {
-            return GetProducts().Where(p => p.Id == id).Single();
+            try {
+                return GetProducts().Where(p => p.Id == id).Single();
+            } catch {
+                return null;
+            }
+        }
+
+        /*
+            Author: Krys Mathis
+            Summary: Checks if the product is on an existing order
+            Parameter: Product Id
+            Return: true if it is on an order, in which case the 
+                    system cannot delete the product
+        */
+        public bool IsProductOnOrder(int productId) {
+            
+            int rowCount = 0;
+            _db.Query($@"SELECT Count(o.Id) as ordercount 
+                        FROM `Order` o, OrderProduct op
+                        WHERE o.Id = op.OrderId
+                        AND op.ProductId = {productId};",
+                        
+            (SqliteDataReader reader) =>
+                {
+                    while (reader.Read())
+                    {
+                        rowCount = Convert.ToInt32(reader["ordercount"]);
+                    }
+                });
+            
+            return rowCount > 0;
+        }
+
+        /*
+            Author: Krys Mathis
+            Summary: Deletes a product from the products table based on Id
+            Parameter: Product Id
+         */
+        public void DeleteProduct(int productId) {
+            // update description in SQL
+            string SQLUpdate = $@"DELETE FROM `Product`
+            WHERE id = {productId};";
+            try
+            {
+                _db.Update(SQLUpdate);
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine("There was an error with the delete statement", err.Message);
+            }
         }
 
     }
