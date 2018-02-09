@@ -86,8 +86,7 @@ namespace bangazon_cli.Menus
                     // create a record in the OrderProduct table for the relationship of the selected product and the customer's orderId
                     _orderManager.AddProductToOrder(customerOrder.Id, selectedProduct.Id);
 
-                    Console.WriteLine("*** SUCCESS                ***");
-                    Console.WriteLine("*** PRESS ENTER TO CONTINE ***");
+                    Console.WriteLine("*** PRESS ENTER TO CONTINUE ***");
                     Console.ReadLine();
                     }
                     
