@@ -187,10 +187,13 @@ namespace bangazon_cli.Managers
                             {
                                 while (reader.Read())
                                 {
-                                    // assign order details to the order created above
-                                    availableQuantity = Convert.ToInt32(reader["Available"]);
+                                    // if the value is null, do not reassign it
+                                    if(!reader.IsDBNull(0))
+                                    {
+                                        availableQuantity = Convert.ToInt32(reader["Available"]);
+                                    }
                                 }
-                            });
+                    });
             return availableQuantity;
         }
 
@@ -203,6 +206,7 @@ namespace bangazon_cli.Managers
         public bool hasAvailableQuantity(int productId){
             return getAvailableQuantity(productId) > 0;
         }
+
         public Product GetSingleProductFromOrder(int orderId, int productId)
         {
 
