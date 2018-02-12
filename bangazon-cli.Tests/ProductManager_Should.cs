@@ -163,116 +163,43 @@ namespace bangazon_cli.Managers.Tests
             Assert.Equal(id, storedProduct.Id);
         }
 
-
         [Fact]
-        public void UpdateProductName()
+        public void UpdateProduct()
         {
             // add customer to DB and get id
             int CustomerId = _customerManager.AddCustomer(_customer);
 
-            // add new product with product name
+            // add new product with updated property values
             _product = new Models.Product();
-            _product.Name = "THIS IS UPDATED";
+            _product.Name = "kite";
             _product.CustomerId = CustomerId;
-            _product.Price = 45.00;
-            _product.Quantity = 3;
+            _product.Price = 40.00;
             _product.Description = "Kite description";
+            _product.Quantity = 30;
 
             // add product to database and get id returned
             int id = _productManager.AddProduct(_product);
 
             // select one product to update based on id
             Product prodToUpdate = _productManager.GetSingleProduct(id);
+            prodToUpdate.Name = "new kite name";
+            prodToUpdate.Price = 32.75;
+            prodToUpdate.Description = "new kite desc";
+            prodToUpdate.Quantity = 12;
 
-            // updates product name 
-            _productManager.UpdateName(prodToUpdate, "New Kite");
+            // updates product property values
+            _productManager.Update(id, CustomerId, prodToUpdate);
 
+            // calls db to get upated values
             Product updatedProduct = _productManager.GetSingleProduct(id);
-            // tests that new product name is updated
-            Assert.Equal(updatedProduct.Name, "New Kite");
+
+            // product description was updated
+            Assert.Equal(updatedProduct.Name, "new kite name");
+            Assert.Equal(updatedProduct.Price, 32.75);
+            Assert.Equal(updatedProduct.Description, "new kite desc");
+            Assert.Equal(updatedProduct.Quantity, 12);
         }
 
-        [Fact]
-        public void UpdateProductDesc()
-        {
-            // add customer to DB and get id
-            int CustomerId = _customerManager.AddCustomer(_customer);
-
-            // add new product with product description
-            _product = new Models.Product();
-            _product.Description = "THIS IS UPDATED";
-            _product.Name = "Kite";
-            _product.CustomerId = CustomerId;
-            _product.Price = 45.00;
-            _product.Quantity = 3;
-
-        
-            // add product to database and get id returned
-            int id = _productManager.AddProduct(_product);
-
-            // select one product to update based on id
-            Product prodToUpdate = _productManager.GetSingleProduct(id);
-
-            // updates product description 
-            _productManager.UpdateDescription(prodToUpdate, "New Kite description");
-
-            // tests that new product description is updated
-            Assert.Equal(prodToUpdate.Description, "New Kite description");
-        }
-
-        [Fact]
-        public void UpdateProductPrice()
-        {
-            // add customer to DB and get id
-            int CustomerId = _customerManager.AddCustomer(_customer);
-
-            // add new product with product price
-            _product = new Models.Product();
-            _product.Price = 75.00;
-            _product.Description = "Kite Description";
-            _product.Name = "Kite";
-            _product.CustomerId = CustomerId;
-            _product.Quantity = 3;
-
-            // add product to database and get id returned
-            int id = _productManager.AddProduct(_product);
-
-            // select one product to update based on id
-            Product prodToUpdate = _productManager.GetSingleProduct(id);
-
-            // updates product price 
-            _productManager.UpdatePrice(prodToUpdate, 50.97);
-
-            // tests that new product price is updated
-            Assert.Equal(prodToUpdate.Price, 50.97);
-        }
-
-        [Fact]
-        public void UpdateProductQuantity()
-        {
-            // add customer to DB and get id
-            int CustomerId = _customerManager.AddCustomer(_customer);
-
-            // add new product with product quantity
-            _product = new Models.Product();
-            _product.Quantity = 70;
-            _product.Description = "Kite Description";
-            _product.Name = "Kite";
-            _product.CustomerId = CustomerId;
-            _product.Price = 45.00;
-
-            // add product to database and get id returned
-            int id = _productManager.AddProduct(_product);
-
-            // select one product to update based on id
-            Product prodToUpdate = _productManager.GetSingleProduct(id);
-
-            // updates product quantity 
-            _productManager.UpdateQuantity(prodToUpdate, 10);
-
-            // tests that new product quantity is updated
-            Assert.Equal(prodToUpdate.Quantity, 10);
-        }
 
         [Fact]
         public void CheckIfProductIsOnOrder() {
