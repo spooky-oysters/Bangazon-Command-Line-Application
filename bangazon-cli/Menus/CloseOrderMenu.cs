@@ -89,7 +89,6 @@ namespace bangazon_cli.Menus
                 });
 
 
-
                 // alert the user if any of their products are no longer available
                 if (UnavailableProducts.Count() > 0) {
                     Console.WriteLine("The following items are no longer available to purchase.");
@@ -121,14 +120,17 @@ namespace bangazon_cli.Menus
 
                     // create a starting menu item number
                     int menuNum = 1;
+
                     // create a variable to hold the payment type choice
                     int output = 0;
+
                     // loop through payment types and write each to the console and increment the menuNum by 1.
                     CustPaymentTypes.ForEach(pt => {
                         Console.WriteLine($"{menuNum}. {pt.Type}");
                         menuNum++;
                     });
                     Console.Write("> ");
+
                     // Capture the user's input for their payment choice 
                     ConsoleKeyInfo paymentChoice = Console.ReadKey();
                     Console.WriteLine("");
@@ -155,6 +157,7 @@ namespace bangazon_cli.Menus
                             quitCmd = enteredKey.KeyChar.ToString();
                         }
                     } while (quitCmd == "");
+                    
                 // If user chose "N" to not complete their order 
                 } else {
                     string output = "";

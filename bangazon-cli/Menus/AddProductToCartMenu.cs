@@ -50,11 +50,16 @@ namespace bangazon_cli.Menus
 
                     // check if there are products in the database
                     if (AllProducts.Count > 0) {
-                        // Loop through list of products and print each to console.
+                        // 
+                        // Loop through list of products and only print available products to the console, which are products with a quantity greater than 0. 
                         Console.WriteLine("Choose a Product to add to the order:");
-                            Console.WriteLine();
+                        Console.WriteLine();
+
                         foreach (Product product in AllProducts)
                         {
+                            if (_orderManager.hasAvailableQuantity(product)) {
+                                // add product to new list of just available products
+                            }
                             Console.WriteLine($"{menuNum}. {product.Name}");
                             menuNum++;
                         }
