@@ -164,7 +164,11 @@ namespace bangazon_cli.Managers
             return CurrentOrder;
         }
 
-        
+        public int getAvailableQuantity(int productId)
+        {
+            return 4;
+        }
+
         public Product GetSingleProductFromOrder(int orderId, int productId)
         {
 
