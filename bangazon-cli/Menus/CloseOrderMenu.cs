@@ -38,13 +38,13 @@ namespace bangazon_cli.Menus
             // clear the console
             Console.WriteLine("");
 
+            Order UserOrder = _orderManager.GetUnpaidOrder(_customer.Id);
             // get the users order
-            Order UserOrder = _orderManager.GetProductsFromOrder(_customer.Id);
+            UserOrder = _orderManager.GetProductsFromOrder(UserOrder.Id);
             
             // Check if order contains products
             if (UserOrder.Products.Count() < 1) {
                 // if no products on order, display message for user to add products first
-                // add do while and allow user to press any key to exit back to add a product
                 string output = "";
                 do {
                 Console.WriteLine("*** NO PRODUCTS EXIST IN YOUR SHOPPING CART.  ***");
@@ -68,10 +68,39 @@ namespace bangazon_cli.Menus
                     >
                 */
 
+                // loop through products in order and confirm they are all available to purchase. (Quantity greater than 1)
                 // initialize variable to hold the total price of the items in the shopping cart
                 Double OrderTotal = 0;
-                // loop through the user's products from the car and add the price of each to the OrderTotal
-                UserOrder.Products.ForEach(p => OrderTotal += p.Price);
+                // create a list to hold the unavailable product names
+                List<string> UnavailableProducts = new List<string>();
+
+                UserOrder.Products.ForEach(product => 
+                {
+                    if (_orderManager.hasAvailableQuantity(product.Id)) 
+                    {
+                        // loop through the user's products from the shopping cart and add the price of each to the OrderTotal
+                        OrderTotal += product.Price;
+                    } else
+                    {
+                        // store the names of the unavailable products
+                        string UnavailableProduct = product.Name;
+                        UnavailableProducts.Add(UnavailableProduct);
+                    }
+                });
+
+
+
+                // alert the user if any of their products are no longer available
+                if (UnavailableProducts.Count() > 0) {
+                    Console.WriteLine("The following items are no longer available to purchase.");
+                    // loop through unavailable product names and print each to the console.
+                    UnavailableProducts.ForEach(pName => 
+                    {
+                        Console.WriteLine($"{pName}");
+                    });
+                }
+
+
                 // Alert the user to the total price and ask if they want to continue checking out
                 Console.WriteLine($"Your order total is ${OrderTotal}. Ready to purchase?");
                 Console.Write("(Y/N) > ");  
@@ -84,48 +113,48 @@ namespace bangazon_cli.Menus
                 if (response.ToLower() == "y") 
                 {   
                     string quitCmd = "";
-                        // prompt user to pick a payment type
-                        Console.WriteLine("Choose a payment option:");
+                    // prompt user to pick a payment type
+                    Console.WriteLine("Choose a payment option:");
 
-                        // display their available Payment Types
-                        List<PaymentType> CustPaymentTypes = _paymentTypeManager.GetPaymentTypesByCustomerId(_customer.Id);
+                    // display their available Payment Types
+                    List<PaymentType> CustPaymentTypes = _paymentTypeManager.GetPaymentTypesByCustomerId(_customer.Id);
 
-                        // create a starting menu item number
-                        int menuNum = 1;
-                        // create a variable to hold the payment type choice
-                        int output = 0;
-                        // loop through payment types and write each to the console and increment the menuNum by 1.
-                        CustPaymentTypes.ForEach(pt => {
-                            Console.WriteLine($"{menuNum}. {pt.Type}");
-                            menuNum++;
-                        });
-                        Console.Write("> ");
-                        // Capture the user's input for their payment choice 
-                        ConsoleKeyInfo paymentChoice = Console.ReadKey();
-                        Console.WriteLine("");
-                        int.TryParse(paymentChoice.KeyChar.ToString(), out output);
-                        
-                        
-                        // find the matching payment type
-                        PaymentType selectedPaymentType = CustPaymentTypes.ElementAt(output - 1);
-                        
-                        // close the order by adding the payment type info
-                        bool successfullyClosed = _orderManager.CloseOrder(UserOrder.Id, selectedPaymentType.Id);
+                    // create a starting menu item number
+                    int menuNum = 1;
+                    // create a variable to hold the payment type choice
+                    int output = 0;
+                    // loop through payment types and write each to the console and increment the menuNum by 1.
+                    CustPaymentTypes.ForEach(pt => {
+                        Console.WriteLine($"{menuNum}. {pt.Type}");
+                        menuNum++;
+                    });
+                    Console.Write("> ");
+                    // Capture the user's input for their payment choice 
+                    ConsoleKeyInfo paymentChoice = Console.ReadKey();
+                    Console.WriteLine("");
+                    int.TryParse(paymentChoice.KeyChar.ToString(), out output);
                     
-                        do {
-                            if (successfullyClosed) {
-                                Console.WriteLine("***      SUCCESS!                             ***");
-                                Console.WriteLine("*** Press any key to go back to Main Menu.    ***");
-                                enteredKey = Console.ReadKey();
-                                Console.WriteLine("");
-                                quitCmd = enteredKey.KeyChar.ToString();
-                            } else {
-                                Console.WriteLine("*** There was an error closing your order.    ***");
-                                enteredKey = Console.ReadKey();
-                                Console.WriteLine("");
-                                quitCmd = enteredKey.KeyChar.ToString();
-                            }
-                        } while (quitCmd == "");
+                    
+                    // find the matching payment type
+                    PaymentType selectedPaymentType = CustPaymentTypes.ElementAt(output - 1);
+                    
+                    // close the order by adding the payment type info
+                    bool successfullyClosed = _orderManager.CloseOrder(UserOrder.Id, selectedPaymentType.Id);
+                
+                    do {
+                        if (successfullyClosed) {
+                            Console.WriteLine("***      SUCCESS!                             ***");
+                            Console.WriteLine("*** Press any key to go back to Main Menu.    ***");
+                            enteredKey = Console.ReadKey();
+                            Console.WriteLine("");
+                            quitCmd = enteredKey.KeyChar.ToString();
+                        } else {
+                            Console.WriteLine("*** There was an error closing your order.    ***");
+                            enteredKey = Console.ReadKey();
+                            Console.WriteLine("");
+                            quitCmd = enteredKey.KeyChar.ToString();
+                        }
+                    } while (quitCmd == "");
                 // If user chose "N" to not complete their order 
                 } else {
                     string output = "";
@@ -137,10 +166,6 @@ namespace bangazon_cli.Menus
                         output = enteredKey.KeyChar.ToString();
                     } while (output == "");
                 }
-
-
-
-
             }
         }
     }

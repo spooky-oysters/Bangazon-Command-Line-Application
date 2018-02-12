@@ -274,20 +274,19 @@ namespace bangazon_cli.Managers
                         while (reader.Read())
                         {
                             // assign order details to the order created above
-                            // use .GetValueOrDefault() to correctly either return the correct value and type stored in DB, or return Null. 
+                            // check if value is null 
                             RequestedOrder.Id = Convert.ToInt32(reader["OrderId"]);
                             RequestedOrder.CustomerId = Convert.ToInt32(reader["CustomerId"]);
-                            try {
-                                RequestedOrder.PaymentTypeId  = Convert.ToInt32(reader["PaymentTypeId"]);
-                            } catch (Exception err) {
+                            if (reader.IsDBNull(2)) {
                                 RequestedOrder.PaymentTypeId = null;
+                            } else {
+                                RequestedOrder.PaymentTypeId = Convert.ToInt32(reader["PaymentTypeId"]);
                             }
-                            try {
-                                RequestedOrder.CompletedDate = Convert.ToDateTime(reader["CompletedDate"]);
-                            } catch (Exception err) {
+                            if (reader.IsDBNull(3)) {
                                 RequestedOrder.CompletedDate = null;
+                            } else {
+                                RequestedOrder.CompletedDate = Convert.ToDateTime(reader["CompletedDate"]);
                             }
-                            
                         }
                     });
                     // return the RequestedOrder out of the function

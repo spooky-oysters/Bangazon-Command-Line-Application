@@ -65,34 +65,36 @@ namespace bangazon_cli.Menus
                     }
 
                     // menu option to exit back to main menu. This will always be the last number, no matter how many products are in the system.
-                    Console.WriteLine ($"{menuNum}. Exit back to Main Menu. ");
+                    Console.WriteLine ($"{menuNum + 1}. Exit back to Main Menu. ");
 
                     Console.Write ("> ");
                     String enteredKey = Console.ReadLine();
                     Console.WriteLine("");
                     int.TryParse(enteredKey, out output);
 
-                    // find the selected product from the list
-                    Product selectedProduct = AllProducts.ElementAt(output - 1);
+                    if(output != menuNum + 1) {
+                        // find the selected product from the list
+                        Product selectedProduct = AllProducts.ElementAt(output - 1);
 
-                    // retrieve customers Unpaid order
-                    Order customerOrder = _orderManager.GetUnpaidOrder(_customer.Id);
+                        // retrieve customers Unpaid order
+                        Order customerOrder = _orderManager.GetUnpaidOrder(_customer.Id);
 
-                    // check if the customer does not have a current order started. If they do not, add an order and retrieve it to get the OrderId. 
-                    if (customerOrder.Id < 1) {
-                        Order newOrder = new Order(_customer.Id);
-                        customerOrder.Id = _orderManager.AddOrder(newOrder);
+                        // check if the customer does not have a current order started. If they do not, add an order and retrieve it to get the OrderId. 
+                        if (customerOrder.Id < 1) {
+                            Order newOrder = new Order(_customer.Id);
+                            customerOrder.Id = _orderManager.AddOrder(newOrder);
+                        }
+
+                        // create a record in the OrderProduct table for the relationship of the selected product and the customer's orderId
+                        _orderManager.AddProductToOrder(customerOrder.Id, selectedProduct.Id);
+
+                        // Alert the user press enter to continue adding products or to select the option to got back to main menu
+                        Console.WriteLine("*** Press ENTER to continue to add products                        ***");
+                        Console.WriteLine($"*** Or Choose {menuNum} and press enter to exit back to main menu. ***");
+                        int.TryParse(Console.ReadLine(), out output);
                     }
-
-                    // create a record in the OrderProduct table for the relationship of the selected product and the customer's orderId
-                    _orderManager.AddProductToOrder(customerOrder.Id, selectedProduct.Id);
-
-                    // Alert the user press enter to continue adding products or to select the option to got back to main menu
-                    Console.WriteLine("*** Press ENTER to continue to add products                        ***");
-                    Console.WriteLine($"*** Or Choose {menuNum} and press enter to exit back to main menu. ***");
-                    int.TryParse(Console.ReadLine(), out output);
                     
-                } while (output != menuNum);
+                } while (output != menuNum + 1);
             } else {
                 Console.WriteLine("*** SELECT AN ACTIVE CUSTOMER FIRST! ***");
                 Console.WriteLine("*** PRESS ENTER TO CONTINUE ***");
