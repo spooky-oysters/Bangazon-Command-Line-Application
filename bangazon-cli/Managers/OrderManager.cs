@@ -172,16 +172,15 @@ namespace bangazon_cli.Managers
             Parameter: Product Id
             Returns: true of false
          */
-        public int getAvailableQuantity(int productId)
+        public int getAvailableQuantity(Product product)
         {
-            int availableQuantity = 0;
+            int intialQuantity = product.Quantity;
+            int soldQuantity = 0;
 
-            _db.Query($@"SELECT (p.Quantity - Count(*)) as Available
-                    FROM `Order` o, OrderProduct op, Product p
-                    WHERE o.Id = op.OrderId
-                    AND op.ProductId = p.Id
-                    AND o.PaymentTypeId is not null
-                    AND op.ProductId = {productId}",
+            _db.Query($@"SELECT Count(*) as Sold FROM Product p 
+                        LEFT JOIN OrderProduct op ON p.Id = op.ProductId
+                        LEFT JOIN (SELECT * from `Order` WHERE CompletedDate is not null) o ON op.OrderId = o.Id
+                        WHERE p.Id = {product.Id};",
 
                      (SqliteDataReader reader) =>
                             {
@@ -190,11 +189,12 @@ namespace bangazon_cli.Managers
                                     // if the value is null, do not reassign it
                                     if(!reader.IsDBNull(0))
                                     {
-                                        availableQuantity = Convert.ToInt32(reader["Available"]);
+                                        soldQuantity = Convert.ToInt32(reader["Sold"]);
                                     }
                                 }
                     });
-            return availableQuantity;
+                    
+            return intialQuantity - soldQuantity;
         }
 
         /*
