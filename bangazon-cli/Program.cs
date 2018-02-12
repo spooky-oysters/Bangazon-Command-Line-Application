@@ -22,7 +22,7 @@ namespace bangazon_cli
 
             ReportsMenu reportsMenu;
             Customer activeCustomer = new Customer();
-            
+
             int choice;
             // When the user enters the system show the main menu
             do
@@ -53,6 +53,17 @@ namespace bangazon_cli
                         }
 
                     /*
+                        Add a new payment type for a customer
+                    */
+
+                    case 3:
+                        {
+                            PaymentTypeMenu addPaymentTypeMenu = new PaymentTypeMenu(new PaymentType(), paymentTypeManager, activeCustomer);
+                            addPaymentTypeMenu.Show();
+                            break;
+                        }
+
+                    /*
                         Add product to active customer 
                      */
                     case 4:
@@ -64,34 +75,38 @@ namespace bangazon_cli
                         }
 
                     /*
-                        Add a new payment type for a customer
+                        Update an active customer's product
                      */
-
-                    case 3: {
-                        PaymentTypeMenu addPaymentTypeMenu = new PaymentTypeMenu(new PaymentType(), paymentTypeManager, activeCustomer);
-                        addPaymentTypeMenu.Show();
+                    case 5:
+                    {
+                        UpdateProductMenu updateProductMenu = new UpdateProductMenu(activeCustomer, productManager);
+                        updateProductMenu.Show();
                         break;
                     }
-                    
+
+
+
                     /*
                         List the active customer's product(s) 
                         The user cannot delete products that are on active orders
                     */
-                    case 6: {
-                        DeleteActiveCustomerProductsMenu menu = new DeleteActiveCustomerProductsMenu(activeCustomer, productManager);
-                        menu.Show();
-                        break;
-                    }
+                    case 6:
+                        {
+                            DeleteActiveCustomerProductsMenu menu = new DeleteActiveCustomerProductsMenu(activeCustomer, productManager);
+                            menu.Show();
+                            break;
+                        }
 
                     /*
                         Lists all products to allow user to choose one to add to their order. When product is chosen, the product is added to the active customer's order
                     */
 
-                    case 7: {
-                        AddProductToCartMenu addProductToCartMenu = new AddProductToCartMenu(activeCustomer, orderManager, productManager);
-                        addProductToCartMenu.Show();
-                        break;
-                    }
+                    case 7:
+                        {
+                            AddProductToCartMenu addProductToCartMenu = new AddProductToCartMenu(activeCustomer, orderManager, productManager);
+                            addProductToCartMenu.Show();
+                            break;
+                        }
 
                     case 9: {
                         reportsMenu = new ReportsMenu();
@@ -100,9 +115,10 @@ namespace bangazon_cli
                     }
 
 
-                    default: {
-                        break;
-                    }
+                    default:
+                        {
+                            break;
+                        }
 
                 }
 

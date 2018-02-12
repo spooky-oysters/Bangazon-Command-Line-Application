@@ -129,6 +129,14 @@ namespace bangazon_cli.Managers
             return _products;
         }
 
+        // update products
+        public void Update(int productId, int customerId, Product updatedProduct)
+        {
+            string SQLUpdate = $"UPDATE Product SET Name = '{updatedProduct.Name}', Description = '{updatedProduct.Description}', Price = '{updatedProduct.Price}', Quantity = '{updatedProduct.Quantity}' WHERE Id= {productId} AND CustomerId = {customerId}";
+
+            _db.Update(SQLUpdate);
+        }
+
         /*
             Updates product name in database. 
             Parameters: 
@@ -226,9 +234,12 @@ namespace bangazon_cli.Managers
         // gets one product. Parameters: id
         public Product GetSingleProduct(int id)
         {
-            try {
+            try
+            {
                 return GetProducts().Where(p => p.Id == id).Single();
-            } catch {
+            }
+            catch
+            {
                 return null;
             }
         }
@@ -240,14 +251,15 @@ namespace bangazon_cli.Managers
             Return: true if it is on an order, in which case the 
                     system cannot delete the product
         */
-        public bool IsProductOnOrder(int productId) {
-            
+        public bool IsProductOnOrder(int productId)
+        {
+
             int rowCount = 0;
             _db.Query($@"SELECT Count(o.Id) as ordercount 
                         FROM `Order` o, OrderProduct op
                         WHERE o.Id = op.OrderId
                         AND op.ProductId = {productId};",
-                        
+
             (SqliteDataReader reader) =>
                 {
                     while (reader.Read())
@@ -255,7 +267,7 @@ namespace bangazon_cli.Managers
                         rowCount = Convert.ToInt32(reader["ordercount"]);
                     }
                 });
-            
+
             return rowCount > 0;
         }
 
@@ -264,7 +276,8 @@ namespace bangazon_cli.Managers
             Summary: Deletes a product from the products table based on Id
             Parameter: Product Id
          */
-        public void DeleteProduct(int productId) {
+        public void DeleteProduct(int productId)
+        {
             // update description in SQL
             string SQLUpdate = $@"DELETE FROM `Product`
             WHERE id = {productId};";

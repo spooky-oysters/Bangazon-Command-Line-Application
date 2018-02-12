@@ -44,28 +44,28 @@ namespace bangazon_cli.Menus
 
             // City cannot be null
             do {
-                Console.WriteLine ("Enter customer city");
+                Console.WriteLine ("Enter city");
                 Console.Write ("> ");
                 _customer.City = Console.ReadLine();
             } while (_customer.City.Length == 0);
 
             // State cannot be null
             do {
-                Console.WriteLine ("Enter customer state");
+                Console.WriteLine ("Enter state");
                 Console.Write ("> ");
                 _customer.State = Console.ReadLine();
             } while (_customer.State.Length == 0);
 
             // PostalCode cannot be null
             do {
-                Console.WriteLine ("Enter customer postal code");
+                Console.WriteLine ("Enter code");
                 Console.Write ("> ");
                 _customer.PostalCode = Console.ReadLine();
             } while (_customer.PostalCode.Length == 0);
 
             // Phone number cannot be null
             do {
-                Console.WriteLine ("Enter customer phone number");
+                Console.WriteLine ("Enter phone number");
                 Console.Write ("> ");
                 _customer.PhoneNumber = Console.ReadLine();
             } while (_customer.PhoneNumber.Length == 0);
