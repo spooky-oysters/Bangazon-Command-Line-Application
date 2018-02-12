@@ -164,6 +164,14 @@ namespace bangazon_cli.Managers
             return CurrentOrder;
         }
 
+        /*
+            Author: Krys Mathis
+            Summary: Queries the database and returns the available quantity for a product
+                    this is the result of the product quantity minus the total number of 
+                    order rows for the product on closed orders (PaymentTypeId is not null)
+            Parameter: Product Id
+            Returns: true of false
+         */
         public int getAvailableQuantity(int productId)
         {
             int availableQuantity = 0;
@@ -186,8 +194,14 @@ namespace bangazon_cli.Managers
             return availableQuantity;
         }
 
+        /*
+            Author: Krys Mathis
+            Summary: Checks if available quantity is > 0
+            Parameter: Product Id
+            Returns: true of false
+         */
         public bool hasAvailableQuantity(int productId){
-            return false;
+            return getAvailableQuantity(productId) > 0;
         }
         public Product GetSingleProductFromOrder(int orderId, int productId)
         {
