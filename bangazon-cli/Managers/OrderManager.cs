@@ -179,6 +179,8 @@ namespace bangazon_cli.Managers
         
         Parameters orderId and ProductId are used to find an order in the database that has a matching orderId and also contains a product that matches the productId.
         */
+
+         
         public Product GetSingleProductFromOrder(int orderId, int productId)
         {
             try {
@@ -299,23 +301,22 @@ namespace bangazon_cli.Managers
         }
 
         /* 
-            Author: Krys Mathis
+          Author: Krys Mathis
             Summary: Queries the database and returns the available quantity for a product
                     this is the result of the product quantity minus the total number of 
                     order rows for the product on closed orders (PaymentTypeId is not null)
-            Parameter: Product Id
-            Returns: true of false
-        */
-        public int getAvailableQuantity(int productId)
+            Parameter: Product object
+            Returns: amount of available product (initial minus sold)
+         */
+        public int getAvailableQuantity(Product product)
         {
-            int availableQuantity = 0;
+            int intialQuantity = product.Quantity;
+            int soldQuantity = 0;
 
-            _db.Query($@"SELECT (p.Quantity - Count(*)) as Available
-                    FROM `Order` o, OrderProduct op, Product p
-                    WHERE o.Id = op.OrderId
-                    AND op.ProductId = p.Id
-                    AND o.PaymentTypeId is not null
-                    AND op.ProductId = {productId}",
+            _db.Query($@"SELECT Count(*) as Sold FROM Product p 
+                        LEFT JOIN OrderProduct op ON p.Id = op.ProductId
+                        LEFT JOIN (SELECT * from `Order` WHERE CompletedDate is not null) o ON op.OrderId = o.Id
+                        WHERE p.Id = {product.Id};",
 
                      (SqliteDataReader reader) =>
                             {
@@ -324,22 +325,22 @@ namespace bangazon_cli.Managers
                                     // if the value is null, do not reassign it
                                     if(!reader.IsDBNull(0))
                                     {
-                                        availableQuantity = Convert.ToInt32(reader["Available"]);
+                                        soldQuantity = Convert.ToInt32(reader["Sold"]);
                                     }
                                 }
                     });
-            return availableQuantity;
+                    
+            return intialQuantity - soldQuantity;
         }
 
         /*
             Author: Krys Mathis
             Summary: Checks if available quantity is > 0
-            Parameter: Product Id
+            Parameter: Product object
             Returns: true of false
          */
-        public bool hasAvailableQuantity(int productId){
-            return getAvailableQuantity(productId) > 0;
+        public bool hasAvailableQuantity(Product product){
+            return getAvailableQuantity(product) > 0;
         }
-
     }
 }
