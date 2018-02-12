@@ -29,6 +29,7 @@ namespace bangazon_cli.Menus
         // Displays the add product menu to the user
         public void Show()
         {
+            Console.Clear();
             // user enter product name
             do
             {
