@@ -164,9 +164,47 @@ namespace bangazon_cli.Managers
             return CurrentOrder;
         }
 
+        /*
+            Author: Krys Mathis
+            Summary: Queries the database and returns the available quantity for a product
+                    this is the result of the product quantity minus the total number of 
+                    order rows for the product on closed orders (PaymentTypeId is not null)
+            Parameter: Product Id
+            Returns: true of false
+         */
         public int getAvailableQuantity(int productId)
         {
-            throw new NotImplementedException();
+            int availableQuantity = 0;
+
+            _db.Query($@"SELECT (p.Quantity - Count(*)) as Available
+                    FROM `Order` o, OrderProduct op, Product p
+                    WHERE o.Id = op.OrderId
+                    AND op.ProductId = p.Id
+                    AND o.PaymentTypeId is not null
+                    AND op.ProductId = {productId}",
+
+                     (SqliteDataReader reader) =>
+                            {
+                                while (reader.Read())
+                                {
+                                    // if the value is null, do not reassign it
+                                    if(!reader.IsDBNull(0))
+                                    {
+                                        availableQuantity = Convert.ToInt32(reader["Available"]);
+                                    }
+                                }
+                    });
+            return availableQuantity;
+        }
+
+        /*
+            Author: Krys Mathis
+            Summary: Checks if available quantity is > 0
+            Parameter: Product Id
+            Returns: true of false
+         */
+        public bool hasAvailableQuantity(int productId){
+            return getAvailableQuantity(productId) > 0;
         }
 
         public Product GetSingleProductFromOrder(int orderId, int productId)
@@ -212,9 +250,5 @@ namespace bangazon_cli.Managers
             }
         }
 
-        public bool hasAvailableQuantity(int productId)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
