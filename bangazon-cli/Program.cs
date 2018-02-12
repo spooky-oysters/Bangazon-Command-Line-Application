@@ -20,6 +20,7 @@ namespace bangazon_cli
             OrderManager orderManager = new OrderManager(db);
             PaymentTypeManager paymentTypeManager = new PaymentTypeManager(db);
 
+            ReportsMenu reportsMenu;
             Customer activeCustomer = new Customer();
             
             int choice;
@@ -89,6 +90,12 @@ namespace bangazon_cli
                     case 7: {
                         AddProductToCartMenu addProductToCartMenu = new AddProductToCartMenu(activeCustomer, orderManager, productManager);
                         addProductToCartMenu.Show();
+                        break;
+                    }
+
+                    case 9: {
+                        reportsMenu = new ReportsMenu();
+                        reportsMenu.Show();
                         break;
                     }
 
