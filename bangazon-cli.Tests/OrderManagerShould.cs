@@ -24,6 +24,7 @@ namespace bangazon_cli.Managers.Tests
         private readonly PaymentTypeManager _paymentTypeManager;
         private Order _testOrder;
         private Product _testProduct;
+        private PaymentType _paymentType1;
 
         // constructor for unit test
         public OrderManagerShould()
@@ -109,6 +110,47 @@ namespace bangazon_cli.Managers.Tests
             Assert.Equal(returnedProduct.Name, "Bicycle");
             Assert.Equal(returnedProduct.Description, "Awesome bike");
         }
+
+        // [Fact]
+        // public void CloseOrder()
+        // {   
+        //     // add customer to DB and get id
+        //     int CustomerId = _customerManager.AddCustomer(_customer);
+        //     // add the customerId to _testOrder
+        //     _testOrder.CustomerId = CustomerId;
+        //     // add the customerId to _testProduct
+        //     _testProduct.CustomerId = CustomerId;
+
+        //     // Variable initialization for Payment Type
+        //     _paymentType1 = new PaymentType();
+        //     // Adds properties to the _paymentType instance
+        //     _paymentType1.Type = "Mastercard";
+        //     _paymentType1.AccountNumber = 12345678910;
+
+        //     // add a test order
+        //     int orderId = _orderManager.AddOrder(_testOrder);
+        //     // add a test product
+        //     int productId = _productManager.AddProduct(_testProduct);
+
+        //     // Adds the _paymentType to the _paymentList in the paymentTypeManager, passes in a customerId
+        //     int paymentId = _paymentTypeManager.AddNewPaymentType(_paymentType1, CustomerId);
+
+        //     // Close the order by adding the payment type and currentDate
+        //     DateTime currentDate = DateTime.UtcNow;
+        //     _orderManager.closeOrder(paymentId, CustomerId, currentDate);
+
+        //     // retrieve the order and Assert that the updated values match
+        //     Order retrievedOrder = _orderManager.getOrderById(orderId);
+
+        //     // Get the payment type info used on the order
+        //     // since PaymentTypeId is currently a nullable int type, use GetValueOrDefault() to convert it to an int. 
+        //     int retrievedPaymentTypeId = retrievedOrder.PaymentTypeId.GetValueOrDefault();
+        //     PaymentType retrievedPaymentType = _paymentTypeManager.GetSinglePaymentType(retrievedPaymentTypeId);
+
+        //     // Assert that the payment type matches what we used to close the order
+        //     Assert.Equal("Mastercard", retrievedPaymentType.Type);
+        //     Assert.Equal(12345678910, retrievedPaymentType.AccountNumber);
+        // }
 
         [Fact]
         public void Dispose()

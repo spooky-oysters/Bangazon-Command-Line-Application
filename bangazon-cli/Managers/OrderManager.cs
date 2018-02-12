@@ -125,7 +125,7 @@ namespace bangazon_cli.Managers
 
         
         // function to check if customer's order contains a product.
-        public Order GetProductFromOrder(int orderId)
+        public Order GetProductsFromOrder(int orderId)
         {
             // initialize a new order to hold the return from db
             Order CurrentOrder = new Order();

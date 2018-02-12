@@ -36,16 +36,14 @@ namespace bangazon_cli.Menus
         public void Show()
         {
             // get the users order
-            Order UserOrder = _orderManager.GetProductFromOrder(_customer.Id);
-            // print the amount of orders in the list to console
-            Console.WriteLine(UserOrder.Products.Count());
+            Order UserOrder = _orderManager.GetProductsFromOrder(_customer.Id);
             
             // Check if order contains products
             if (UserOrder.Products.Count() < 1) {
                 // if no products on order, display message for user to add products first
-                Console.WriteLine("*** NO PRODUCTS EXIST IN YOUR SHOPPING CART. ***");
+                Console.WriteLine("*** NO PRODUCTS EXIST IN YOUR SHOPPING CART.  ***");
                 Console.WriteLine("*** ADD PRODUCTS TO YOUR SHOPPING CART FIRST. ***");
-                Console.WriteLine("*** PRESS ENTER TO RETURN TO MAIN MENU ***");
+                Console.WriteLine("*** PRESS ENTER TO RETURN TO MAIN MENU        ***");
                 Console.ReadLine();
 
             } else {
@@ -60,10 +58,15 @@ namespace bangazon_cli.Menus
                     2. Visa
                     >
                 */
+
+                // initialize variable to hold the total price of the items in the shopping cart
                 Double OrderTotal = 0;
-                UserOrder.Products.ForEach(p=> OrderTotal += p.Price);
+                // loop through the user's products from the car and add the price of each to the OrderTotal
+                UserOrder.Products.ForEach(p => OrderTotal += p.Price);
+                // Alert the user to the total price and ask if they want to continue checking out
                 Console.WriteLine($"Your order total is ${OrderTotal}. Ready to purchase?");
-                Console.WriteLine("(Y/N) >");  
+                Console.Write("(Y/N) > ");  
+                // capture the user's input
                 ConsoleKeyInfo enteredKey = Console.ReadKey();                 
                 Console.WriteLine(""); 
                 string response = enteredKey.KeyChar.ToString();
@@ -75,23 +78,28 @@ namespace bangazon_cli.Menus
                     Console.WriteLine("Choose a payment option:");
 
                     // if user selected Y, display their available Payment Types
-                    List<PaymentType> custPaymentTypes = _paymentTypeManager.GetPaymentTypesByCustomerId(_customer.Id);
+                    List<PaymentType> CustPaymentTypes = _paymentTypeManager.GetPaymentTypesByCustomerId(_customer.Id);
 
                     // create a starting menu item number
                     int menuNum = 1;
                     // create a variable to hold the payment type choice
                     int output = -1;
                     // loop through payment types and write each to the console and increment the menuNum by 1.
-                    custPaymentTypes.ForEach(pt => {
+                    CustPaymentTypes.ForEach(pt => {
                         Console.WriteLine($"{menuNum}. {pt.Type}");
                         menuNum++;
                     });
                     Console.Write("> ");
+                    // Capture the user's input for their payment choice 
                     Console.ReadKey();
                     ConsoleKeyInfo paymentChoice = Console.ReadKey();
                     Console.WriteLine("");
                     int.TryParse(paymentChoice.KeyChar.ToString(), out output);
-                    
+                    // find the matching payment type
+                    PaymentType selectedPaymentType = CustPaymentTypes.ElementAt(output - 1);
+                    // close the order by adding the payment type info and the current date
+                    DateTime currentDate = DateTime.UtcNow;
+                    //_orderManager.closeOrder(selectedPaymentType.Id, UserOrder.Id, currentDate);
                         
 
                 } else {
