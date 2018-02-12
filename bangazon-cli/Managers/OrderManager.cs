@@ -164,7 +164,11 @@ namespace bangazon_cli.Managers
             return CurrentOrder;
         }
 
-        
+        public int getAvailableQuantity(int productId)
+        {
+            throw new NotImplementedException();
+        }
+
         public Product GetSingleProductFromOrder(int orderId, int productId)
         {
 
@@ -206,6 +210,11 @@ namespace bangazon_cli.Managers
                 Console.WriteLine("Get Single Product From Order Error", err.Message);
                 return null;
             }
+        }
+
+        public bool hasAvailableQuantity(int productId)
+        {
+            throw new NotImplementedException();
         }
     }
 }
