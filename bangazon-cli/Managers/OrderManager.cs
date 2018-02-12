@@ -27,7 +27,7 @@ namespace bangazon_cli.Managers
             this.CreateOrderProductTable();
         }
 
-
+        // created the Order table if it doesn't exist
         private void CreateOrderTable() {
             try {
                 _db.Update(@"CREATE TABLE IF NOT EXISTS `Order` (
@@ -43,7 +43,7 @@ namespace bangazon_cli.Managers
             }
         }
 
-        // creates the OrderProduct joiner table 
+        // creates the OrderProduct joiner table if it doesn't exist
         private void CreateOrderProductTable() {
             try {
                 _db.Update(@"CREATE TABLE IF NOT EXISTS `OrderProduct` (
@@ -60,8 +60,8 @@ namespace bangazon_cli.Managers
         }
         /*
             Adds a Order record to the database
-            Parameters: 
-                - Order object
+            Parameters: Order object
+            Returns the Id of the order, that is created by the database
         */        
         public int AddOrder(Order order) {
             string SQLInsert = $@"INSERT INTO `Order`
@@ -82,7 +82,11 @@ namespace bangazon_cli.Managers
             return orderId;
         }
 
-        // returns customer's unpaid order from the database
+        /* 
+            Function that returns customer's unpaid order from the database
+            Parameter: customerId - used to query the database and find the current user's active, unpaid order
+            Returns an order object that matches the query.
+        */
         public Order GetUnpaidOrder(int customerId) {
             // initialize a new order to hold the return from db
             Order order = new Order(customerId);
@@ -132,6 +136,7 @@ namespace bangazon_cli.Managers
         Function to check if customer's order contains a product.
         Parameters are: orderId
         OrderId is used to retrieve the order from the database.
+        Returns an order containing a list of all the products associated with the order
         */
         public Order GetProductsFromOrder(int orderId)
         {
@@ -172,14 +177,15 @@ namespace bangazon_cli.Managers
             return CurrentOrder;
         }
 
+
         /*
         Function allows the user to retrieve a single product that is on an order
         Parameters are:
         orderId, productId
         
         Parameters orderId and ProductId are used to find an order in the database that has a matching orderId and also contains a product that matches the productId.
+        Returns a matching product
         */
-
          
         public Product GetSingleProductFromOrder(int orderId, int productId)
         {
@@ -222,10 +228,13 @@ namespace bangazon_cli.Managers
                 return null;
             }
         }
+
+
         /*
             Function to allow a customer's order to be closed and paid for by adding a payment type and a current date to the respective fields on the order. 
             Parameters are:
             OrderId, PaymentTypeId
+            Returns a boolean value of whether the order was successfully closed by saving the changes to the database. Changes will be adding payment type and completion date
         */
         public bool CloseOrder(int orderId, int paymentTypeId)
         {
@@ -259,6 +268,7 @@ namespace bangazon_cli.Managers
         /*
             Function to find an order by Id and return it
             Parameters: orderId
+            Returns a matching order
         */
         public Order GetOrderById(int orderId)
         {

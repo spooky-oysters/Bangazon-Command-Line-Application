@@ -36,7 +36,7 @@ namespace bangazon_cli.Menus
         public void Show()
         {   
             // clear the console
-            Console.WriteLine("");
+            Console.Clear();
 
             Order UserOrder = _orderManager.GetUnpaidOrder(_customer.Id);
             // get the users order
