@@ -150,7 +150,7 @@ namespace bangazon_cli.Managers.Tests
 
             // make it a completed order
 
-            int availableQuantity = _orderManager.getAvailableQuantity(productId);
+            int availableQuantity = _orderManager.getAvailableQuantity(testProduct);
 
             Assert.Equal(testProduct.Quantity-1, availableQuantity);
 
@@ -196,7 +196,7 @@ namespace bangazon_cli.Managers.Tests
 
             // make it a completed order
 
-            bool isAvailable = _orderManager.hasAvailableQuantity(productId);
+            bool isAvailable = _orderManager.hasAvailableQuantity(testProduct);
 
             Assert.False(isAvailable);
             
