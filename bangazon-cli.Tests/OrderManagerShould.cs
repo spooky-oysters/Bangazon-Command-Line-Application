@@ -138,18 +138,68 @@ namespace bangazon_cli.Managers.Tests
 
             // create new order and add it to the system
             Order testOrder = new Order(customerId);
+            testOrder.CompletedDate = DateTime.Now;
+            testOrder.PaymentTypeId = paymentTypeId;
             int orderId = _orderManager.AddOrder(testOrder);
             
+            // manually update the value to closed status
+            _db.Update($"UPDATE `Order` SET CompletedDate = current_timestamp, PaymentTypeId = {paymentTypeId}");
+
             // add our product to the system
             _orderManager.AddProductToOrder(orderId,productId);
 
             // make it a completed order
-            testOrder.CompletedDate = DateTime.Now;
-            testOrder.PaymentTypeId = paymentTypeId;
 
             int availableQuantity = _orderManager.getAvailableQuantity(productId);
 
-            Assert.Equal(4, availableQuantity);
+            Assert.Equal(testProduct.Quantity-1, availableQuantity);
+
+        }
+
+        [Fact]
+        public void checkIfQuantityIsAvailable() {
+
+            // create a new customer
+            int customerId = _customerManager.AddCustomer(_customer);
+
+            // create a new product for this customer
+            Product testProduct = new Product()
+            {
+                CustomerId = customerId,
+                Name = "Bicycle",
+                Price = 55.25,
+                Description = "Awesome bike",
+                Quantity = 1
+            };
+            // Add product to the database
+            int productId = _productManager.AddProduct(testProduct);
+            // generate new payment type
+            PaymentType paymentType = new PaymentType();
+            paymentType.CustomerId = customerId;
+            paymentType.AccountNumber = 123456;
+            paymentType.Type = "Visa";
+            
+            // add payment type
+            int paymentTypeId = _paymentTypeManager.AddNewPaymentType(paymentType, customerId);
+
+            // create new order and add it to the system
+            Order testOrder = new Order(customerId);
+            testOrder.CompletedDate = DateTime.Now;
+            testOrder.PaymentTypeId = paymentTypeId;
+            int orderId = _orderManager.AddOrder(testOrder);
+            
+            // manually update the value to closed status
+            _db.Update($"UPDATE `Order` SET CompletedDate = current_timestamp, PaymentTypeId = {paymentTypeId}");
+
+            // add our product to the system
+            _orderManager.AddProductToOrder(orderId,productId);
+
+            // make it a completed order
+
+            bool isAvailable = _orderManager.hasAvailableQuantity(productId);
+
+            Assert.False(isAvailable);
+            
 
         }
 
