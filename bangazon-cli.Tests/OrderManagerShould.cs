@@ -111,6 +111,49 @@ namespace bangazon_cli.Managers.Tests
         }
 
         [Fact]
+        public void checkAvailableQuantity() {
+
+            // create a new customer
+            int customerId = _customerManager.AddCustomer(_customer);
+
+            // create a new product for this customer
+            Product testProduct = new Product()
+            {
+                CustomerId = customerId,
+                Name = "Bicycle",
+                Price = 55.25,
+                Description = "Awesome bike",
+                Quantity = 5
+            };
+            // Add product to the database
+            int productId = _productManager.AddProduct(testProduct);
+            // generate new payment type
+            PaymentType paymentType = new PaymentType();
+            paymentType.CustomerId = customerId;
+            paymentType.AccountNumber = 123456;
+            paymentType.Type = "Visa";
+            
+            // add payment type
+            int paymentTypeId = _paymentTypeManager.AddNewPaymentType(paymentType, customerId);
+
+            // create new order and add it to the system
+            Order testOrder = new Order(customerId);
+            int orderId = _orderManager.AddOrder(testOrder);
+            
+            // add our product to the system
+            _orderManager.AddProductToOrder(orderId,productId);
+
+            // make it a completed order
+            testOrder.CompletedDate = DateTime.Now;
+            testOrder.PaymentTypeId = paymentTypeId;
+
+            int availableQuantity = _orderManager.getAvailableQuantity(productId);
+
+            Assert.Equal(4, availableQuantity);
+
+        }
+
+        [Fact]
         public void Dispose()
         {
             _db.DeleteTables();
