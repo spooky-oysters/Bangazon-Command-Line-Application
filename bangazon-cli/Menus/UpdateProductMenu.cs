@@ -109,12 +109,23 @@ namespace bangazon_cli.Menus
                                 break;
 
                             case 4:
-
-                                Console.WriteLine("Enter new product quantity");
-                                Console.Write("> ");
-                                product.Quantity = Convert.ToInt32(Console.ReadLine());
-                                displayUpdate(product, id);
-                                break;
+                                // checks if product that will be updated is already on any orders. User may only add to product quantity if == true
+                                if (_productManager.IsProductOnOrder(id) == true)
+                                {
+                                    Console.WriteLine("Add additional quantity to product");
+                                    Console.Write("> ");
+                                    product.Quantity += Convert.ToInt32(Console.ReadLine());
+                                    displayUpdate(product, id);
+                                    break;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Update product quantity. Ex: 45 to add quantity. -45 to remove quantity.");
+                                    Console.Write("> ");
+                                    product.Quantity += Convert.ToInt32(Console.ReadLine());
+                                    displayUpdate(product, id);
+                                    break;
+                                }
 
                             case 5:
                                 _productManager.Update(id, _activeCustomer.Id, product);
