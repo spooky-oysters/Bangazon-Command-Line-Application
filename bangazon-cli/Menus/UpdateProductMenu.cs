@@ -90,7 +90,6 @@ namespace bangazon_cli.Menus
                                 Console.Write("> ");
                                 product.Name = Console.ReadLine();
                                 displayUpdate(product, id);
-                                _productManager.UpdateName(_product, product.Name);
                                 break;
 
                             case 2:
@@ -99,7 +98,6 @@ namespace bangazon_cli.Menus
                                 Console.Write("> ");
                                 product.Price = Convert.ToDouble(Console.ReadLine());
                                 displayUpdate(product, id);
-                                _productManager.UpdatePrice(_product, product.Price);
                                 break;
 
                             case 3:
@@ -108,7 +106,6 @@ namespace bangazon_cli.Menus
                                 Console.Write("> ");
                                 product.Description = Console.ReadLine();
                                 displayUpdate(product, id);
-                                _productManager.UpdateDescription(_product, product.Description);
                                 break;
 
                             case 4:
@@ -117,7 +114,10 @@ namespace bangazon_cli.Menus
                                 Console.Write("> ");
                                 product.Quantity = Convert.ToInt32(Console.ReadLine());
                                 displayUpdate(product, id);
-                                _productManager.UpdateQuantity(_product, product.Quantity);
+                                break;
+
+                            case 5:
+                                _productManager.Update(id, _activeCustomer.Id, product);
                                 break;
                         }
                         // if user selects invalid choice, return to product menu
@@ -133,7 +133,6 @@ namespace bangazon_cli.Menus
             else
             {
                 Console.WriteLine("No products found for current customer.");
-                // UpdateProductMenu.Show();
             }
         }
 
