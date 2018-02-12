@@ -2,7 +2,9 @@ select
 	c.Name as "Customer Name", 
 	o.Id as "Order Number", 
 	p.Name as "Product Name", 
-	SUM(p.Quantity * p.Price) as "Total" 
+	p.Quantity as "Quantity",
+	p.price as "Price",
+	SUM(p.Quantity * p.Price) as "Total Revenue Per Product" 
 from 
 	Customer c, 
 	`Order` o, 
