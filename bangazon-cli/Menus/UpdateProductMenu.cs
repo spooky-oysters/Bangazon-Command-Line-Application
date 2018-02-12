@@ -29,6 +29,8 @@ namespace bangazon_cli.Menus
 
         public void Show()
         {
+            // clear console
+            Console.Clear();
             // get all customer's products
             List<Product> customerProducts = _productManager.GetProducts(_activeCustomer.Id);
 
@@ -128,6 +130,7 @@ namespace bangazon_cli.Menus
                                 }
 
                             case 5:
+
                                 _productManager.Update(id, _activeCustomer.Id, product);
                                 break;
                         }
