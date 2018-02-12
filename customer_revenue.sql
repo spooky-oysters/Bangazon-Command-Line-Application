@@ -4,12 +4,14 @@ select
 	p.Name as "Product Name", 
 	p.Quantity as "Quantity",
 	p.price as "Price",
-	SUM(p.Quantity * p.Price) as "Total Revenue Per Product" 
+	SUM(p.Quantity * p.Price) as "Total Revenue Per Product" ,
+	pt.Type as "Payment Type"
 from 
 	Customer c, 
 	`Order` o, 
 	Product p, 
-	OrderProduct op
+	OrderProduct op,
+	PaymentType pt
 where c.Id = p.CustomerId
 and p.Id = op.ProductId
 and c.Id = o.CustomerId
