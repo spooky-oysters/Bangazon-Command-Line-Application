@@ -310,13 +310,16 @@ namespace bangazon_cli.Managers
          */
         public int getAvailableQuantity(Product product)
         {
-            int intialQuantity = product.Quantity;
+            int initialQuantity = product.Quantity;
             int soldQuantity = 0;
 
-            _db.Query($@"SELECT Count(*) as Sold FROM Product p 
-                        LEFT JOIN OrderProduct op ON p.Id = op.ProductId
-                        LEFT JOIN (SELECT * from `Order` WHERE CompletedDate is not null) o ON op.OrderId = o.Id
-                        WHERE p.Id = {product.Id};",
+            _db.Query($@"SELECT Count(*) as Sold 
+					    FROM
+                        OrderProduct op, 
+						`Order` o
+						WHERE o.CompletedDate is not null
+						AND op.OrderId = o.Id
+                        AND op.ProductId = {product.Id};",
 
                      (SqliteDataReader reader) =>
                             {
@@ -330,7 +333,7 @@ namespace bangazon_cli.Managers
                                 }
                     });
                     
-            return intialQuantity - soldQuantity;
+            return initialQuantity - soldQuantity;
         }
 
         /*

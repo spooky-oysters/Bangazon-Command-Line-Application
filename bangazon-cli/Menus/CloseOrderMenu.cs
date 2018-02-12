@@ -76,7 +76,7 @@ namespace bangazon_cli.Menus
 
                 UserOrder.Products.ForEach(product => 
                 {
-                    if (_orderManager.hasAvailableQuantity(product.Id)) 
+                    if (_orderManager.hasAvailableQuantity(product)) 
                     {
                         // loop through the user's products from the shopping cart and add the price of each to the OrderTotal
                         OrderTotal += product.Price;
