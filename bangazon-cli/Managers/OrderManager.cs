@@ -169,8 +169,8 @@ namespace bangazon_cli.Managers
             Summary: Queries the database and returns the available quantity for a product
                     this is the result of the product quantity minus the total number of 
                     order rows for the product on closed orders (PaymentTypeId is not null)
-            Parameter: Product Id
-            Returns: true of false
+            Parameter: Product object
+            Returns: amount of available product (initial minus sold)
          */
         public int getAvailableQuantity(Product product)
         {
@@ -200,11 +200,11 @@ namespace bangazon_cli.Managers
         /*
             Author: Krys Mathis
             Summary: Checks if available quantity is > 0
-            Parameter: Product Id
+            Parameter: Product object
             Returns: true of false
          */
-        public bool hasAvailableQuantity(int productId){
-            return getAvailableQuantity(productId) > 0;
+        public bool hasAvailableQuantity(Product product){
+            return getAvailableQuantity(product) > 0;
         }
 
         public Product GetSingleProductFromOrder(int orderId, int productId)
