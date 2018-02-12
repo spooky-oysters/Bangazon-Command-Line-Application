@@ -105,7 +105,11 @@ namespace bangazon_cli.Managers
             return order;
         }
 
-        // store a product on an order, by using a joiner table
+        /* 
+        Function to store a product on an order, by adding a record to the OrderProduct joiner table
+        Parameters: orderId, productId
+        Parameters are used to create a new record on the OrderProduct table that shows the relationship of the product being placed on the order with that orderId. 
+        */
         public void AddProductToOrder(int orderId, int productId)
         {
             // add the product and order relationship to the OrderProduct join table
@@ -124,7 +128,11 @@ namespace bangazon_cli.Managers
         }
 
         
-        // function to check if customer's order contains a product.
+        /* 
+        Function to check if customer's order contains a product.
+        Parameters are: orderId
+        OrderId is used to retrieve the order from the database.
+        */
         public Order GetProductsFromOrder(int orderId)
         {
             // initialize a new order to hold the return from db
@@ -164,10 +172,15 @@ namespace bangazon_cli.Managers
             return CurrentOrder;
         }
 
+        /*
+        Function allows the user to retrieve a single product that is on an order
+        Parameters are:
+        orderId, productId
         
+        Parameters orderId and ProductId are used to find an order in the database that has a matching orderId and also contains a product that matches the productId.
+        */
         public Product GetSingleProductFromOrder(int orderId, int productId)
         {
-
             try {
                 // initialize a new order to hold the return from db
                 Order CurrentOrder = new Order();
@@ -203,6 +216,84 @@ namespace bangazon_cli.Managers
                 return CurProduct;
 
             } catch  (Exception err) {
+                Console.WriteLine("Get Single Product From Order Error", err.Message);
+                return null;
+            }
+        }
+        /*
+            Function to allow a customer's order to be closed and paid for by adding a payment type and a current date to the respective fields on the order. 
+            Parameters are:
+            OrderId, PaymentTypeId
+        */
+        public bool CloseOrder(int orderId, int paymentTypeId)
+        {
+            // get the current date to place on the order as a closing date
+            // DateTime currentDate = DateTime.UtcNow;
+
+            //update order record in Database by adding paymentTypeId and currentDate
+            string SQLUpdate = $@"UPDATE `Order` 
+            SET PaymentTypeId = {paymentTypeId},
+                CompletedDate = current_timestamp
+            WHERE `Id` = {orderId};
+            ";
+
+            // initialize a variable to hold whether order was successfully updated
+            bool success;
+            // try to update database
+            try
+            {
+                _db.Update(SQLUpdate);
+                success = true;
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine("Close Order Error", err.Message);
+                success = false;
+            }
+            // return whether db update was successful
+            return success;
+        }
+
+        /*
+            Function to find an order by Id and return it
+            Parameters: orderId
+        */
+        public Order GetOrderById(int orderId)
+        {
+            // initialize an order
+            Order RequestedOrder = new Order();
+
+            // query the database for a matching order
+            try {
+                _db.Query($@"SELECT o.Id as OrderId, o.CustomerId as CustomerId, o.PaymentTypeId as PaymentTypeId, o.CompletedDate as CompletedDate
+                    FROM `Order` o
+                    WHERE o.Id = {orderId};
+                    ",
+                    (SqliteDataReader reader) =>
+                    {
+                        while (reader.Read())
+                        {
+                            // assign order details to the order created above
+                            // use .GetValueOrDefault() to correctly either return the correct value and type stored in DB, or return Null. 
+                            RequestedOrder.Id = Convert.ToInt32(reader["OrderId"]);
+                            RequestedOrder.CustomerId = Convert.ToInt32(reader["CustomerId"]);
+                            try {
+                                RequestedOrder.PaymentTypeId  = Convert.ToInt32(reader["PaymentTypeId"]);
+                            } catch (Exception err) {
+                                RequestedOrder.PaymentTypeId = null;
+                            }
+                            try {
+                                RequestedOrder.CompletedDate = Convert.ToDateTime(reader["CompletedDate"]);
+                            } catch (Exception err) {
+                                RequestedOrder.CompletedDate = null;
+                            }
+                            
+                        }
+                    });
+                    // return the RequestedOrder out of the function
+                    return RequestedOrder;
+
+            } catch (Exception err) {
                 Console.WriteLine("Get Single Product From Order Error", err.Message);
                 return null;
             }
