@@ -166,9 +166,29 @@ namespace bangazon_cli.Managers
 
         public int getAvailableQuantity(int productId)
         {
-            return 4;
+            int availableQuantity = 0;
+
+            _db.Query($@"SELECT (p.Quantity - Count(*)) as Available
+                    FROM `Order` o, OrderProduct op, Product p
+                    WHERE o.Id = op.OrderId
+                    AND op.ProductId = p.Id
+                    AND o.PaymentTypeId is not null
+                    AND op.ProductId = {productId}",
+
+                     (SqliteDataReader reader) =>
+                            {
+                                while (reader.Read())
+                                {
+                                    // assign order details to the order created above
+                                    availableQuantity = Convert.ToInt32(reader["Available"]);
+                                }
+                            });
+            return availableQuantity;
         }
 
+        public bool hasAvailableQuantity(int productId){
+            return false;
+        }
         public Product GetSingleProductFromOrder(int orderId, int productId)
         {
 
