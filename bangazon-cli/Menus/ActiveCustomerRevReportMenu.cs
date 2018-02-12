@@ -1,3 +1,4 @@
+/*
 using System;
 using bangazon_cli.Models;
 using Microsoft.Data.Sqlite;
@@ -16,6 +17,8 @@ namespace bangazon_cli.Menus
             - OrderProduct object
             - PaymentType object
     */
+    /*
+     
 
     public class ViewActiveCustomerRevReport
     {
@@ -24,19 +27,17 @@ namespace bangazon_cli.Menus
         private Order _order;
         private Product _product;
         private PaymentType _paymentType;
-        private OrderProduct _orderProduct;
 
-        public ViewReportMenu(Customer customer, Order order, Product product, PaymentType paymentType, OrderProduct orderProduct)
+        public ViewReportMenu(Customer customer, Order order, Product product, PaymentType paymentType)
         {
             _customer = customer;
             _order = order;
             _product = product;
             _paymentType = paymentType;
-            _orderProduct = orderProduct;
         }
 
         // Displays view report menu to user
-        public Show()
+        public void Show()
         {
             Console.Clear();
             // missing option to exit report
@@ -57,8 +58,7 @@ namespace bangazon_cli.Menus
                     Product p,
                     PaymentType pt,
                     OrderProduct op
-                where c.Id = {id}
-                and c.Id = p.CustomerId
+                where c.Id = p.CustomerId
                 and p.Id = op.ProductId
                 and c.Id = o.CustomerId
                 and o.id = op.OrderId
@@ -73,7 +73,8 @@ namespace bangazon_cli.Menus
                     // missing SUM
                     paymentType.Type = Convert.ToString(reader["Payment Type"]);
                 });
-                return Console.WriteLine(GenerateReport(id));
+                // output data
+                Console.WriteLine();
                 
             } while (ouput < 1);
         }
@@ -81,5 +82,6 @@ namespace bangazon_cli.Menus
 
 
 }
+*/
 
 
