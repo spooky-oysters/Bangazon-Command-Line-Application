@@ -101,7 +101,7 @@ When a customer no longer wishes to list one of their items, this menu option al
 **Only items that are not on an order can be deleted.** For data integrity reasons, Bangazon must keep records for ordered items for up to 10 years.
 
 ### Add products to shopping cart
-When a customer wants to purchase an item, this menu option guides them through the steps to add an item to their shopping carts. They can continue shopping if they like and complete their order at a later time.
+When a customer wants to purchase a product, this menu option guides them through the steps to add a product to their shopping cart. The user will only be presented with products that have an "In Stock" status with available inventory. They can continue shopping if they like and complete their order at a later time. 
 
 Sample of menu options:
 ```sh
@@ -114,7 +114,7 @@ Choose a Product to add to the order:
 ```
 
 ### Complete an order
-Completing an order means the customer is ready to pay. This menu allows the user to associate an order with a customer's payment type. This action closes an order in the Bangazon system.
+Completing an order means the customer is ready to pay. This menu allows the user to associate an order with a customer's payment type. This action closes an order in the Bangazon system. A closed order is an order which includes a paymentTypeId and a CompleteDate on it's database record. 
 
 A check on available inventory is made when an order is closed. Any items that are out of stock are automatically removed from the order. 
 
@@ -171,7 +171,7 @@ To run the test project:
 1. Navigate to the banazon-cli.Tests project
 1. run the command ```dotnet test``
 
-At the time of this writing, there are 26 unit tests. **Run these each time you refactor or add features**
+At the time of this writing, there are 27 unit tests. **Run these each time you refactor or add features**
 
 ### Architecture:
 
@@ -207,9 +207,9 @@ public class ExampleClass
 ### Managers
 All managers take, as part of their constructors, a DatabaseInterface object. They communicate with the database and essentially manage the database actions related to a specific feature or data model.
 
-For example, the CustomerManager manages the database queries relate to data.
+For example, the CustomerManager manages the database queries related to customer data.
 
-### Menus
+### Menu
 The menu classes control the visual interaction of the program and accept user input. These classes allow the program to coordinate between user input and Managers.
 
 ### Models
