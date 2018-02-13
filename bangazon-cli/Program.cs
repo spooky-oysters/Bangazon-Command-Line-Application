@@ -64,7 +64,7 @@ namespace bangazon_cli
 
                     /*
                         Add product to active customer 
-                     */
+                    */
                     case 4:
                         {
                             AddProductMenu addProductMenu = new AddProductMenu(activeCustomer, new Product(), productManager);
@@ -106,6 +106,19 @@ namespace bangazon_cli
                             addProductToCartMenu.Show();
                             break;
                         }
+
+                    /*
+                        Allow user to complete order.
+                        Checks to make sure active customer's order contains products
+                        If products exist on order, displays the total order amount in dollars.
+                        Allows user to Add Payment type to their order.
+                    */
+
+                    case 8: {
+                        CloseOrderMenu closeOrderMenu = new CloseOrderMenu(activeCustomer, orderManager, productManager, paymentTypeManager);
+                        closeOrderMenu.Show();
+                        break;
+                    }
 
 
                     default:

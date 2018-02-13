@@ -31,49 +31,64 @@ namespace bangazon_cli.Menus
             Summary: Displays the add customer menu to the user
          */
         public void Show() {
-            if (_customer.Id > 0) {
-                // get a list of all products in the database
-                List<Product> AllProducts = _productManager.GetProducts();
-                
-                // create variable to hold the user choice
-                int output = 0;
+            // get a list of all products in the database
+            List<Product> AllProducts = _productManager.GetProducts();
+            
+            // create variable to hold the user choice
+            int output = 0;
 
-                // create a variable to hold a number to use as the menu number.
-                int menuNum = 1;
+            // create a variable to hold a number to use as the menu number.
+            int menuNum = 1;
 
-                do {
-                    // start the menuNum at 1 for each loop
-                    menuNum = 1;
+            // create a list of products to hold all the available products with quantities greated than 0
+            List<Product> AllAvailableProducts = new List<Product>();
 
-                    // Clear the console
-                    Console.Clear();
+            do {
+                // start the menuNum at 1 for each loop
+                menuNum = 1;
 
-                    if (AllProducts.Count > 0) {
-                    // Loop through list of products and print each to console.
+                // Clear the console
+                Console.Clear();
+
+                // check if there are products in the database
+                if (AllProducts.Count > 0) {
+                    
                     Console.WriteLine("Choose a Product to add to the order:");
-                        Console.WriteLine();
+                    Console.WriteLine();
+
+                    // Loop through list of products and only print available products to the console, which are products with a quantity greater than 0. 
                     foreach (Product product in AllProducts)
                     {
-                        Console.WriteLine($"{menuNum}. {product.Name}");
-                        menuNum++;
+                        if (_orderManager.hasAvailableQuantity(product)) {
+                            // add product to list of available products
+                            AllAvailableProducts.Add(product);
+                            Console.WriteLine($"{menuNum}. {product.Name}");
+                            menuNum++;
+                        }
                     }
-                    } else {
-                        Console.WriteLine("*** NO PRODUCTS CURRENTLY IN SYSTEM ***");
-                        Console.WriteLine("*** PRESS ENTER TO CONTINUE.        ***");
+                    // show alert to user if there are no available products
+                    if (AllAvailableProducts.Count() < 1) {
+                        Console.WriteLine("*** NO PRODUCTS CURRENTLY AVAILABLE TO PURCHASE. ***");
                     }
+                } else {
+                    // if there are no products, alert the user
+                    Console.WriteLine("*** NO PRODUCTS CURRENTLY IN SYSTEM ***");
+                    Console.WriteLine("*** PRESS ENTER TO CONTINUE.        ***");
+                }
 
-                    Console.WriteLine ($"{menuNum+1}. Exit back to Main Menu. ");
+                // menu option to exit back to main menu. This will always be the last number, no matter how many products are in the system.
+                Console.WriteLine ($"{menuNum + 1}. Exit back to Main Menu. ");
 
-                    Console.Write ("> ");
-                    ConsoleKeyInfo enteredKey = Console.ReadKey();
-                    Console.WriteLine("");
-                    int.TryParse(enteredKey.KeyChar.ToString(), out output);
+                Console.Write ("> ");
+                String enteredKey = Console.ReadLine();
+                Console.WriteLine("");
+                int.TryParse(enteredKey, out output);
 
-                    if (output != menuNum + 1) {
+                if(output != menuNum + 1) {
                     // find the selected product from the list
-                    Product selectedProduct = AllProducts.ElementAt(output - 1);
+                    Product selectedProduct = AllAvailableProducts.ElementAt(output - 1);
 
-                    //retrieve customers Unpaid order
+                    // retrieve customer's Unpaid order
                     Order customerOrder = _orderManager.GetUnpaidOrder(_customer.Id);
 
                     // check if the customer does not have a current order started. If they do not, add an order and retrieve it to get the OrderId. 
@@ -85,17 +100,13 @@ namespace bangazon_cli.Menus
                     // create a record in the OrderProduct table for the relationship of the selected product and the customer's orderId
                     _orderManager.AddProductToOrder(customerOrder.Id, selectedProduct.Id);
 
-                    Console.WriteLine("*** PRESS ENTER TO CONTINUE ***");
-                    Console.ReadLine();
-                    }
-                    
-                } while (output != menuNum+1);
-            } else {
-                Console.WriteLine("*** SELECT AN ACTIVE CUSTOMER FIRST! ***");
-                Console.WriteLine("*** PRESS ENTER TO CONTINUE ***");
-                Console.ReadLine();
-            }
-
+                    // Alert the user press enter to continue adding products or to select the option to got back to main menu
+                    Console.WriteLine("*** Press ENTER to continue to add products                   ***");
+                    Console.WriteLine($"*** Or Choose {menuNum + 1} and press enter to exit back to main menu. ***");
+                    int.TryParse(Console.ReadLine(), out output);
+                }
+                
+            } while (output != menuNum + 1);
         }
 
     }

@@ -24,6 +24,7 @@ namespace bangazon_cli.Managers.Tests
         private readonly PaymentTypeManager _paymentTypeManager;
         private Order _testOrder;
         private Product _testProduct;
+        private PaymentType _paymentType1;
 
         // constructor for unit test
         public OrderManagerShould()
@@ -74,7 +75,8 @@ namespace bangazon_cli.Managers.Tests
             int orderId = _orderManager.AddOrder(_testOrder);
             
             // retrieve the order
-            Order retrievedOrder = _orderManager.GetUnpaidOrder(CustomerId);   
+            // Order retrievedOrder = _orderManager.GetUnpaidOrder(CustomerId);   
+            Order retrievedOrder = _orderManager.GetOrderById(orderId);   
             // check if the fields all match between the order sent to the db and the order retrieved from the db
             Assert.Equal(retrievedOrder.Id, orderId);
             Assert.Equal(retrievedOrder.CustomerId, CustomerId);
@@ -111,6 +113,49 @@ namespace bangazon_cli.Managers.Tests
         }
 
         [Fact]
+        public void CloseOrder()
+        {   
+            // add customer to DB and get id
+            int CustomerId = _customerManager.AddCustomer(_customer);
+            // add the customerId to _testOrder
+            _testOrder.CustomerId = CustomerId;
+            // add the customerId to _testProduct
+            _testProduct.CustomerId = CustomerId;
+
+            // Variable initialization for Payment Type
+            _paymentType1 = new PaymentType();
+            // Adds properties to the _paymentType instance
+            _paymentType1.Type = "Mastercard";
+            _paymentType1.AccountNumber = 12345678910;
+
+            // add a test order
+            int orderId = _orderManager.AddOrder(_testOrder);
+            // add a test product
+            int productId = _productManager.AddProduct(_testProduct);
+
+            // Adds the _paymentType to the _paymentList in the paymentTypeManager, passes in a customerId
+            int paymentId = _paymentTypeManager.AddNewPaymentType(_paymentType1, CustomerId);
+
+            // get the user's unpaid order
+            Order customerOrder = _orderManager.GetUnpaidOrder(CustomerId);
+
+            // Close the order by adding the payment type selected
+            _orderManager.CloseOrder(customerOrder.Id, paymentId);
+
+            // retrieve the order and Assert that the updated values match
+            Order retrievedOrder = _orderManager.GetOrderById(orderId);
+
+            // Get the payment type info used on the order
+            // since PaymentTypeId is currently a nullable int type, convert it to an int to use it to retrieve the payment Type details 
+            int retrievedPaymentTypeId = retrievedOrder.PaymentTypeId ?? default(int);
+            PaymentType retrievedPaymentType = _paymentTypeManager.GetSinglePaymentType(retrievedPaymentTypeId);
+
+            // Assert that the payment type matches what we used to close the order
+            Assert.Equal("Mastercard", retrievedPaymentType.Type);
+            Assert.Equal(12345678910, retrievedPaymentType.AccountNumber);
+        }
+
+
         public void checkAvailableQuantity() {
 
             // create a new customer
@@ -199,8 +244,52 @@ namespace bangazon_cli.Managers.Tests
             bool isAvailable = _orderManager.hasAvailableQuantity(testProduct);
 
             Assert.False(isAvailable);
-            
+        }
 
+        /*
+            Function to manage removing a product from an order, either manually or when an order is being closed and a product is out of stock.
+        */
+        [Fact]
+        public void RemoveProductFromOrder()
+        {
+            // create a new customer
+            int customerId = _customerManager.AddCustomer(_customer);
+
+            // create a new product for this customer
+            Product testProduct = new Product()
+            {
+                CustomerId = customerId,
+                Name = "Bicycle",
+                Price = 55.25,
+                Description = "Awesome bike",
+                Quantity = 1
+            };
+
+            // Add product to the database
+            int productId = _productManager.AddProduct(testProduct);
+
+            // create new order and add it to the system
+            Order testOrder = new Order(customerId);
+            testOrder.CompletedDate = DateTime.Now;
+            int orderId = _orderManager.AddOrder(testOrder);
+
+            // add a product to the order
+            _orderManager.AddProductToOrder(orderId, productId);
+
+            // get the count of the OrderProduct table
+            Order retrievedOrder = _orderManager.GetProductsFromOrder(orderId);
+            int productCount = retrievedOrder.Products.Count();
+
+            // remove the product from the order
+            bool SuccessfulRemoval = _orderManager.RemoveProductFromOrder(orderId, productId);
+
+            // get the count of the OrderProduct table again and confirm that one entry has been erased
+            Order DeletedProductOrder = _orderManager.GetProductsFromOrder(orderId);
+            int deletedOrderProductCount = DeletedProductOrder.Products.Count();
+
+            // check if the count of the products on the order is one fewer after removing the product.
+            Assert.Equal(deletedOrderProductCount, productCount -1); 
+            
         }
 
         [Fact]
