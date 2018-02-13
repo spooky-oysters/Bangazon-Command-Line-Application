@@ -1,3 +1,5 @@
+using System;
+
 namespace bangazon_cli.Models
 {
     /*
@@ -7,6 +9,7 @@ namespace bangazon_cli.Models
     public class Product
     {
         public int Id { get; set; }
+        public DateTime DateAdded { get; set; } = DateTime.Now;
         public int CustomerId { get; set; }
         public string Name { get; set; }
         public double Price { get; set; }

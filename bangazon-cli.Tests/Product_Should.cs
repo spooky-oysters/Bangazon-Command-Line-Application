@@ -19,8 +19,9 @@ namespace bangazon_cli.Models.Tests
         public void ProductHasProperties()
         {
             Product product = new Product();
+            DateTime date = DateTime.Now;
             product.Id = 1;
-            // active customer Id - this is hard coded for the time being
+            product.DateAdded = date;
             product.CustomerId = 1;
             product.Name = "Kite";
             product.Price = 45.00;
@@ -28,6 +29,7 @@ namespace bangazon_cli.Models.Tests
             product.Quantity = 3;
 
             Assert.Equal(product.Id, 1);
+            Assert.Equal(product.DateAdded, date);
             Assert.Equal(product.CustomerId, 1);
             Assert.Equal(product.Name, "Kite");
             Assert.Equal(product.Price, 45.00);

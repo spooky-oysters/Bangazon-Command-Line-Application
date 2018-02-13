@@ -90,10 +90,21 @@ Once the user selects an active user, the system reveals the full menu:
 Provides the ability to assign a payment option to the active customer. Customers can have up to 8 payment options in the system.
 
 ### Adding a product to active customer
-Allows the user to add a product to the active customer. The system guides the user step-by-step through the product set-up process.
+Allows the user to add a product to the active customer. The system guides the user step-by-step through the product set-up process one at a time: 
+
+```sh
+Enter product name
+> Custom Wooden Table
+Enter product price
+> 1199.99
+Enter product description
+> Made from reclaimed cedar. 
+Enter product quantity
+> 2
+```
 
 ### Update active customer's product
-Changes happen. If a customer needs to update the information about one of their products, this menu will prompt the user for the type of change then allow the user to make the change to the product.
+Changes happen. If a customer needs to update the information about one of their products, this menu will prompt the user for the type of change (product name, product price, etc.) then allow the user to make the change to the product. Note: if product is on an existing order, the product quantity can only have more quantity added. If the product is not on any orders, the product quantity can be updated to either add or remove quantity.
 
 ### Delete active customer's product
 When a customer no longer wishes to list one of their items, this menu option allows the user to de-list an item for the active user.

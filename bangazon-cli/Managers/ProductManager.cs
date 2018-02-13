@@ -28,6 +28,7 @@ namespace bangazon_cli.Managers
                 _db.Update(@"CREATE TABLE IF NOT EXISTS
                 `Product` (
                     `Id` INTEGER PRIMARY KEY AUTOINCREMENT,
+                    `DateAdded` TEXT NOT NULL,
                     `CustomerId` INTEGER NOT NULL,
                     `Name` TEXT NOT NULL,
                     `Price` DOUBLE NOT NULL,
@@ -54,6 +55,7 @@ namespace bangazon_cli.Managers
             string SQLInsert = $@"INSERT INTO `Product`
             VALUES (
                 null,
+                '{product.DateAdded}',
                 '{product.CustomerId}',
                 '{product.Name}',
                 '{product.Price}',
@@ -89,6 +91,7 @@ namespace bangazon_cli.Managers
                         // new product object
                         Product product = new Product();
                         product.Id = Convert.ToInt32(reader["Id"]);
+                        product.DateAdded = Convert.ToDateTime(reader["DateAdded"]);
                         product.CustomerId = Convert.ToInt32(reader["CustomerId"]);
                         product.Name = Convert.ToString(reader["Name"]);
                         product.Price = Convert.ToDouble(reader["Price"]);
@@ -116,6 +119,7 @@ namespace bangazon_cli.Managers
                         // new product object
                         Product product = new Product();
                         product.Id = Convert.ToInt32(reader["Id"]);
+                        product.DateAdded = Convert.ToDateTime(reader["DateAdded"]);
                         product.CustomerId = Convert.ToInt32(reader["CustomerId"]);
                         product.Name = Convert.ToString(reader["Name"]);
                         product.Price = Convert.ToDouble(reader["Price"]);
@@ -135,100 +139,6 @@ namespace bangazon_cli.Managers
             string SQLUpdate = $"UPDATE Product SET Name = '{updatedProduct.Name}', Description = '{updatedProduct.Description}', Price = '{updatedProduct.Price}', Quantity = '{updatedProduct.Quantity}' WHERE Id= {productId} AND CustomerId = {customerId}";
 
             _db.Update(SQLUpdate);
-        }
-
-        /*
-            Updates product name in database. 
-            Parameters: 
-            - Product Object
-            - String name
-        */
-        public void UpdateName(Product product, string name)
-        {
-
-            //update name in SQL
-            string SQLUpdate = $@"UPDATE `Product`
-            SET `Name` = '{product.Name = name}'
-            WHERE `Id` = {product.Id};
-            ";
-
-            try
-            {
-                _db.Update(SQLUpdate);
-            }
-            catch (Exception err)
-            {
-                Console.WriteLine("Update Product Error", err.Message);
-            }
-        }
-
-        /*
-            Updates product description in database. 
-            Parameters: 
-            - Product Object
-            - String description
-        */
-        public void UpdateDescription(Product product, string desc)
-        {
-            // update description in SQL
-            string SQLUpdate = $@"UPDATE `Product`
-            SET `Description` = '{product.Description = desc}'
-            WHERE `Id` = {product.Id}";
-
-            try
-            {
-                _db.Update(SQLUpdate);
-            }
-            catch (Exception err)
-            {
-                Console.WriteLine("Update Product Error", err.Message);
-            }
-        }
-
-        /*
-            Updates product price in database. 
-            Parameters: 
-            - Product Object
-            - Double price
-        */
-        public void UpdatePrice(Product product, double price)
-        {
-            // update price in SQL
-            string SQLUpdate = $@"UPDATE `Product`
-            SET `Price` = '{product.Price = price}'
-            WHERE `Id` = {product.Id}";
-
-            try
-            {
-                _db.Update(SQLUpdate);
-            }
-            catch (Exception err)
-            {
-                Console.WriteLine("Update Product Error", err.Message);
-            }
-        }
-
-        /*
-            Updates product price in database. 
-            Parameters: 
-            - Product Object
-            - Double price
-        */
-        public void UpdateQuantity(Product product, int quantity)
-        {
-            // update quantity in SQL
-            string SQLUpdate = $@"UPDATE `Product`
-            SET `Quantity` = '{product.Quantity = quantity}'
-            WHERE `Id` = {product.Id}";
-
-            try
-            {
-                _db.Update(SQLUpdate);
-            }
-            catch (Exception err)
-            {
-                Console.WriteLine("Update Product Error", err.Message);
-            }
         }
 
         // gets one product. Parameters: id
