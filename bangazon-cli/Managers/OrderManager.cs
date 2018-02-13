@@ -249,5 +249,6 @@ namespace bangazon_cli.Managers
                 return null;
             }
         }
+
     }
 }
