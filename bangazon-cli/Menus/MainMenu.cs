@@ -22,7 +22,7 @@ namespace bangazon_cli.Menus
             bool hasActiveCustomer = activeCustomer.Id > 0;
             int output = 0;
             bool isValidChoice = false;
-            List<int> validChoicesWithoutActiveCustomer = new List<int>(){1,2,10};
+            List<int> validChoicesWithoutActiveCustomer = new List<int>(){1,2,9,10};
             
             do {
                  Console.Clear();
@@ -48,9 +48,9 @@ namespace bangazon_cli.Menus
                     Console.WriteLine ("6. Delete active customer's product");
                     Console.WriteLine ("7. Add product to shopping cart");
                     Console.WriteLine ("8. Complete an order");
-                    Console.WriteLine ("9. View Reports");
                 }
                 
+                Console.WriteLine ("9. View Reports");
                 Console.WriteLine ("10. Leave Bangazon!");
 
                 // get the user input
