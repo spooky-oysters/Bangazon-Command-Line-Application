@@ -52,11 +52,11 @@ namespace bangazon_cli.Menus
 
                 // check if there are products in the database
                 if (AllProducts.Count > 0) {
-                    // 
-                    // Loop through list of products and only print available products to the console, which are products with a quantity greater than 0. 
+                    
                     Console.WriteLine("Choose a Product to add to the order:");
                     Console.WriteLine();
 
+                    // Loop through list of products and only print available products to the console, which are products with a quantity greater than 0. 
                     foreach (Product product in AllProducts)
                     {
                         if (_orderManager.hasAvailableQuantity(product)) {
@@ -88,7 +88,7 @@ namespace bangazon_cli.Menus
                     // find the selected product from the list
                     Product selectedProduct = AllAvailableProducts.ElementAt(output - 1);
 
-                    // retrieve customers Unpaid order
+                    // retrieve customer's Unpaid order
                     Order customerOrder = _orderManager.GetUnpaidOrder(_customer.Id);
 
                     // check if the customer does not have a current order started. If they do not, add an order and retrieve it to get the OrderId. 

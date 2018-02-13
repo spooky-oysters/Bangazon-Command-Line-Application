@@ -83,8 +83,9 @@ namespace bangazon_cli.Menus
                     } else
                     {
                         // store the names of the unavailable products
-                        string UnavailableProduct = product.Name;
-                        UnavailableProducts.Add(UnavailableProduct);
+                        UnavailableProducts.Add(product.Name);
+                        // call function to remove the out-of-stock product from the order.
+                        _orderManager.RemoveProductFromOrder(UserOrder.Id, product.Id);
                     }
                 });
 

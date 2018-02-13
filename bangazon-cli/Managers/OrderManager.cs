@@ -310,6 +310,35 @@ namespace bangazon_cli.Managers
             }
         }
 
+        /*
+            Function removes a product from an order. This will be used when an order is closed and it contains a product that is out of stock. That product will be removed from that order before it is closed.
+            Parameters: orderId, productId
+            Returns a boolean value depending on if the removal was successful.
+        */
+        public bool RemoveProductFromOrder(int orderId, int productId)
+        {
+            //update order record in Database
+            string SQLUpdate = $@"DELETE FROM OrderProduct
+            WHERE OrderId = {orderId}
+            AND ProductId = {productId};";
+
+            // initialize a variable to hold whether order was successfully updated
+            bool success;
+            // try to update database
+            try
+            {
+                _db.Update(SQLUpdate);
+                success = true;
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine("Remove Product Error", err.Message);
+                success = false;
+            }
+            // return whether db update was successful
+            return success;
+        }
+
         /* 
           Author: Krys Mathis
             Summary: Queries the database and returns the available quantity for a product

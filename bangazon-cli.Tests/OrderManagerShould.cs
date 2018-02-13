@@ -246,6 +246,52 @@ namespace bangazon_cli.Managers.Tests
             Assert.False(isAvailable);
         }
 
+        /*
+            Function to manage removing a product from an order, either manually or when an order is being closed and a product is out of stock.
+        */
+        [Fact]
+        public void RemoveProductFromOrder()
+        {
+            // create a new customer
+            int customerId = _customerManager.AddCustomer(_customer);
+
+            // create a new product for this customer
+            Product testProduct = new Product()
+            {
+                CustomerId = customerId,
+                Name = "Bicycle",
+                Price = 55.25,
+                Description = "Awesome bike",
+                Quantity = 1
+            };
+
+            // Add product to the database
+            int productId = _productManager.AddProduct(testProduct);
+
+            // create new order and add it to the system
+            Order testOrder = new Order(customerId);
+            testOrder.CompletedDate = DateTime.Now;
+            int orderId = _orderManager.AddOrder(testOrder);
+
+            // add a product to the order
+            _orderManager.AddProductToOrder(orderId, productId);
+
+            // get the count of the OrderProduct table
+            Order retrievedOrder = _orderManager.GetProductsFromOrder(orderId);
+            int productCount = retrievedOrder.Products.Count();
+
+            // remove the product from the order
+            bool SuccessfulRemoval = _orderManager.RemoveProductFromOrder(orderId, productId);
+
+            // get the count of the OrderProduct table again and confirm that one entry has been erased
+            Order DeletedProductOrder = _orderManager.GetProductsFromOrder(orderId);
+            int deletedOrderProductCount = DeletedProductOrder.Products.Count();
+
+            // check if the count of the products on the order is one fewer after removing the product.
+            Assert.Equal(deletedOrderProductCount, productCount -1); 
+            
+        }
+
         [Fact]
         public void Dispose()
         {

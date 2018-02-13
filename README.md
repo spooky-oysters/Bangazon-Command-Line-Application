@@ -103,8 +103,38 @@ When a customer no longer wishes to list one of their items, this menu option al
 ### Add products to shopping cart
 When a customer wants to purchase an item, this menu option guides them through the steps to add an item to their shopping carts. They can continue shopping if they like and complete their order at a later time.
 
+Sample of menu options:
+```sh
+Choose a Product to add to the order:
+
+1. Baseball
+2. phone
+4. Exit back to Main Menu. 
+> 
+```
+
 ### Complete an order
 Completing an order means the customer is ready to pay. This menu allows the user to associate an order with a customer's payment type. This action closes an order in the Bangazon system.
+
+A check on available inventory is made when an order is closed. Any items that are out of stock are automatically removed from the order. 
+
+Sample of menu options:
+```sh
+Your order total is $1511. Ready to purchase?
+(Y/N) > 
+```
+
+```sh
+Your order total is $1511. Ready to purchase?
+(Y/N) > y
+Choose a payment option:
+1. Visa
+2. AmEx
+3. Checking
+> 
+```
+
+
 
 ### View reports
 There are currently three reports available to Bangazon! users:
