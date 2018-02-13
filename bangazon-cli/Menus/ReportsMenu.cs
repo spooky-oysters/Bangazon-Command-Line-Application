@@ -15,9 +15,6 @@ namespace bangazon_cli.Menus
                 Console.Clear();
 
                 Console.WriteLine("1. View Most Popular Products");
-                Console.WriteLine("2. View Stale Products");
-                Console.WriteLine("3. View Revenue Report");
-                choice = Convert.ToInt32(Console.ReadLine());
                 
             switch (choice)
             {
