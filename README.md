@@ -114,7 +114,7 @@ Choose a Product to add to the order:
 ```
 
 ### Complete an order
-Completing an order means the customer is ready to pay. This menu allows the user to associate an order with a customer's payment type. This action closes an order in the Bangazon system. A closed order is an order which includes a paymentTypeId and a CompleteDate on it's database record. 
+Completing an order means the customer is ready to pay. This menu allows the user to associate an order with a customer's payment type. This action closes an order in the Bangazon system. A closed order is an order which includes a paymentTypeId and a CompleteDate on its database record. 
 
 A check on available inventory is made when an order is closed. Any items that are out of stock are automatically removed from the order. 
 
