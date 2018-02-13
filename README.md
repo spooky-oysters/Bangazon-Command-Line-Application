@@ -171,7 +171,7 @@ To run the test project:
 1. Navigate to the banazon-cli.Tests project
 1. run the command ```dotnet test``
 
-At the time of this writing, there are 27 unit tests. **Run these each time you refactor or add features**
+At the time of this writing, there are 26 unit tests. **Run these each time you refactor or add features**
 
 ### Architecture:
 
